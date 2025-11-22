@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.DepartmentMapper">
 
-    <select id="findAll" resultMap="departmentResultMap">
+    <select id="findAllDepartment" resultMap="departmentResultMap">
         select id, name, create_time, update_time
         from department
         where is_deleted = 0
@@ -19,19 +19,19 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <delete id="deleteById">
+    <delete id="deleteDepartmentById">
         update department
         set is_deleted = 1
         where id = #{id}
         and is_deleted = 0
     </delete>
 
-    <insert id="add">
+    <insert id="addDepartment">
         INSERT INTO department (name, create_time, update_time, is_deleted)
         VALUES (#{name}, #{createTime}, #{updateTime}, #{isDeleted})
     </insert>
 
-    <select id="findById" resultMap="findByIdResultMap">
+    <select id="findDepartmentById" resultMap="findByIdResultMap">
         select id, name, create_time, update_time
         from department
         where id = #{id}
@@ -46,7 +46,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <update id="update">
+    <update id="updateDepartment">
         UPDATE department
         set name = #{name}, update_time = #{updateTime}
         where id = #{id}

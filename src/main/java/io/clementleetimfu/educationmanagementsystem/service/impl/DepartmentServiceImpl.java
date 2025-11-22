@@ -28,8 +28,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentMapper departmentMapper;
 
     @Override
-    public List<DepartmentListDTO> findAll() {
-        List<DepartmentListDTO> departmentListDTOList = departmentMapper.findAll();
+    public List<DepartmentListDTO> findAllDepartment() {
+        List<DepartmentListDTO> departmentListDTOList = departmentMapper.findAllDepartment();
         if (departmentListDTOList.isEmpty()){
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
         }
@@ -37,22 +37,22 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Boolean deleteById(Integer id) {
-        return departmentMapper.deleteById(id) > 0;
+    public Boolean deleteDepartmentById(Integer id) {
+        return departmentMapper.deleteDepartmentById(id) > 0;
     }
 
     @Override
-    public Boolean add(DepartmentAddDTO departmentAddDTO) {
+    public Boolean addDepartment(DepartmentAddDTO departmentAddDTO) {
         Department department = modelMapper.map(departmentAddDTO, Department.class);
         department.setCreateTime(LocalDateTime.now());
         department.setUpdateTime(LocalDateTime.now());
         department.setIsDeleted(Boolean.FALSE);
-        return departmentMapper.add(department) > 0;
+        return departmentMapper.addDepartment(department) > 0;
     }
 
     @Override
-    public DepartmentFindByIdDTO findById(Integer id) {
-        DepartmentFindByIdDTO departmentFindByIdDTO = departmentMapper.findById(id);
+    public DepartmentFindByIdDTO findDepartmentById(Integer id) {
+        DepartmentFindByIdDTO departmentFindByIdDTO = departmentMapper.findDepartmentById(id);
         if (departmentFindByIdDTO == null) {
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
         }
@@ -60,10 +60,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Boolean update(DepartmentUpdateDTO departmentUpdateDTO) {
+    public Boolean updateDepartment(DepartmentUpdateDTO departmentUpdateDTO) {
         Department department = modelMapper.map(departmentUpdateDTO, Department.class);
         department.setUpdateTime(LocalDateTime.now());
-        return departmentMapper.update(department) > 0;
+        return departmentMapper.updateDepartment(department) > 0;
     }
 
 }

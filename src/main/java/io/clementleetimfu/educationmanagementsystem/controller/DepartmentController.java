@@ -19,28 +19,28 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @GetMapping
-    public Result<List<DepartmentListDTO>> findAll() {
-        return Result.success(departmentService.findAll());
+    public Result<List<DepartmentListDTO>> findAllDepartment() {
+        return Result.success(departmentService.findAllDepartment());
     }
 
     @DeleteMapping("/{id}")
-    public Result<Boolean> deleteById(@PathVariable("id") Integer id) {
-        return Result.success(departmentService.deleteById(id));
+    public Result<Boolean> deleteDepartmentById(@PathVariable("id") Integer id) {
+        return Result.success(departmentService.deleteDepartmentById(id));
     }
 
     @PostMapping
-    public Result<Boolean> add(@RequestBody DepartmentAddDTO departmentAddDTO) {
-        return Result.success(departmentService.add(departmentAddDTO));
+    public Result<Boolean> addDepartment(@RequestBody DepartmentAddDTO departmentAddDTO) {
+        return Result.success(departmentService.addDepartment(departmentAddDTO));
     }
 
     @GetMapping("/{id}")
-    public Result<DepartmentFindByIdDTO> findById(@PathVariable("id") Integer id) {
-        return Result.success(departmentService.findById(id));
+    public Result<DepartmentFindByIdDTO> findDepartmentById(@PathVariable("id") Integer id) {
+        return Result.success(departmentService.findDepartmentById(id));
     }
 
     @PutMapping
-    public Result<Boolean> update(@RequestBody DepartmentUpdateDTO departmentUpdateDTO) {
-        return Result.success(departmentService.update(departmentUpdateDTO));
+    public Result<Boolean> updateDepartment(@RequestBody DepartmentUpdateDTO departmentUpdateDTO) {
+        return Result.success(departmentService.updateDepartment(departmentUpdateDTO));
     }
 
 }

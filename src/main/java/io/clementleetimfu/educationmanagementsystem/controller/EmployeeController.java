@@ -17,13 +17,13 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping
-    public Result<PageResult<EmployeeQueryResponseDTO>> query(EmployeeQueryRequestDTO employeeQueryRequestDTO) {
-        return Result.success(employeeService.query(employeeQueryRequestDTO));
+    public Result<PageResult<EmployeeQueryResponseDTO>> queryEmployee(EmployeeQueryRequestDTO employeeQueryRequestDTO) {
+        return Result.success(employeeService.queryEmployee(employeeQueryRequestDTO));
     }
 
     @PostMapping
-    public Result<Boolean> add(@RequestBody EmployeeAddDTO employeeAddDTO) {
-        return Result.success(employeeService.add(employeeAddDTO));
+    public Result<Boolean> addEmployee(@RequestBody EmployeeAddDTO employeeAddDTO) {
+        return Result.success(employeeService.addEmployee(employeeAddDTO));
     }
 
 }

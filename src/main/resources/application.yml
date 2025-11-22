@@ -10,3 +10,15 @@ spring:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+cloudflare:
+  r2:
+    bucketName: education-management-system
+    accountId:
+    accessKey:
+    secretKey:
+
+logging:
+  level:
+    org.springframework.jdbc.support.JdbcTransactionManager: debug

@@ -17,7 +17,7 @@ public class EmployeeQueryResponseDTO {
     private String name;
     private Integer gender;
     private String image;
-    private Integer jobPosition;
+    private Integer jobTitle;
     private Integer salary;
     private LocalDate hireDate;
     private Integer deptId;

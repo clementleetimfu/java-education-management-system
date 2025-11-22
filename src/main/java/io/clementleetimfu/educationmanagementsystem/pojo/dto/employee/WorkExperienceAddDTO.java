@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WorkExperienceAddDTO {
-    private Integer empId;
+    private String companyName;
+    private String jobTitle;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String companyName;
 }

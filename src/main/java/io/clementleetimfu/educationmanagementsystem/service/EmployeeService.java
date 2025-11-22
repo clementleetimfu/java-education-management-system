@@ -6,7 +6,7 @@ import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeQu
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeQueryResponseDTO;
 
 public interface EmployeeService {
-    PageResult<EmployeeQueryResponseDTO> query(EmployeeQueryRequestDTO employeeQueryRequestDTO);
+    PageResult<EmployeeQueryResponseDTO> queryEmployee(EmployeeQueryRequestDTO employeeQueryRequestDTO);
 
-    Boolean add(EmployeeAddDTO employeeAddDTO);
+    Boolean addEmployee(EmployeeAddDTO employeeAddDTO);
 }

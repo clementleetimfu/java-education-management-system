@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.WorkExperienceMapper">
+
+    <insert id="addWorkExperienceByBatch">
+        INSERT INTO work_experience (
+        emp_id,
+        start_date,
+        end_date,
+        company_name,
+        job_title,
+        create_time,
+        update_time,
+        is_deleted
+        )
+        VALUES
+        <foreach collection="workExperienceList" item="workExperience" separator=",">
+            (
+            #{workExperience.empId},
+            #{workExperience.startDate},
+            #{workExperience.endDate},
+            #{workExperience.companyName},
+            #{workExperience.jobTitle},
+            #{workExperience.createTime},
+            #{workExperience.updateTime},
+            #{workExperience.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

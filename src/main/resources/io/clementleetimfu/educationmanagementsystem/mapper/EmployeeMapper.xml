@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper">
 
-    <select id="query" resultMap="queryResultMap">
+    <select id="queryEmployee" resultMap="queryResultMap">
         select e.*, d.name
         from employee e
         left join department d
@@ -32,7 +32,7 @@
         <result property="name" column="name"/>
         <result property="gender" column="gender"/>
         <result property="image" column="image"/>
-        <result property="jobPosition" column="job_position"/>
+        <result property="jobTitle" column="job_title"/>
         <result property="salary" column="salary"/>
         <result property="hireDate" column="hire_date"/>
         <result property="deptId" column="dept_id"/>
@@ -41,13 +41,13 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
-    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addEmployee" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO employee
-        ( image, username, name, gender, job_position, hire_date, dept_id,
+        ( image, username, name, gender, job_title, hire_date, dept_id,
             phone, salary, create_time, update_time, is_deleted
         )
         VALUES
-        ( #{image}, #{username}, #{name}, #{gender}, #{jobPosition}, #{hireDate}, #{deptId},
+        ( #{image}, #{username}, #{name}, #{gender}, #{jobTitle}, #{hireDate}, #{deptId},
             #{phone}, #{salary}, #{createTime}, #{updateTime}, #{isDeleted}
         )
     </insert>

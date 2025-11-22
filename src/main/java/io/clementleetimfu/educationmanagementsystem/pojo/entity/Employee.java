@@ -19,7 +19,7 @@ public class Employee {
     private Integer gender;
     private String phone;
     // 1: Class Teacher, 2: Lecturer, 3: Student Affairs Manager, 4: Academic Research Manager, 5: Advisor
-    private Integer jobPosition;
+    private Integer jobTitle;
     private Integer salary;
     private String image;
     private LocalDate hireDate;

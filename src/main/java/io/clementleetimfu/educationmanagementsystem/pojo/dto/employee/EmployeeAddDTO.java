@@ -16,11 +16,11 @@ public class EmployeeAddDTO {
     private String username;
     private String name;
     private Integer gender;
-    private Integer jobPosition;
+    private Integer jobTitle;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate hireDate;
     private Integer deptId;
     private String phone;
     private Integer salary;
-    private List<WorkExperienceAddDTO> workExprList;
+    private List<WorkExperienceAddDTO> workExperienceAddDTOList;
 }

@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface DepartmentService {
 
-    List<DepartmentListDTO> findAll();
+    List<DepartmentListDTO> findAllDepartment();
 
-    Boolean deleteById(Integer id);
+    Boolean deleteDepartmentById(Integer id);
 
-    Boolean add(DepartmentAddDTO departmentAddDTO);
+    Boolean addDepartment(DepartmentAddDTO departmentAddDTO);
 
-    DepartmentFindByIdDTO findById(Integer id);
+    DepartmentFindByIdDTO findDepartmentById(Integer id);
 
-    Boolean update(DepartmentUpdateDTO departmentUpdateDTO);
+    Boolean updateDepartment(DepartmentUpdateDTO departmentUpdateDTO);
 }

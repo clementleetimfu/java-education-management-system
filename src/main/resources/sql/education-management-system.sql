@@ -29,11 +29,11 @@ CREATE TABLE employee
 (
     id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
     username        VARCHAR(50)      NOT NULL COMMENT 'Username',
-    password        VARCHAR(128)     NOT NULL COMMENT 'Password',
+    password        VARCHAR(128)     NOT NULL DEFAULT 'abc123' COMMENT 'Password',
     name            VARCHAR(50)      NOT NULL COMMENT 'Full Name',
     gender          TINYINT UNSIGNED NOT NULL COMMENT 'Gender, 1: Male, 2: Female',
     phone           VARCHAR(15)      NOT NULL COMMENT 'Phone Number',
-    job_position    TINYINT UNSIGNED COMMENT 'Job Position, 1: Class Teacher, 2: Lecturer, 3: Student Affairs Manager, 4: Academic Research Manager, 5: Advisor',
+    job_title       TINYINT UNSIGNED COMMENT 'Job Title, 1: Class Teacher, 2: Lecturer, 3: Student Affairs Manager, 4: Academic Research Manager, 5: Advisor',
     salary          INT UNSIGNED     NOT NULL COMMENT 'Salary',
     image           VARCHAR(255) COMMENT 'Avatar',
     hire_date       DATE             NOT NULL COMMENT 'Hire Date',
@@ -48,7 +48,7 @@ CREATE TABLE employee
     UNIQUE INDEX idx_phone (phone),
     INDEX idx_name (name),
     INDEX idx_gender (gender),
-    INDEX idx_job_position (job_position),
+    INDEX idx_job_title (job_title),
     INDEX idx_salary (salary),
     INDEX idx_hire_date (hire_date),
     INDEX idx_dept_id (dept_id),
@@ -59,7 +59,7 @@ CREATE TABLE employee
 ) COMMENT ='Employee Table';
 
 
-INSERT INTO employee (username, password, name, gender, phone, job_position, salary, image, hire_date, dept_id,
+INSERT INTO employee (username, password, name, gender, phone, job_title, salary, image, hire_date, dept_id,
                       create_time, update_time, is_deleted)
 VALUES ('johnsmith', '123456', 'John Smith', 1, '13309090001', 4, 15000, '5.png', '2000-01-01', 2,
         '2025-01-10 10:10:10', '2025-01-15 12:12:12', 0),
@@ -123,7 +123,7 @@ VALUES ('johnsmith', '123456', 'John Smith', 1, '13309090001', 4, 15000, '5.png'
         '2025-08-20 20:44:54', '2025-11-20 09:41:04', 0);
 
 -- Work Experience
-CREATE TABLE work_expr
+CREATE TABLE work_experience
 (
     id           INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
     emp_id       INT UNSIGNED COMMENT 'Employee ID',
@@ -131,6 +131,8 @@ CREATE TABLE work_expr
     end_date     DATE COMMENT 'End date',
     company_name VARCHAR(50) COMMENT 'Company name',
     job_title    VARCHAR(50) COMMENT 'Position / Job title',
+    create_time  DATETIME   NOT NULL COMMENT 'Creation Time',
+    update_time  DATETIME   NOT NULL COMMENT 'Update Time',
     is_deleted   TINYINT(1) NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
 
     INDEX idx_emp_id (emp_id),
@@ -138,5 +140,22 @@ CREATE TABLE work_expr
     INDEX idx_end_date (end_date),
     INDEX idx_company_name (company_name),
     INDEX idx_job_title (job_title),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
     INDEX idx_is_deleted (is_deleted)
 ) COMMENT 'Work experience';
+
+-- Activity Log
+CREATE TABLE activity_log
+(
+    id           INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, Primary Key',
+    operate_time DATETIME      NOT NULL COMMENT 'Operation Time',
+    info         VARCHAR(2000) NOT NULL COMMENT 'Log Information',
+    create_time  DATETIME      NOT NULL COMMENT 'Creation Time',
+    update_time  DATETIME      NOT NULL COMMENT 'Update Time',
+    is_deleted   TINYINT(1)    NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+    INDEX idx_operate_time (operate_time),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+) COMMENT = 'Activity Log';
