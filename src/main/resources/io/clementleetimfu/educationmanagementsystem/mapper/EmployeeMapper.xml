@@ -21,8 +21,8 @@
             <if test="startDate != null and endDate != null">
                 and e.hire_date between #{startDate} and #{endDate}
             </if>
-            order by e.update_time desc
         </where>
+        order by e.update_time desc
     </select>
 
     <resultMap id="searchResultMap"
@@ -45,9 +45,11 @@
         update employee
         set is_deleted = 1
         where id in
-        <foreach collection="ids" item="id" separator="," open="(" close=")">
-            #{id}
-        </foreach>
+        <if test="ids != null and ids.size() > 0">
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
         and is_deleted = 0
     </update>
 
@@ -61,4 +63,73 @@
         #{phone}, #{salary}, #{createTime}, #{updateTime}, #{isDeleted}
         )
     </insert>
+
+    <select id="findEmployeeById" resultMap="findEmployeeByIdResultMap">
+        SELECT
+        id,
+        username,
+        name,
+        gender,
+        job_title,
+        salary,
+        image,
+        hire_date,
+        dept_id,
+        phone
+        FROM employee
+        WHERE is_deleted = 0
+        AND id = #{id}
+    </select>
+
+    <select id="findWorkExperienceByEmpId"
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.WorkExperienceFindByEmpIdDTO">
+        SELECT
+        company_name AS companyName,
+        job_title AS jobTitle,
+        start_date AS startDate,
+        end_date AS endDate
+        FROM work_experience
+        WHERE is_deleted = 0
+        AND emp_id = #{id}
+        ORDER BY start_date DESC;
+    </select>
+
+
+    <resultMap id="findEmployeeByIdResultMap"
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdDTO">
+
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="jobTitle" column="job_title"/>
+        <result property="hireDate" column="hire_date"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="phone" column="phone"/>
+        <result property="salary" column="salary"/>
+        <result property="image" column="image"/>
+
+        <collection property="workExpList"
+                    column="id"
+                    select="findWorkExperienceByEmpId"/>
+    </resultMap>
+
+    <update id="updateEmployee">
+        UPDATE employee
+        <set>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="name != null and username != ''">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="jobTitle != null">job_title = #{jobTitle},</if>
+            <if test="hireDate != null">hire_date = #{hireDate},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="phone != null and username != ''">phone = #{phone},</if>
+            <if test="salary != null">salary = #{salary},</if>
+            <if test="image != null and username != ''">image = #{image},</if>
+            <if test="updateTime != null">image = #{image},</if>
+        </set>
+        WHERE id = #{id}
+        AND is_deleted = 0
+    </update>
+
 </mapper>

@@ -77,11 +77,9 @@ public class CloudflareR2Client {
             default:
                 contentType = "application/octet-stream"; // fallback, should never happen
         }
-        log.info("contentType:{}", contentType);
 
         // e.g. abc/123.jpg
         String objectKey = String.format("%s/%s.%s", key, UUID.randomUUID(), ext);
-        log.info("objectKey:{}", objectKey);
 
         try {
             PutObjectRequest request = PutObjectRequest.builder()

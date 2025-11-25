@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkExperienceFindByEmpIdDTO {
+public class WorkExperienceUpdateDTO {
     private String companyName;
     private String jobTitle;
     private LocalDate startDate;

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface WorkExperienceMapper {
     Integer addWorkExperienceByBatch(List<WorkExperience> workExperienceList);
+
+    Integer deleteWorkExperienceByEmpIds(List<Integer> ids);
 }

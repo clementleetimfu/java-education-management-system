@@ -3,10 +3,7 @@ package io.clementleetimfu.educationmanagementsystem.controller;
 import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
 import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.Result;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeAddDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchResponseDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.*;
 import io.clementleetimfu.educationmanagementsystem.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +16,7 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
     @GetMapping("/search")
     public Result<PageResult<EmployeeSearchResponseDTO>> searchEmployee(@ModelAttribute("employeeSearchRequestDTO")
                                                                         EmployeeSearchRequestDTO employeeSearchRequestDTO) {
@@ -37,20 +35,14 @@ public class EmployeeController {
         return Result.success(employeeService.addEmployee(employeeAddDTO));
     }
 
-
-
-
-
-
-
     @GetMapping("/{id}")
     public Result<EmployeeFindByIdDTO> findEmployeeById(@PathVariable("id") Integer id) {
         return Result.success(employeeService.findEmployeeById(id));
     }
 
-//    // delete - ok
-//    // findbyid
-//    // update
-//    // find all
-
+    @AddActivityLog
+    @PutMapping
+    public Result<Boolean> updateEmployee(@RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
+        return Result.success(employeeService.updateEmployee(employeeUpdateDTO));
+    }
 }

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -21,7 +20,6 @@ public class EmployeeFindByIdDTO {
     private String image;
     private LocalDate hireDate;
     private Integer deptId;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
-    private List<WorkExperienceFindByEmpIdDTO> workExperienceFindByEmpIdDTOList;
+    private String phone;
+    private List<WorkExperienceFindByEmpIdDTO> workExpList;
 }

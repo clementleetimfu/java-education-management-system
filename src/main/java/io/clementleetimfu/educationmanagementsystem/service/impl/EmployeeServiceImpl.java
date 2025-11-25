@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -51,30 +52,61 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setIsDeleted(false);
         Integer addEmployeeResult = employeeMapper.addEmployee(employee);
 
-        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddDTO.getWorkExperienceList();
-        List<WorkExperience> workExperienceList = workExperienceAddDTOList.stream()
-                .map(workExperienceAddDTO -> {
-                    WorkExperience workExperience = modelMapper.map(workExperienceAddDTO, WorkExperience.class);
-                    workExperience.setEmpId(employee.getId());
-                    workExperience.setCreateTime(LocalDateTime.now());
-                    workExperience.setUpdateTime(LocalDateTime.now());
-                    workExperience.setIsDeleted(Boolean.FALSE);
-                    return workExperience;
-                }).toList();
-        Integer addWorkExperienceResult = workExperienceMapper.addWorkExperienceByBatch(workExperienceList);
+        Integer addWorkExperienceResult = null;
+        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddDTO.getWorkExpList();
+        if (!workExperienceAddDTOList.isEmpty()) {
+            List<WorkExperience> workExperienceList = workExperienceAddDTOList.stream()
+                    .map(workExperienceAddDTO -> {
+                        WorkExperience workExperience = modelMapper.map(workExperienceAddDTO, WorkExperience.class);
+                        workExperience.setEmpId(employee.getId());
+                        workExperience.setCreateTime(LocalDateTime.now());
+                        workExperience.setUpdateTime(LocalDateTime.now());
+                        workExperience.setIsDeleted(Boolean.FALSE);
+                        return workExperience;
+                    }).toList();
+            addWorkExperienceResult = workExperienceMapper.addWorkExperienceByBatch(workExperienceList);
+        } else {
+            addWorkExperienceResult = 1;
+        }
 
         return addEmployeeResult > 0 && addWorkExperienceResult > 0;
     }
 
     @Override
     public Boolean deleteEmployeeByIds(List<Integer> ids) {
-        return employeeMapper.deleteEmployeeByIds(ids) > 0;
+        Integer deleteEmployeeResult = employeeMapper.deleteEmployeeByIds(ids);
+        Integer deleteWorkExperienceResult = workExperienceMapper.deleteWorkExperienceByEmpIds(ids);
+        return deleteEmployeeResult > 0 && deleteWorkExperienceResult > 0;
     }
 
     @Override
     public EmployeeFindByIdDTO findEmployeeById(Integer id) {
-        return null;
+        return employeeMapper.findEmployeeById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean updateEmployee(EmployeeUpdateDTO employeeUpdateDTO) {
+        Employee employee = modelMapper.map(employeeUpdateDTO, Employee.class);
+        employee.setUpdateTime(LocalDateTime.now());
+        Integer updateEmployeeResult = employeeMapper.updateEmployee(employee);
+        Integer deleteWorkExperienceResult = workExperienceMapper.deleteWorkExperienceByEmpIds(Arrays.asList(employee.getId()));
 
+        Integer updateWorkExperienceResult = null;
+        List<WorkExperienceUpdateDTO> workExperienceUpdateDTOList = employeeUpdateDTO.getWorkExpList();
+        if (!workExperienceUpdateDTOList.isEmpty()) {
+            List<WorkExperience> workExperienceList = workExperienceUpdateDTOList.stream().map(workExperienceUpdateDTO -> {
+                WorkExperience workExperience = modelMapper.map(workExperienceUpdateDTO, WorkExperience.class);
+                workExperience.setEmpId(employee.getId());
+                workExperience.setCreateTime(LocalDateTime.now());
+                workExperience.setUpdateTime(LocalDateTime.now());
+                workExperience.setIsDeleted(Boolean.FALSE);
+                return workExperience;
+            }).toList();
+            updateWorkExperienceResult = workExperienceMapper.addWorkExperienceByBatch(workExperienceList);
+        } else {
+            updateWorkExperienceResult = 1;
+        }
+        return updateEmployeeResult > 0 && deleteWorkExperienceResult > 0 && updateWorkExperienceResult > 0;
+    }
 }

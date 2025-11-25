@@ -30,4 +30,13 @@
         </foreach>
     </insert>
 
+    <update id="deleteWorkExperienceByEmpIds">
+        UPDATE work_experience
+        SET is_deleted = 1
+        WHERE emp_id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
 </mapper>

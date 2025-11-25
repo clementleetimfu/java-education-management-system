@@ -11,7 +11,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeAddDTO {
+public class EmployeeUpdateDTO {
+    private Integer id;
     private String image;
     private String username;
     private String name;
@@ -22,5 +23,5 @@ public class EmployeeAddDTO {
     private Integer deptId;
     private String phone;
     private Integer salary;
-    private List<WorkExperienceAddDTO> workExpList;
+    private List<WorkExperienceUpdateDTO> workExpList;
 }
