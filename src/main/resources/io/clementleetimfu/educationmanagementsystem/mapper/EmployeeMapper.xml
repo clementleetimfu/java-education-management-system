@@ -142,4 +142,32 @@
         AND password = #{password};
     </select>
 
+    <select id="findEmployeeJobTitleCount" resultType="java.util.Map">
+        SELECT
+        CASE job_title
+        WHEN 1 THEN 'Student Affairs Coordinator'
+        WHEN 2 THEN 'Curriculum Specialist'
+        WHEN 3 THEN 'Academic Advisor'
+        WHEN 4 THEN 'Career Counselor'
+        WHEN 5 THEN 'HR Manager'
+        WHEN 6 THEN 'Administrative Officer'
+        END AS jobTitle,
+        COUNT(*) AS count
+        FROM employee
+        WHERE is_deleted = 0
+        GROUP BY job_title
+    </select>
+
+    <select id="findEmployeeGenderCount" resultType="java.util.Map">
+        SELECT
+        CASE gender
+        WHEN 1 THEN 'Male'
+        WHEN 2 THEN 'Female'
+        END AS gender,
+        COUNT(*) AS count
+        FROM employee
+        WHERE is_deleted = 0
+        GROUP BY gender
+    </select>
+
 </mapper>

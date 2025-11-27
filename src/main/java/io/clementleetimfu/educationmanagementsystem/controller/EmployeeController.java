@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/emps")
@@ -44,5 +45,15 @@ public class EmployeeController {
     @PutMapping
     public Result<Boolean> updateEmployee(@RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
         return Result.success(employeeService.updateEmployee(employeeUpdateDTO));
+    }
+
+    @GetMapping("jobTitle/count")
+    public Result<EmployeeJobTitleCountDTO> findEmployeeJobTitleCount() {
+        return Result.success(employeeService.findEmployeeJobTitleCount());
+    }
+
+    @GetMapping("gender/count")
+    public Result<List<Map<String, Object>>> findEmployeeGenderCount() {
+        return Result.success(employeeService.findEmployeeGenderCount());
     }
 }

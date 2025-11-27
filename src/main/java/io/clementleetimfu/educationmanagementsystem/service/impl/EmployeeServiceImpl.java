@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -153,5 +154,36 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         }
         return Boolean.TRUE;
+    }
+
+    @Override
+    public EmployeeJobTitleCountDTO findEmployeeJobTitleCount() {
+        List<Map<String, Object>> jobTitleCountMapList = employeeMapper.findEmployeeJobTitleCount();
+
+        if (jobTitleCountMapList.isEmpty()) {
+            log.warn("Employee job title count list is empty");
+            throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
+        }
+
+        EmployeeJobTitleCountDTO employeeJobTitleCountDTO = new EmployeeJobTitleCountDTO();
+        employeeJobTitleCountDTO
+                .setJobTitleList(jobTitleCountMapList.stream().map(map -> (String) map.get("jobTitle")).toList());
+
+        employeeJobTitleCountDTO
+                .setJobTitleCountList(jobTitleCountMapList.stream().map(map -> ((Number) map.get("count")).intValue()).toList());
+
+        return employeeJobTitleCountDTO;
+    }
+
+    @Override
+    public List<Map<String, Object>> findEmployeeGenderCount() {
+        List<Map<String, Object>> genderCountMapList = employeeMapper.findEmployeeGenderCount();
+
+        if (genderCountMapList.isEmpty()) {
+            log.warn("Employee gender count list is empty");
+            throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
+        }
+        
+        return genderCountMapList;
     }
 }
