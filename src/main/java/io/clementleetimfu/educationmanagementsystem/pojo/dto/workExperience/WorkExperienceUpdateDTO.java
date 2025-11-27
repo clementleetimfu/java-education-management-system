@@ -1,4 +1,4 @@
-package io.clementleetimfu.educationmanagementsystem.pojo.dto.employee;
+package io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

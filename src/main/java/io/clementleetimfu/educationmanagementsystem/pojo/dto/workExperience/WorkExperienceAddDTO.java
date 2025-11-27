@@ -1,4 +1,4 @@
-package io.clementleetimfu.educationmanagementsystem.pojo.dto.employee;
+package io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkExperienceFindByEmpIdDTO {
+public class WorkExperienceAddDTO {
     private String companyName;
     private String jobTitle;
     private LocalDate startDate;

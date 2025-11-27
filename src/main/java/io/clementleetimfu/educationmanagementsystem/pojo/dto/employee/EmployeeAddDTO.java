@@ -1,5 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.pojo.dto.employee;
 
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceAddDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

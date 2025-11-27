@@ -15,4 +15,5 @@ public interface EmployeeService {
     EmployeeFindByIdDTO findEmployeeById(Integer id);
 
     Boolean updateEmployee(EmployeeUpdateDTO employeeUpdateDTO);
+
 }

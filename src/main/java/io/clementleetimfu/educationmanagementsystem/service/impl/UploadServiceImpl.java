@@ -1,7 +1,7 @@
 package io.clementleetimfu.educationmanagementsystem.service.impl;
 
 import io.clementleetimfu.educationmanagementsystem.service.UploadService;
-import io.clementleetimfu.educationmanagementsystem.utils.r2.CloudflareR2Client;
+import io.clementleetimfu.educationmanagementsystem.service.CloudflareR2Client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

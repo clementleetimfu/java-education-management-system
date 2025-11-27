@@ -2,6 +2,7 @@ package io.clementleetimfu.educationmanagementsystem.aop;
 
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.ActivityLog;
 import io.clementleetimfu.educationmanagementsystem.service.ActivityLogService;
+import io.clementleetimfu.educationmanagementsystem.utils.thread.CurrentEmployee;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -33,7 +34,7 @@ public class ActivityLogAspect {
 
         } finally {
             ActivityLog activityLog = new ActivityLog();
-            activityLog.setOperateEmpId(1); // testing // hardcode 1 for now, use threadlocal to pass in empid later
+            activityLog.setOperateEmpId(CurrentEmployee.get());
             activityLog.setOperateTime(LocalDateTime.now());
             activityLog.setClassName(pjp.getTarget().getClass().getName());
             activityLog.setMethodName(pjp.getSignature().getName());

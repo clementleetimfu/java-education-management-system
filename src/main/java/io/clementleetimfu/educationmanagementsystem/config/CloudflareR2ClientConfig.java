@@ -1,7 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.config;
 
-import io.clementleetimfu.educationmanagementsystem.utils.r2.CloudflareR2Client;
-import io.clementleetimfu.educationmanagementsystem.utils.r2.S3Config;
+import io.clementleetimfu.educationmanagementsystem.service.CloudflareR2Client;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

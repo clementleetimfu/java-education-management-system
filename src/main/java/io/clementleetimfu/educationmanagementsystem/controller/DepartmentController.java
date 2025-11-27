@@ -43,8 +43,8 @@ public class DepartmentController {
 
     @AddActivityLog
     @PutMapping
-    public Result<Boolean> updateDepartment(@RequestBody DepartmentUpdateDTO departmentUpdateDTO) {
-        return Result.success(departmentService.updateDepartment(departmentUpdateDTO));
+    public Result<Boolean> updateDepartmentName(@RequestBody DepartmentUpdateDTO departmentUpdateDTO) {
+        return Result.success(departmentService.updateDepartmentName(departmentUpdateDTO));
     }
 
 }

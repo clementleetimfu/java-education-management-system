@@ -8,6 +8,8 @@ import io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper;
 import io.clementleetimfu.educationmanagementsystem.mapper.WorkExperienceMapper;
 import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.*;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceAddDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceUpdateDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Employee;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.WorkExperience;
 import io.clementleetimfu.educationmanagementsystem.service.EmployeeService;
@@ -57,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setIsDeleted(false);
-        Integer addEmployeeRowsAffected = employeeMapper.addEmployee(employee);
+        Integer addEmployeeRowsAffected = employeeMapper.insertEmployee(employee);
 
         if (addEmployeeRowsAffected == 0) {
             log.warn("Failed to add employee:{}", employee);
@@ -90,25 +92,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Boolean deleteEmployeeByIds(List<Integer> ids) {
         Integer deleteEmployeeRowsAffected = employeeMapper.deleteEmployeeByIds(ids);
-
         if (deleteEmployeeRowsAffected == 0) {
             log.warn("Failed to delete employee with ids:{}", ids);
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_DELETE_FAILED);
         }
 
         Integer deleteWorkExperienceRowsAffected = workExperienceMapper.deleteWorkExperienceByEmpIds(ids);
-
         if (deleteWorkExperienceRowsAffected == 0) {
             log.warn("Failed to delete work experience with employee ids:{}", ids);
             throw new BusinessException(ErrorCodeEnum.WORK_EXPERIENCE_DELETE_FAILED);
         }
-
         return Boolean.TRUE;
     }
 
     @Override
     public EmployeeFindByIdDTO findEmployeeById(Integer id) {
-        EmployeeFindByIdDTO employeeFindByIdDTO = employeeMapper.findEmployeeById(id);
+        EmployeeFindByIdDTO employeeFindByIdDTO = employeeMapper.selectEmployeeById(id);
         if (employeeFindByIdDTO == null) {
             log.warn("Employee with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
@@ -145,15 +144,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                 workExperience.setIsDeleted(Boolean.FALSE);
                 return workExperience;
             }).toList();
+
             Integer addWorkExperienceRowsAffected = workExperienceMapper.addWorkExperienceByBatch(workExperienceList);
 
             if (addWorkExperienceRowsAffected == 0) {
                 log.warn("Failed to add work experience:{}", employee);
                 throw new BusinessException(ErrorCodeEnum.WORK_EXPERIENCE_ADD_FAILED);
             }
-
         }
-
         return Boolean.TRUE;
     }
 }

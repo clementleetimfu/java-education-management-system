@@ -1,4 +1,4 @@
-package io.clementleetimfu.educationmanagementsystem.utils.r2;
+package io.clementleetimfu.educationmanagementsystem.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

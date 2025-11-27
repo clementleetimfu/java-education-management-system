@@ -17,5 +17,5 @@ public interface DepartmentService {
 
     DepartmentFindByIdDTO findDepartmentById(Integer id);
 
-    Boolean updateDepartment(DepartmentUpdateDTO departmentUpdateDTO);
+    Boolean updateDepartmentName(DepartmentUpdateDTO departmentUpdateDTO);
 }

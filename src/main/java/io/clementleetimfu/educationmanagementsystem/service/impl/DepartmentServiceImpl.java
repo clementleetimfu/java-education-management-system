@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +29,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentFindAllDTO> findAllDepartment() {
-        List<DepartmentFindAllDTO> departmentListDTOFindAll = departmentMapper.findAllDepartment();
+        List<DepartmentFindAllDTO> departmentListDTOFindAll = departmentMapper.selectAllDepartment();
         if (departmentListDTOFindAll.isEmpty()) {
             log.warn("Department list is empty");
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
@@ -45,7 +44,6 @@ public class DepartmentServiceImpl implements DepartmentService {
             log.warn("Failed to delete department with id:{}", id);
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_DELETE_FAILED);
         }
-        log.info("Successfully deleted department with id:{}", id);
         return Boolean.TRUE;
     }
 
@@ -55,18 +53,17 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setCreateTime(LocalDateTime.now());
         department.setUpdateTime(LocalDateTime.now());
         department.setIsDeleted(Boolean.FALSE);
-        Integer rowsAffected = departmentMapper.addDepartment(department);
+        Integer rowsAffected = departmentMapper.insertDepartment(department);
         if (rowsAffected == 0) {
             log.warn("Failed to add department:{}", department);
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_ADD_FAILED);
         }
-        log.info("Successfully added department:{}", department);
         return Boolean.TRUE;
     }
 
     @Override
     public DepartmentFindByIdDTO findDepartmentById(Integer id) {
-        DepartmentFindByIdDTO departmentFindByIdDTO = departmentMapper.findDepartmentById(id);
+        DepartmentFindByIdDTO departmentFindByIdDTO = departmentMapper.selectDepartmentById(id);
         if (departmentFindByIdDTO == null) {
             log.warn("Department with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
@@ -75,15 +72,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Boolean updateDepartment(DepartmentUpdateDTO departmentUpdateDTO) {
+    public Boolean updateDepartmentName(DepartmentUpdateDTO departmentUpdateDTO) {
         Department department = modelMapper.map(departmentUpdateDTO, Department.class);
         department.setUpdateTime(LocalDateTime.now());
-        Integer rowsAffected = departmentMapper.updateDepartment(department);
+        Integer rowsAffected = departmentMapper.updateDepartmentName(department);
         if (rowsAffected == 0) {
             log.warn("Failed to update department:{}", department);
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_UPDATE_FAILED);
         }
-        log.info("Successfully updated department:{}", department);
         return Boolean.TRUE;
     }
 

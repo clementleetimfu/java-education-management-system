@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCodeEnum {
 
+    INVALID_CREDENTIALS(1001, "Invalid username or password"),
+
     DEPARTMENT_NOT_FOUND(2001, "Department not found"),
     DEPARTMENT_DELETE_FAILED(2002, "Department delete failed"),
     DEPARTMENT_ADD_FAILED(2003, "Department add failed"),

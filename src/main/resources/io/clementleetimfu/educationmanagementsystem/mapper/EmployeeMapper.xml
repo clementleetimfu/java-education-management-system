@@ -53,7 +53,7 @@
         and is_deleted = 0
     </update>
 
-    <insert id="addEmployee" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO employee
         ( image, username, name, gender, job_title, hire_date, dept_id,
         phone, salary, create_time, update_time, is_deleted
@@ -64,7 +64,7 @@
         )
     </insert>
 
-    <select id="findEmployeeById" resultMap="findEmployeeByIdResultMap">
+    <select id="selectEmployeeById" resultMap="findEmployeeByIdResultMap">
         SELECT
         id,
         username,
@@ -82,7 +82,7 @@
     </select>
 
     <select id="findWorkExperienceByEmpId"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.WorkExperienceFindByEmpIdDTO">
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceFindByEmpIdDTO">
         SELECT
         company_name AS companyName,
         job_title AS jobTitle,
@@ -93,7 +93,6 @@
         AND emp_id = #{id}
         ORDER BY start_date DESC;
     </select>
-
 
     <resultMap id="findEmployeeByIdResultMap"
                type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdDTO">
@@ -131,5 +130,16 @@
         WHERE id = #{id}
         AND is_deleted = 0
     </update>
+
+    <select id="selectEmployeeByUsernameAndPassWord"
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.LoginResponseDTO">
+        SELECT id,
+        username,
+        name
+        FROM employee
+        WHERE is_deleted = 0
+        AND username = #{username}
+        AND password = #{password};
+    </select>
 
 </mapper>

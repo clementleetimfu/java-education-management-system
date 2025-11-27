@@ -1,5 +1,6 @@
-package io.clementleetimfu.educationmanagementsystem.utils.r2;
+package io.clementleetimfu.educationmanagementsystem.service;
 
+import io.clementleetimfu.educationmanagementsystem.config.S3Config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;

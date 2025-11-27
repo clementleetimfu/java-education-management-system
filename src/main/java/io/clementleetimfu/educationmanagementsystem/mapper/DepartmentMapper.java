@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface DepartmentMapper {
 
-    List<DepartmentFindAllDTO> findAllDepartment();
+    List<DepartmentFindAllDTO> selectAllDepartment();
 
     Integer deleteDepartmentById(@Param("id") Integer id);
 
-    Integer addDepartment(Department department);
+    Integer insertDepartment(Department department);
 
-    DepartmentFindByIdDTO findDepartmentById(@Param("id") Integer id);
+    DepartmentFindByIdDTO selectDepartmentById(@Param("id") Integer id);
 
-    Integer updateDepartment(Department department);
+    Integer updateDepartmentName(Department department);
 }
