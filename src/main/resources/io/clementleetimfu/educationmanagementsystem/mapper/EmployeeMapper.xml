@@ -5,7 +5,15 @@
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper">
 
     <select id="searchEmployee" resultMap="searchResultMap">
-        select e.*, d.name as dept_name
+        select
+        e.id,
+        e.name,
+        e.gender,
+        e.image,
+        e.job_title,
+        e.hire_date,
+        e.update_time,
+        d.name as dept_name
         from employee e
         left join department d
         on e.dept_id = d.id

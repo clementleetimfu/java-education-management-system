@@ -30,5 +30,32 @@
         #{isDeleted}
         )
     </insert>
-    
+
+    <select id="findActivityLog" resultMap="findActivityLogResultMap">
+        SELECT
+        emp.username,
+        al.operate_time,
+        al.class_name,
+        al.method_name,
+        al.duration,
+        al.method_params,
+        al.return_value
+        FROM activity_log AS al
+        LEFT JOIN employee AS emp
+        ON al.operate_emp_id = emp.id
+        WHERE al.is_deleted = 0
+        AND emp.is_deleted = 0
+    </select>
+
+    <resultMap id="findActivityLogResultMap"
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.activityLog.FindActivityLogResponseDTO">
+        <result column="username" property="operator"/>
+        <result column="operate_time" property="operateTime"/>
+        <result column="class_name" property="className"/>
+        <result column="method_name" property="methodName"/>
+        <result column="duration" property="duration"/>
+        <result column="method_params" property="methodParams"/>
+        <result column="return_value" property="returnValue"/>
+    </resultMap>
+
 </mapper>

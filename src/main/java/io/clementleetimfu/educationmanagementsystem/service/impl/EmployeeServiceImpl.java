@@ -98,11 +98,16 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_DELETE_FAILED);
         }
 
-        Integer deleteWorkExperienceRowsAffected = workExperienceMapper.deleteWorkExperienceByEmpIds(ids);
-        if (deleteWorkExperienceRowsAffected == 0) {
-            log.warn("Failed to delete work experience with employee ids:{}", ids);
-            throw new BusinessException(ErrorCodeEnum.WORK_EXPERIENCE_DELETE_FAILED);
+        Long workExperienceCount = workExperienceMapper.countWorkExperienceByEmpIds(ids);
+
+        if (workExperienceCount > 0) {
+            Integer deleteWorkExperienceRowsAffected = workExperienceMapper.deleteWorkExperienceByEmpIds(ids);
+            if (deleteWorkExperienceRowsAffected == 0) {
+                log.warn("Failed to delete work experience with employee ids:{}", ids);
+                throw new BusinessException(ErrorCodeEnum.WORK_EXPERIENCE_DELETE_FAILED);
+            }
         }
+
         return Boolean.TRUE;
     }
 
@@ -183,7 +188,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             log.warn("Employee gender count list is empty");
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
-        
+
         return genderCountMapList;
     }
 }

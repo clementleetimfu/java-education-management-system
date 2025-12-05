@@ -20,7 +20,9 @@ public enum ErrorCodeEnum {
     EMPLOYEE_UPDATE_FAILED(3002, "Employee update failed"),
 
     WORK_EXPERIENCE_ADD_FAILED(4002, "Work experience add failed"),
-    WORK_EXPERIENCE_DELETE_FAILED(4002, "Work experience delete failed");
+    WORK_EXPERIENCE_DELETE_FAILED(4002, "Work experience delete failed"),
+
+    ACTIVITY_LOG_NOT_FOUND(5001, "Activity log not found");
 
     private final int code;
     private final String message;

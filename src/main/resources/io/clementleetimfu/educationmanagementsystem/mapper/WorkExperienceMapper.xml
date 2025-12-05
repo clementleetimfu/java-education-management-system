@@ -39,4 +39,18 @@
         </foreach>
     </update>
 
+    <select id="countWorkExperienceByEmpIds" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM work_experience
+        <where>
+            is_deleted = 0
+            <if test="ids != null and ids.size() > 0">
+                AND emp_id IN
+                <foreach collection="ids" item="id" separator="," open="(" close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
 </mapper>

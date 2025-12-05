@@ -13,16 +13,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EmployeeSearchResponseDTO {
     private Integer id;
-    private String username;
     private String name;
     private Integer gender;
     private String image;
-    private Integer jobTitle;
-    private Integer salary;
-    private LocalDate hireDate;
-    private Integer deptId;
     private String deptName;
-    private LocalDateTime createTime;
+    private Integer jobTitle;
+    private LocalDate hireDate;
     private LocalDateTime updateTime;
 }
 
