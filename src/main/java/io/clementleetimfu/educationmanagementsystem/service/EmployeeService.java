@@ -20,4 +20,6 @@ public interface EmployeeService {
     EmployeeJobTitleCountDTO findEmployeeJobTitleCount();
 
     List<Map<String, Object>> findEmployeeGenderCount();
+
+    List<EmployeeFindClassTeachersDTO> findAllTeachers();
 }

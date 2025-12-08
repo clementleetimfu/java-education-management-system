@@ -56,4 +56,10 @@ public class EmployeeController {
     public Result<List<Map<String, Object>>> findEmployeeGenderCount() {
         return Result.success(employeeService.findEmployeeGenderCount());
     }
+
+    @GetMapping("/teachers")
+    public Result<List<EmployeeFindClassTeachersDTO>> findAllTeachers() {
+        return Result.success(employeeService.findAllTeachers());
+    }
+
 }

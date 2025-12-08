@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.ClazzMapper">
+
+    <select id="searchClazz" resultMap="searchClazzResultMap">
+        select
+        c.id,
+        c.name as clazz_name,
+        e.name as teacher_name,
+        c.start_date,
+        c.end_date,
+        c.update_time
+        from clazz c
+        left join employee e
+        on c.teacher_id = e.id
+        <where>
+            e.is_deleted = 0
+            and c.is_deleted = 0
+            <if test="name != null and name != ''">
+                and c.name like concat('%', #{name},'%')
+            </if>
+            <if test="startDate != null and endDate != null">
+                and c.end_date between #{startDate} and #{endDate}
+            </if>
+        </where>
+        order by c.update_time desc
+    </select>
+
+    <resultMap id="searchClazzResultMap"
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzSearchResponseDTO">
+        <id property="id" column="id"/>
+        <result property="clazzName" column="clazz_name"/>
+        <result property="teacherName" column="teacher_name"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insertClazz">
+        INSERT INTO clazz (name, start_date, end_date, teacher_id, subject, create_time, update_time, is_deleted)
+        VALUES (#{name}, #{startDate}, #{endDate}, #{teacherId}, #{subject}, #{createTime}, #{updateTime}, #{isDeleted})
+    </insert>
+
+    <select id="selectClazzById" resultMap="selectClazzByIdResultMap">
+        SELECT id,
+        name,
+        start_date,
+        end_date,
+        teacher_id,
+        subject
+        FROM clazz AS c
+        WHERE is_deleted = 0
+        AND id = #{id}
+    </select>
+
+    <resultMap id="selectClazzByIdResultMap"
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzFindByIdDTO">
+        <result property="name" column="name"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="subject" column="subject"/>
+    </resultMap>
+
+    <update id="updateClazz">
+        UPDATE clazz
+        SET
+        name = #{name},
+        start_date = #{startDate},
+        end_date = #{endDate},
+        teacher_id = #{teacherId},
+        subject = #{subject},
+        update_time = #{updateTime}
+        WHERE id = #{id}
+        AND is_deleted = 0
+    </update>
+
+    <update id="deleteClazzById">
+        update clazz
+        set is_deleted = 1
+        where id = #{id}
+        and is_deleted = 0
+    </update>
+
+</mapper>

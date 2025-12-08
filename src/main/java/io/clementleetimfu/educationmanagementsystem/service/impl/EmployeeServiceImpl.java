@@ -133,11 +133,15 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_UPDATE_FAILED);
         }
 
-        Integer deleteWorkExperienceRowsAffected = workExperienceMapper.deleteWorkExperienceByEmpIds(Arrays.asList(employee.getId()));
+        Long workExperienceCount = workExperienceMapper.countWorkExperienceByEmpIds(Arrays.asList(employee.getId()));
 
-        if (deleteWorkExperienceRowsAffected == 0) {
-            log.warn("Failed to delete work experience with employee id:{}", employee.getId());
-            throw new BusinessException(ErrorCodeEnum.WORK_EXPERIENCE_DELETE_FAILED);
+        if (workExperienceCount > 0) {
+            Integer deleteWorkExperienceRowsAffected = workExperienceMapper.deleteWorkExperienceByEmpIds(Arrays.asList(employee.getId()));
+
+            if (deleteWorkExperienceRowsAffected == 0) {
+                log.warn("Failed to delete work experience with employee id:{}", employee.getId());
+                throw new BusinessException(ErrorCodeEnum.WORK_EXPERIENCE_DELETE_FAILED);
+            }
         }
 
         List<WorkExperienceUpdateDTO> workExperienceUpdateDTOList = employeeUpdateDTO.getWorkExpList();
@@ -190,5 +194,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         return genderCountMapList;
+    }
+
+    @Override
+    public List<EmployeeFindClassTeachersDTO> findAllTeachers() {
+        List<EmployeeFindClassTeachersDTO> employeeFindClassTeachersDTOList = employeeMapper.selectAllTeachers();
+        if (employeeFindClassTeachersDTOList.isEmpty()) {
+            log.warn("Class teacher list is empty");
+            throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
+        }
+        return employeeFindClassTeachersDTOList;
     }
 }

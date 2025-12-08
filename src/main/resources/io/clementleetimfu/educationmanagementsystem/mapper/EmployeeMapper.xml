@@ -36,16 +36,12 @@
     <resultMap id="searchResultMap"
                type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchResponseDTO">
         <id property="id" column="id"/>
-        <result property="username" column="username"/>
         <result property="name" column="name"/>
         <result property="gender" column="gender"/>
         <result property="image" column="image"/>
         <result property="jobTitle" column="job_title"/>
-        <result property="salary" column="salary"/>
         <result property="hireDate" column="hire_date"/>
-        <result property="deptId" column="dept_id"/>
         <result property="deptName" column="dept_name"/>
-        <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
@@ -175,6 +171,19 @@
         FROM employee
         WHERE is_deleted = 0
         GROUP BY gender
+    </select>
+
+    <select id="selectAllTeachers"
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindClassTeachersDTO">
+        select
+        e.id,
+        e.name
+        from employee e
+        left join job_title jt
+        on e.job_title = jt.id
+        where e.is_deleted = 0
+        and jt.is_deleted = 0
+        and jt.name like '%Class Teacher%'
     </select>
 
 </mapper>

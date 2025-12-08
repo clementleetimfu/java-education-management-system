@@ -1,9 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.mapper;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchResponseDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.LoginResponseDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.*;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Employee;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +26,6 @@ public interface EmployeeMapper {
 
     @MapKey("gender")
     List<Map<String, Object>> findEmployeeGenderCount();
+
+    List<EmployeeFindClassTeachersDTO> selectAllTeachers();
 }

@@ -33,7 +33,7 @@ CREATE TABLE employee
     name            VARCHAR(50)      NOT NULL COMMENT 'Full Name',
     gender          TINYINT UNSIGNED NOT NULL COMMENT 'Gender, 1: Male, 2: Female',
     phone           VARCHAR(15)      NOT NULL COMMENT 'Phone Number',
-    job_title       TINYINT UNSIGNED NOT NULL COMMENT 'Job Title, 1: Class Teacher, 2: Lecturer, 3: Student Affairs Manager, 4: Academic Research Manager, 5: Advisor',
+    job_title       TINYINT UNSIGNED NOT NULL COMMENT 'Job Title, refer job_title table',
     salary          INT UNSIGNED     NOT NULL COMMENT 'Salary',
     image           VARCHAR(255) COMMENT 'Avatar',
     hire_date       DATE             NOT NULL COMMENT 'Hire Date',
@@ -45,7 +45,7 @@ CREATE TABLE employee
     active_phone    VARCHAR(15) AS (CASE WHEN is_deleted = 0 THEN phone ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) phone',
 
     UNIQUE INDEX idx_username (active_username),
-    UNIQUE INDEX idx_phone (phone),
+    UNIQUE INDEX idx_phone (active_phone),
     INDEX idx_name (name),
     INDEX idx_gender (gender),
     INDEX idx_job_title (job_title),
@@ -171,3 +171,88 @@ CREATE TABLE activity_log
     INDEX idx_update_time (update_time),
     INDEX idx_is_deleted (is_deleted)
 ) COMMENT ='Activity Log';
+
+CREATE TABLE clazz
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
+    name        VARCHAR(50)      NOT NULL COMMENT 'Class name',
+    start_date  DATE             NOT NULL COMMENT 'Start date',
+    end_date    DATE             NOT NULL COMMENT 'End date',
+    teacher_id  INT UNSIGNED     NOT NULL COMMENT 'Class teacher ID, link to employee table',
+    subject     TINYINT UNSIGNED NOT NULL COMMENT 'Subject, refer subject table',
+    create_time DATETIME         NOT NULL COMMENT 'Creation time',
+    update_time DATETIME         NOT NULL COMMENT 'Update time',
+    is_deleted  TINYINT(1)       NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag (0: active, 1: deleted)',
+
+    active_name VARCHAR(50) AS (CASE WHEN is_deleted = 0 THEN name ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) class name',
+
+    UNIQUE INDEX idx_active_name (active_name),
+    INDEX idx_start_date (start_date),
+    INDEX idx_end_date (end_date),
+    INDEX idx_teacher_id (teacher_id),
+    INDEX idx_subject (subject),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+
+) COMMENT ='Class table';
+
+
+INSERT INTO clazz (id, name, start_date, end_date, teacher_id, subject, create_time, update_time, is_deleted)
+VALUES (1, 'Java Spring Boot Developer Bootcamp - Batch 01', '2023-04-30', '2023-06-29', 10, 1, '2023-06-01 17:08:23',
+        '2023-06-01 17:39:58', 0),
+       (2, 'Frontend Web Development - Batch 01', '2023-07-10', '2024-01-20', 3, 2, '2023-06-01 17:45:12',
+        '2023-06-01 17:45:12', 0),
+       (3, 'Java Spring Boot Developer Bootcamp - Batch 02', '2023-06-15', '2023-12-25', 6, 1, '2023-06-01 17:45:40',
+        '2023-06-01 17:45:40', 0),
+       (4, 'Java Spring Boot Developer Bootcamp - Batch 03', '2023-07-20', '2024-02-20', 20, 1, '2023-06-01 17:46:10',
+        '2023-06-01 17:46:10', 0),
+       (5, 'Python Data Science & Machine Learning - Batch 01', '2023-08-01', '2024-02-15', 7, 3, '2023-06-01 17:51:21',
+        '2023-06-01 17:51:21', 0),
+       (6, 'Frontend Web Development - Batch 02', '2023-11-20', '2024-05-10', 36, 2,
+        '2023-11-15 11:35:46', '2023-12-13 14:31:24', 0);
+
+CREATE TABLE job_title
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
+    name        VARCHAR(50) NOT NULL COMMENT 'Job title name',
+    create_time DATETIME    NOT NULL COMMENT 'Creation Time',
+    update_time DATETIME    NOT NULL COMMENT 'Update Time',
+    is_deleted  TINYINT(1)  NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+
+    INDEX idx_name (name),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+) COMMENT = 'Job Title Table';
+
+INSERT INTO job_title (name, create_time, update_time, is_deleted)
+VALUES ('Student Affairs Coordinator', NOW(), NOW(), 0),
+       ('Class Teacher', NOW(), NOW(), 0),
+       ('Academic Advisor', NOW(), NOW(), 0),
+       ('Career Counselor', NOW(), NOW(), 0),
+       ('HR Manager', NOW(), NOW(), 0),
+       ('Administrative Officer', NOW(), NOW(), 0);
+
+
+CREATE TABLE subject
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
+    name        VARCHAR(50) NOT NULL COMMENT 'Subject name',
+    create_time DATETIME    NOT NULL COMMENT 'Creation Time',
+    update_time DATETIME    NOT NULL COMMENT 'Update Time',
+    is_deleted  TINYINT(1)  NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+
+    INDEX idx_name (name),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+) COMMENT = 'Subject Table';
+
+
+INSERT INTO subject (name, create_time, update_time, is_deleted)
+VALUES ('Java', NOW(), NOW(), 0),
+       ('JavaScript', NOW(), NOW(), 0),
+       ('Python', NOW(), NOW(), 0),
+       ('C++', NOW(), NOW(), 0),
+       ('Go', NOW(), NOW(), 0);
