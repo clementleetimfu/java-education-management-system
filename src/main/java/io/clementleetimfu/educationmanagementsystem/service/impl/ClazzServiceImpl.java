@@ -88,4 +88,14 @@ public class ClazzServiceImpl implements ClazzService {
         return Boolean.TRUE;
     }
 
+    @Override
+    public List<ClazzFindAllDTO> findAllClazz() {
+        List<ClazzFindAllDTO> clazzFindAllDTOList = clazzMapper.selectAllClazz();
+        if (clazzFindAllDTOList.isEmpty()) {
+            log.warn("Clazz list is empty");
+            throw new BusinessException(ErrorCodeEnum.CLAZZ_NOT_FOUND);
+        }
+        return clazzFindAllDTOList;
+    }
+
 }

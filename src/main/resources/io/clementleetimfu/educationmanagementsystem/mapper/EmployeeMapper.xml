@@ -5,21 +5,27 @@
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper">
 
     <select id="searchEmployee" resultMap="searchResultMap">
-        select
+        SELECT
         e.id,
         e.name,
-        e.gender,
+        CASE e.gender
+        WHEN 1 THEN 'Male'
+        WHEN 2 THEN 'Female'
+        END AS gender,
         e.image,
-        e.job_title,
+        jt.name AS job_title,
         e.hire_date,
         e.update_time,
-        d.name as dept_name
-        from employee e
-        left join department d
-        on e.dept_id = d.id
+        d.name AS dept_name
+        FROM employee e
+        LEFT JOIN department d
+        ON e.dept_id = d.id
+        LEFT JOIN job_title jt
+        ON e.job_title = jt.id
         <where>
             e.is_deleted = 0
-            and d.is_deleted = 0
+            AND d.is_deleted = 0
+            AND jt.is_deleted = 0
             <if test="name != null and name != ''">
                 and e.name like concat('%', #{name},'%')
             </if>
@@ -101,7 +107,7 @@
     <resultMap id="findEmployeeByIdResultMap"
                type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdDTO">
 
-        <result property="id" column="id"/>
+        <id property="id" column="id"/>
         <result property="username" column="username"/>
         <result property="name" column="name"/>
         <result property="gender" column="gender"/>
@@ -129,7 +135,7 @@
             <if test="phone != null and username != ''">phone = #{phone},</if>
             <if test="salary != null">salary = #{salary},</if>
             <if test="image != null and username != ''">image = #{image},</if>
-            <if test="updateTime != null">image = #{image},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
         WHERE id = #{id}
         AND is_deleted = 0

@@ -31,7 +31,17 @@ public enum ErrorCodeEnum {
 
     JOB_TITLE_NOT_FOUND(7001, "Job title not found"),
 
-    SUBJECT_NOT_FOUND(8001, "Subject not found");
+    SUBJECT_NOT_FOUND(8001, "Subject not found"),
+
+    STUDENT_NOT_FOUND(9001, "Student not found"),
+    STUDENT_ADD_FAILED(9002, "Student add failed"),
+    STUDENT_DELETE_FAILED(9003, "Student delete failed"),
+    STUDENT_UPDATE_FAILED(9004, "Student update failed"),
+
+    STUDENT_NUMBER_SEQUENCE_ADD_FAILED(10001, "Student number sequence add failed"),
+    STUDENT_NUMBER_SEQUENCE_NOT_FOUND(10002, "Student number sequence not found"),
+
+    EDUCATION_LEVEL_NOT_FOUND(11001, "Education level not found");
 
     private final int code;
     private final String message;

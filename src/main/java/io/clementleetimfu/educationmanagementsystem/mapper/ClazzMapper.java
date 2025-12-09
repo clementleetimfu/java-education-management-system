@@ -1,5 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.mapper;
 
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzFindAllDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzFindByIdDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzSearchRequestDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzSearchResponseDTO;
@@ -17,4 +18,6 @@ public interface ClazzMapper {
     Integer updateClazz(Clazz clazz);
 
     Integer deleteClazzById(Integer id);
+
+    List<ClazzFindAllDTO> selectAllClazz();
 }

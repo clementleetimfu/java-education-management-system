@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.StudentNumberSequenceMapper">
+
+    <select id="isIntakeExist" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM student_number_sequence
+        WHERE intake_date = #{intakeDate}
+        AND is_deleted = 0;
+    </select>
+
+    <insert id="insertStudentNumberSequence">
+        INSERT INTO student_number_sequence(intake_date, last_seq, create_time, update_time, is_deleted)
+        VALUES (#{intakeDate}, #{lastSeq}, #{createTime}, #{updateTime}, #{isDeleted});
+    </insert>
+
+    <select id="selectStudentNumberSequenceByIntakeDate"
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.entity.StudentNumberSequence">
+        SELECT *
+        FROM student_number_sequence
+        WHERE intake_date = #{intakeDate}
+        AND is_deleted = 0;
+    </select>
+    
+</mapper>

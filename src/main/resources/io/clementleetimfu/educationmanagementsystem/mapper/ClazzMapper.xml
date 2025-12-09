@@ -84,4 +84,11 @@
         and is_deleted = 0
     </update>
 
+    <select id="selectAllClazz"
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzFindAllDTO">
+        select id, name
+        from clazz
+        where is_deleted = 0
+    </select>
+
 </mapper>

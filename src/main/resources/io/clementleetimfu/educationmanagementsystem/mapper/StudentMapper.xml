@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.StudentMapper">
+
+    <select id="searchStudent" resultMap="searchStudentResultMap">
+        SELECT
+        s.id,
+        s.name AS student_name,
+        s.no,
+        CASE s.gender
+        WHEN 1 THEN 'Male'
+        WHEN 2 THEN 'Female'
+        END AS gender,
+        el.name AS highest_education,
+        c.name AS clazz_name,
+        s.intake_date,
+        s.update_time
+        FROM student s
+        LEFT JOIN clazz c
+        ON s.clazz_id = c.id
+        LEFT JOIN education_level el
+        ON s.highest_education = el.id
+        <where>
+            s.is_deleted = 0
+            AND c.is_deleted = 0
+            AND el.is_deleted = 0
+            <if test="name != null and name != ''">
+                AND s.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="highestEducation != null">
+                AND el.id = #{highestEducation}
+            </if>
+            <if test="clazzId != null">
+                AND s.clazz_id = #{clazzId}
+            </if>
+        </where>
+        ORDER BY s.update_time DESC
+    </select>
+
+
+    <resultMap id="searchStudentResultMap"
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.student.StudentSearchResponseDTO">
+        <id property="id" column="id"/>
+        <result property="name" column="student_name"/>
+        <result property="no" column="no"/>
+        <result property="gender" column="gender"/>
+        <result property="highestEducation" column="highest_education"/>
+        <result property="clazzName" column="clazz_name"/>
+        <result property="intakeDate" column="intake_date"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <insert id="insertStudent">
+        INSERT INTO student(name, no, gender, birthdate, phone, email, address, highest_education, graduation_date,
+        clazz_id, intake_date, create_time, update_time, is_deleted)
+        VALUES (#{name}, #{no}, #{gender}, #{birthdate}, #{phone}, #{email}, #{address}, #{highestEducation},
+        #{graduationDate}, #{clazzId}, #{intakeDate}, #{createTime}, #{updateTime}, #{isDeleted})
+    </insert>
+
+    <select id="selectStudentById" resultMap="selectStudentByIdResultMap">
+        SELECT
+        s.id,
+        s.name,
+        s.gender,
+        s.birthdate,
+        s.phone,
+        s.email,
+        s.address,
+        el.id AS highest_education,
+        s.graduation_date,
+        c.id as clazz_id,
+        s.intake_date,
+        s.update_time
+        FROM student s
+        LEFT JOIN clazz c
+        ON s.clazz_id = c.id
+        AND c.is_deleted = 0
+        LEFT JOIN education_level el
+        ON s.highest_education = el.id
+        AND el.is_deleted = 0
+        WHERE s.is_deleted = 0
+        AND s.id = #{id}
+    </select>
+
+    <resultMap id="selectStudentByIdResultMap"
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.student.StudentFindByIdResponseDTO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="birthdate" column="birthdate"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="highestEducation" column="highest_education"/>
+        <result property="graduationDate" column="graduation_date"/>
+        <result property="clazzId" column="clazz_id"/>
+        <result property="intakeDate" column="intake_date"/>
+    </resultMap>
+
+    <update id="deleteStudentByIds">
+        update student
+        set is_deleted = 1
+        where id in
+        <if test="ids != null and ids.size() > 0">
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+        </if>
+        and is_deleted = 0
+    </update>
+
+    <update id="updateStudent">
+        UPDATE student
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="birthdate != null">birthdate = #{birthdate},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="highestEducation != null">highest_education = #{highestEducation},</if>
+            <if test="graduationDate != null">graduation_date = #{graduationDate},</if>
+            <if test="clazzId != null">clazz_id = #{clazzId},</if>
+            <if test="intakeDate != null">intake_date = #{intakeDate},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </set>
+        WHERE id = #{id}
+        AND is_deleted = 0
+    </update>
+
+</mapper>

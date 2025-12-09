@@ -256,3 +256,107 @@ VALUES ('Java', NOW(), NOW(), 0),
        ('Python', NOW(), NOW(), 0),
        ('C++', NOW(), NOW(), 0),
        ('Go', NOW(), NOW(), 0);
+
+
+CREATE TABLE student
+(
+    id                INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
+    name              VARCHAR(50)      NOT NULL COMMENT 'Name',
+    no                CHAR(15)         NOT NULL COMMENT 'Student number',
+    gender            TINYINT UNSIGNED NOT NULL COMMENT 'Gender: 1 = Male, 2 = Female',
+    birthdate         DATE             NOT NULL COMMENT 'Birthdate',
+    phone             VARCHAR(15)      NOT NULL COMMENT 'Phone number',
+    email             VARCHAR(50)      NOT NULL COMMENT 'Email address',
+    address           VARCHAR(100)     NOT NULL COMMENT 'Address',
+    highest_education TINYINT UNSIGNED COMMENT 'Highest education, refer education_level table',
+    graduation_date   DATE COMMENT 'Graduation date',
+    clazz_id          INT UNSIGNED     NOT NULL COMMENT 'Class ID, link to clazz table',
+    intake_date       DATE             NOT NULL COMMENT 'Student intake date',
+    create_time       DATETIME         NOT NULL COMMENT 'Creation Time',
+    update_time       DATETIME         NOT NULL COMMENT 'Update Time',
+    is_deleted        TINYINT(1)       NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+
+    active_no         CHAR(15) AS (CASE WHEN is_deleted = 0 THEN no ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) student number',
+    active_phone      VARCHAR(15) AS (CASE WHEN is_deleted = 0 THEN phone ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) phone',
+    active_email      VARCHAR(50) AS (CASE WHEN is_deleted = 0 THEN email ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) email',
+
+    UNIQUE INDEX idx_active_no (active_no),
+    UNIQUE INDEX idx_active_phone (active_phone),
+    UNIQUE INDEX idx_active_email (active_email),
+
+    INDEX idx_name (name),
+    INDEX idx_no (no),
+    INDEX idx_gender (gender),
+    INDEX idx_birthdate (birthdate),
+    INDEX idx_phone (phone),
+    INDEX idx_email (email),
+    INDEX idx_address (address),
+    INDEX idx_highest_education (highest_education),
+    INDEX idx_graduation_date (graduation_date),
+    INDEX idx_clazz_id (clazz_id),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+) COMMENT 'Student table';
+
+INSERT INTO student
+(name, no, gender, birthdate, phone, email, address, highest_education, graduation_date, clazz_id, intake_date,
+ create_time, update_time, is_deleted)
+VALUES ('Alice Tan', '20250501000001', 2, '1998-03-15', '01234567890', 'alice.tan@example.com', 'Kuala Lumpur', 4,
+        '2020-06-30', 101, '2025-05-01', NOW(), NOW(), 0),
+       ('Bob Lim', '20250501000002', 1, '1995-07-22', '01234567891', 'bob.lim@example.com', 'Penang', 5, '2018-07-15',
+        101, '2025-05-01', NOW(), NOW(), 0),
+       ('Catherine Ong', '20250501000003', 2, '2000-01-10', '01234567892', 'catherine.ong@example.com', 'Johor Bahru',
+        3, '2019-05-20', 102, '2025-05-01', NOW(), NOW(), 0),
+       ('David Chew', '20250501000004', 1, '1992-12-05', '01234567893', 'david.chew@example.com', 'Kuala Lumpur', 6,
+        '2015-11-30', 102, '2025-05-01', NOW(), NOW(), 0),
+       ('Emily Wong', '20250501000005', 2, '1997-08-18', '01234567894', 'emily.wong@example.com', 'Selangor', 4,
+        '2019-12-10', 103, '2025-05-01', NOW(), NOW(), 0),
+       ('Frank Lee', '20250501000006', 1, '1994-04-25', '01234567895', 'frank.lee@example.com', 'Penang', 5,
+        '2016-07-20', 103, '2025-05-01', NOW(), NOW(), 0),
+       ('Grace Lim', '20250501000007', 2, '1999-11-30', '01234567896', 'grace.lim@example.com', 'Johor Bahru', 3,
+        '2021-05-15', 104, '2025-05-01', NOW(), NOW(), 0),
+       ('Henry Tan', '20250501000008', 1, '1996-02-14', '01234567897', 'henry.tan@example.com', 'Kuala Lumpur', 4,
+        '2018-06-30', 104, '2025-05-01', NOW(), NOW(), 0),
+       ('Isabella Chua', '20250501000009', 2, '2001-09-08', '01234567898', 'isabella.chua@example.com', 'Selangor', 2,
+        '2019-11-15', 105, '2025-05-01', NOW(), NOW(), 0),
+       ('Jason Koh', '20250501000010', 1, '1993-05-12', '01234567899', 'jason.koh@example.com', 'Penang', 7,
+        '2012-06-30', 105, '2025-05-01', NOW(), NOW(), 0);
+
+CREATE TABLE education_level
+(
+    id          INT UNSIGNED PRIMARY KEY COMMENT 'ID, primary key',
+    name        VARCHAR(50) NOT NULL COMMENT 'Education level name',
+    create_time DATETIME    NOT NULL COMMENT 'Creation Time',
+    update_time DATETIME    NOT NULL COMMENT 'Update Time',
+    is_deleted  TINYINT(1)  NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+
+    INDEX idx_name (name),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+);
+
+INSERT INTO education_level (id, name, create_time, update_time, is_deleted)
+VALUES (1, 'Middle School', NOW(), NOW(), 0),
+       (2, 'High School', NOW(), NOW(), 0),
+       (3, 'Diploma', NOW(), NOW(), 0),
+       (4, 'Bachelor', NOW(), NOW(), 0),
+       (5, 'Master', NOW(), NOW(), 0),
+       (6, 'Doctorate', NOW(), NOW(), 0),
+       (7, 'Other', NOW(), NOW(), 0);
+
+
+CREATE TABLE student_number_sequence
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
+    intake_date DATE         NOT NULL COMMENT 'Student intake date',
+    last_seq    INT UNSIGNED NOT NULL COMMENT 'Last sequence number used for this intake',
+    create_time DATETIME     NOT NULL COMMENT 'Creation Time',
+    update_time DATETIME     NOT NULL COMMENT 'Update Time',
+    is_deleted  TINYINT(1)   NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+) COMMENT ='Tracks the latest student number sequence per intake date';
