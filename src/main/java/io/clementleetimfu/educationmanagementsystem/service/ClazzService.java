@@ -10,9 +10,9 @@ public interface ClazzService {
 
     Boolean addClazz(ClazzAddDTO clazzAddDTO);
 
-    ClazzFindByIdDTO findClazzById(Integer id);
+    ClazzFindByIdResponseDTO findClazzById(Integer id);
 
-    Boolean updateClazzName(ClazzUpdateDTO clazzUpdateDTO);
+    Boolean updateClazzName(ClazzUpdateRequestDTO clazzUpdateRequestDTO);
 
     Boolean deleteClazzById(Integer id);
 

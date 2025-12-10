@@ -6,9 +6,10 @@ import org.apache.ibatis.annotations.Param;
 import java.time.LocalDate;
 
 public interface StudentNumberSequenceMapper {
-    Long isIntakeExist(@Param("intakeDate") LocalDate intakeDate);
 
     Integer insertStudentNumberSequence(StudentNumberSequence studentNumberSequence);
 
-    StudentNumberSequence selectStudentNumberSequenceByIntakeDate(LocalDate intakeDate);
+    StudentNumberSequence selectStudentNumberSequenceByIntakeDate(@Param("intakeDate") LocalDate intakeDate);
+
+    Integer updateStudentNumberSequence(@Param("intakeDate") LocalDate intakeDate, @Param("seq") Integer seq);
 }

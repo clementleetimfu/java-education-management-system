@@ -55,8 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean addEmployee(EmployeeAddDTO employeeAddDTO) {
-        Employee employee = modelMapper.map(employeeAddDTO, Employee.class);
+    public Boolean addEmployee(EmployeeAddRequestDTO employeeAddRequestDTO) {
+
+        Employee employee = modelMapper.map(employeeAddRequestDTO, Employee.class);
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setIsDeleted(false);
@@ -67,7 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_ADD_FAILED);
         }
 
-        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddDTO.getWorkExpList();
+        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddRequestDTO.getWorkExpList();
         if (!workExperienceAddDTOList.isEmpty()) {
             List<WorkExperience> workExperienceList = workExperienceAddDTOList.stream()
                     .map(workExperienceAddDTO -> {
@@ -78,7 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                         workExperience.setIsDeleted(Boolean.FALSE);
                         return workExperience;
                     }).toList();
-            Integer addWorkExperienceRowsAffected = workExperienceMapper.addWorkExperienceByBatch(workExperienceList);
+            Integer addWorkExperienceRowsAffected = workExperienceMapper.insertWorkExperienceByBatch(workExperienceList);
 
             if (addWorkExperienceRowsAffected == 0) {
                 log.warn("Failed to add work experience:{}", employee);
@@ -92,13 +93,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteEmployeeByIds(List<Integer> ids) {
+
         Integer deleteEmployeeRowsAffected = employeeMapper.deleteEmployeeByIds(ids);
         if (deleteEmployeeRowsAffected == 0) {
             log.warn("Failed to delete employee with ids:{}", ids);
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_DELETE_FAILED);
         }
 
-        Long workExperienceCount = workExperienceMapper.countWorkExperienceByEmpIds(ids);
+        Long workExperienceCount = workExperienceMapper.selectWorkExperienceCountByEmpIds(ids);
 
         if (workExperienceCount > 0) {
             Integer deleteWorkExperienceRowsAffected = workExperienceMapper.deleteWorkExperienceByEmpIds(ids);
@@ -112,19 +114,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeFindByIdDTO findEmployeeById(Integer id) {
-        EmployeeFindByIdDTO employeeFindByIdDTO = employeeMapper.selectEmployeeById(id);
-        if (employeeFindByIdDTO == null) {
+    public EmployeeFindByIdRequestDTO findEmployeeById(Integer id) {
+
+        EmployeeFindByIdRequestDTO employeeFindByIdRequestDTO = employeeMapper.selectEmployeeById(id);
+        if (employeeFindByIdRequestDTO == null) {
             log.warn("Employee with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
-        return employeeFindByIdDTO;
+
+        return employeeFindByIdRequestDTO;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateEmployee(EmployeeUpdateDTO employeeUpdateDTO) {
-        Employee employee = modelMapper.map(employeeUpdateDTO, Employee.class);
+    public Boolean updateEmployee(EmployeeUpdateRequestDTO employeeUpdateRequestDTO) {
+
+        Employee employee = modelMapper.map(employeeUpdateRequestDTO, Employee.class);
         employee.setUpdateTime(LocalDateTime.now());
         Integer updateEmployeeRowsAffected = employeeMapper.updateEmployee(employee);
 
@@ -133,7 +138,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_UPDATE_FAILED);
         }
 
-        Long workExperienceCount = workExperienceMapper.countWorkExperienceByEmpIds(Arrays.asList(employee.getId()));
+        Long workExperienceCount = workExperienceMapper.selectWorkExperienceCountByEmpIds(Arrays.asList(employee.getId()));
 
         if (workExperienceCount > 0) {
             Integer deleteWorkExperienceRowsAffected = workExperienceMapper.deleteWorkExperienceByEmpIds(Arrays.asList(employee.getId()));
@@ -144,7 +149,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         }
 
-        List<WorkExperienceUpdateDTO> workExperienceUpdateDTOList = employeeUpdateDTO.getWorkExpList();
+        List<WorkExperienceUpdateDTO> workExperienceUpdateDTOList = employeeUpdateRequestDTO.getWorkExpList();
         if (!workExperienceUpdateDTOList.isEmpty()) {
             List<WorkExperience> workExperienceList = workExperienceUpdateDTOList.stream().map(workExperienceUpdateDTO -> {
                 WorkExperience workExperience = modelMapper.map(workExperienceUpdateDTO, WorkExperience.class);
@@ -155,7 +160,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 return workExperience;
             }).toList();
 
-            Integer addWorkExperienceRowsAffected = workExperienceMapper.addWorkExperienceByBatch(workExperienceList);
+            Integer addWorkExperienceRowsAffected = workExperienceMapper.insertWorkExperienceByBatch(workExperienceList);
 
             if (addWorkExperienceRowsAffected == 0) {
                 log.warn("Failed to add work experience:{}", employee);
@@ -166,27 +171,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeJobTitleCountDTO findEmployeeJobTitleCount() {
-        List<Map<String, Object>> jobTitleCountMapList = employeeMapper.findEmployeeJobTitleCount();
+    public EmployeeJobTitleCountRequestDTO findEmployeeJobTitleCount() {
+        List<Map<String, Object>> jobTitleCountMapList = employeeMapper.selectEmployeeJobTitleCount();
 
         if (jobTitleCountMapList.isEmpty()) {
             log.warn("Employee job title count list is empty");
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
-        EmployeeJobTitleCountDTO employeeJobTitleCountDTO = new EmployeeJobTitleCountDTO();
-        employeeJobTitleCountDTO
+        EmployeeJobTitleCountRequestDTO employeeJobTitleCountRequestDTO = new EmployeeJobTitleCountRequestDTO();
+        employeeJobTitleCountRequestDTO
                 .setJobTitleList(jobTitleCountMapList.stream().map(map -> (String) map.get("jobTitle")).toList());
 
-        employeeJobTitleCountDTO
+        employeeJobTitleCountRequestDTO
                 .setJobTitleCountList(jobTitleCountMapList.stream().map(map -> ((Number) map.get("count")).intValue()).toList());
 
-        return employeeJobTitleCountDTO;
+        return employeeJobTitleCountRequestDTO;
     }
 
     @Override
     public List<Map<String, Object>> findEmployeeGenderCount() {
-        List<Map<String, Object>> genderCountMapList = employeeMapper.findEmployeeGenderCount();
+        List<Map<String, Object>> genderCountMapList = employeeMapper.selectEmployeeGenderCount();
 
         if (genderCountMapList.isEmpty()) {
             log.warn("Employee gender count list is empty");
@@ -204,5 +209,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
         return employeeFindClassTeachersDTOList;
+    }
+
+    @Override
+    public Boolean isEmployeeExistsInDepartment(Integer deptId) {
+        return employeeMapper.selectEmployeeCountByDeptId(deptId) > 0;
     }
 }

@@ -13,30 +13,31 @@
         WHEN 2 THEN 'Female'
         END AS gender,
         e.image,
-        jt.name AS job_title,
+        jt.name AS jobTitle,
         e.hire_date,
         e.update_time,
-        d.name AS dept_name
+        d.name AS deptName
         FROM employee e
         LEFT JOIN department d
         ON e.dept_id = d.id
+        AND d.is_deleted = 0
         LEFT JOIN job_title jt
         ON e.job_title = jt.id
+        AND jt.is_deleted = 0
         <where>
             e.is_deleted = 0
-            AND d.is_deleted = 0
-            AND jt.is_deleted = 0
+
             <if test="name != null and name != ''">
-                and e.name like concat('%', #{name},'%')
+                AND e.name LIKE CONCAT('%', #{name}, '%')
             </if>
             <if test="gender != null">
-                and e.gender = #{gender}
+                AND e.gender = #{gender}
             </if>
             <if test="startDate != null and endDate != null">
-                and e.hire_date between #{startDate} and #{endDate}
+                AND e.hire_date BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
-        order by e.update_time desc
+        ORDER BY e.update_time DESC
     </select>
 
     <resultMap id="searchResultMap"
@@ -45,22 +46,23 @@
         <result property="name" column="name"/>
         <result property="gender" column="gender"/>
         <result property="image" column="image"/>
-        <result property="jobTitle" column="job_title"/>
+        <result property="jobTitle" column="jobTitle"/>
         <result property="hireDate" column="hire_date"/>
-        <result property="deptName" column="dept_name"/>
+        <result property="deptName" column="deptName"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <update id="deleteEmployeeByIds">
-        update employee
-        set is_deleted = 1
-        where id in
+        UPDATE employee
+        SET is_deleted = 1,
+        update_time = NOW()
+        WHERE is_deleted = 0
         <if test="ids != null and ids.size() > 0">
-            <foreach collection="ids" item="id" separator="," open="(" close=")">
+            AND id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
                 #{id}
             </foreach>
         </if>
-        and is_deleted = 0
     </update>
 
     <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id">
@@ -105,7 +107,7 @@
     </select>
 
     <resultMap id="findEmployeeByIdResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdRequestDTO">
 
         <id property="id" column="id"/>
         <result property="username" column="username"/>
@@ -132,9 +134,9 @@
             <if test="jobTitle != null">job_title = #{jobTitle},</if>
             <if test="hireDate != null">hire_date = #{hireDate},</if>
             <if test="deptId != null">dept_id = #{deptId},</if>
-            <if test="phone != null and username != ''">phone = #{phone},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
             <if test="salary != null">salary = #{salary},</if>
-            <if test="image != null and username != ''">image = #{image},</if>
+            <if test="image != null and image != ''">image = #{image},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
         WHERE id = #{id}
@@ -151,7 +153,7 @@
         AND password = #{password};
     </select>
 
-    <select id="findEmployeeJobTitleCount" resultType="java.util.Map">
+    <select id="selectEmployeeJobTitleCount" resultType="java.util.Map">
         SELECT
         CASE job_title
         WHEN 1 THEN 'Student Affairs Coordinator'
@@ -167,7 +169,7 @@
         GROUP BY job_title
     </select>
 
-    <select id="findEmployeeGenderCount" resultType="java.util.Map">
+    <select id="selectEmployeeGenderCount" resultType="java.util.Map">
         SELECT
         CASE gender
         WHEN 1 THEN 'Male'
@@ -181,15 +183,28 @@
 
     <select id="selectAllTeachers"
             resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindClassTeachersDTO">
-        select
+        SELECT
         e.id,
         e.name
-        from employee e
-        left join job_title jt
-        on e.job_title = jt.id
-        where e.is_deleted = 0
-        and jt.is_deleted = 0
-        and jt.name like '%Class Teacher%'
+        FROM
+        employee e
+        LEFT JOIN
+        job_title jt
+        ON e.job_title = jt.id
+        AND jt.is_deleted = 0
+        WHERE
+        e.is_deleted = 0
+        AND jt.name LIKE '%Class Teacher%';
+    </select>
+
+    <select id="selectEmployeeCountByDeptId" resultType="java.lang.Long">
+        SELECT
+        COUNT(*)
+        FROM
+        employee
+        WHERE
+        dept_id = #{deptId}
+        AND is_deleted = 0;
     </select>
 
 </mapper>

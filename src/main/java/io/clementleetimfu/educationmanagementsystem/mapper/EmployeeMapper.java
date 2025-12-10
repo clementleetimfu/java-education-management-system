@@ -15,17 +15,19 @@ public interface EmployeeMapper {
     
     Integer deleteEmployeeByIds(List<Integer> ids);
 
-    EmployeeFindByIdDTO selectEmployeeById(@Param("id") Integer id);
+    EmployeeFindByIdRequestDTO selectEmployeeById(@Param("id") Integer id);
 
     Integer updateEmployee(Employee employee);
 
     LoginResponseDTO selectEmployeeByUsernameAndPassWord(@Param("username") String username, @Param("password") String password);
 
     @MapKey("jobTitle")
-    List<Map<String, Object>> findEmployeeJobTitleCount();
+    List<Map<String, Object>> selectEmployeeJobTitleCount();
 
     @MapKey("gender")
-    List<Map<String, Object>> findEmployeeGenderCount();
+    List<Map<String, Object>> selectEmployeeGenderCount();
 
     List<EmployeeFindClassTeachersDTO> selectAllTeachers();
+
+    Long selectEmployeeCountByDeptId(@Param("deptId") Integer deptId);
 }

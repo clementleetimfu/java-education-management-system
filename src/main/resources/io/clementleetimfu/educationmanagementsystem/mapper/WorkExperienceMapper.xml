@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.WorkExperienceMapper">
 
-    <insert id="addWorkExperienceByBatch">
+    <insert id="insertWorkExperienceByBatch">
         INSERT INTO work_experience (
         emp_id,
         start_date,
@@ -32,14 +32,20 @@
 
     <update id="deleteWorkExperienceByEmpIds">
         UPDATE work_experience
-        SET is_deleted = 1
-        WHERE emp_id IN
-        <foreach collection="ids" item="id" separator="," open="(" close=")">
-            #{id}
-        </foreach>
+        SET
+        is_deleted = 1,
+        update_time = NOW()
+        WHERE
+        is_deleted = 0
+        <if test="ids != null and ids.size() > 0">
+            AND emp_id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
     </update>
 
-    <select id="countWorkExperienceByEmpIds" resultType="java.lang.Long">
+    <select id="selectWorkExperienceCountByEmpIds" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM work_experience
         <where>

@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentSearchRequestDTO {
-    private Integer page = 1;
-    private Integer pageSize = 10;
-    private String name;
-    private Integer educationLevel;
-    private Integer clazzId;
+public class StudentFindCountByClazzDTO {
+    private List<String> clazzNameList;
+    private List<Integer> studentCountList;
 }

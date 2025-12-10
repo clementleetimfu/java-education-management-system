@@ -58,69 +58,38 @@ CREATE TABLE employee
 
 ) COMMENT ='Employee Table';
 
-
-INSERT INTO employee (username, password, name, gender, phone, job_title, salary, image, hire_date, dept_id,
-                      create_time, update_time, is_deleted)
-VALUES ('johnsmith', '123456', 'John Smith', 1, '13309090001', 4, 15000, '5.png', '2000-01-01', 2,
-        '2025-01-10 10:10:10', '2025-01-15 12:12:12', 0),
-       ('michaeljones', '123456', 'Michael Jones', 1, '13309090002', 2, 8600, '01.png', '2015-01-01', 2,
-        '2025-01-11 09:15:23', '2025-02-01 14:20:33', 0),
-       ('davidlee', '123456', 'David Lee', 1, '13309090003', 2, 8900, '01.png', '2008-05-01', 2, '2025-02-05 08:35:12',
-        '2025-03-01 11:30:45', 0),
-       ('williambrown', '123456', 'William Brown', 1, '13309090004', 2, 9200, '01.png', '2007-01-01', 2,
-        '2025-02-15 15:10:50', '2025-04-10 09:40:33', 0),
-       ('jameswilson', '123456', 'James Wilson', 1, '13309090005', 2, 9500, '01.png', '2012-12-05', 2,
-        '2025-03-10 12:45:11', '2025-05-12 17:15:05', 0),
-       ('emilyclark', '123456', 'Emily Clark', 2, '13309090006', 3, 6500, '01.png', '2013-09-05', 1,
-        '2025-03-20 20:25:33', '2025-06-10 16:35:45', 0),
-       ('chrisjohnson', '123456', 'Chris Johnson', 1, '13309090007', 1, 4700, '01.png', '2005-08-01', 1,
-        '2025-04-01 16:35:33', '2025-07-12 16:35:47', 0),
-       ('robertmiller', '123456', 'Robert Miller', 1, '13309090008', 1, 4800, '01.png', '2014-11-09', 1,
-        '2025-04-05 16:35:33', '2025-07-15 16:35:49', 0),
-       ('josephmoore', '123456', 'Joseph Moore', 1, '13309090009', 1, 4900, '01.png', '2011-03-11', 1,
-        '2025-04-10 16:35:33', '2025-08-01 16:35:51', 0),
-       ('danielwhite', '123456', 'Daniel White', 1, '13309090010', 1, 5000, '01.png', '2013-09-05', 1,
-        '2025-04-15 16:35:33', '2025-08-10 16:35:53', 0),
-       ('anthonyharris', '123456', 'Anthony Harris', 1, '13309090011', 2, 9700, '01.png', '2007-02-01', 2,
-        '2025-05-01 16:35:33', '2025-08-15 16:35:55', 0),
-       ('stephenmartin', '123456', 'Stephen Martin', 1, '13309090012', 2, 10000, '01.png', '2008-08-18', 2,
-        '2025-05-05 16:35:33', '2025-08-20 16:35:57', 0),
-       ('brianthomas', '123456', 'Brian Thomas', 1, '13309090013', 1, 5300, '01.png', '2012-11-01', 1,
-        '2025-05-10 16:35:33', '2025-08-25 16:35:59', 0),
-       ('kevinjackson', '123456', 'Kevin Jackson', 1, '13309090014', 2, 10600, '01.png', '2002-08-01', 2,
-        '2025-05-15 16:35:33', '2025-08-30 16:36:01', 0),
-       ('sarahlee', '123456', 'Sarah Lee', 2, '13309090015', 2, 10900, '01.png', '2011-05-01', 2, '2025-06-01 16:35:33',
-        '2025-09-05 16:36:03', 0),
-       ('markallen', '123456', 'Mark Allen', 1, '13309090016', 2, 9600, '01.png', '2010-01-01', 2,
-        '2025-06-05 16:35:33', '2025-09-10 16:36:05', 0),
-       ('lindseyadams', '12345678', 'Lindsey Adams', 1, '13309090017', 1, 5800, '01.png', '2015-03-21', 1,
-        '2025-06-10 16:35:33', '2025-09-15 16:36:07', 0),
-       ('nathanroberts', '123456', 'Nathan Roberts', 1, '13309090018', 2, 10200, '01.png', '2015-01-01', 2,
-        '2025-06-15 16:35:33', '2025-09-20 16:36:09', 0),
-       ('carolynking', '123456', 'Carolyn King', 2, '13309090019', 2, 10500, '01.png', '2008-01-01', 2,
-        '2025-07-01 16:35:33', '2025-09-25 16:36:11', 0),
-       ('edwardhill', '123456', 'Edward Hill', 1, '13309090020', 2, 10800, '01.png', '2018-01-01', 2,
-        '2025-07-05 16:35:33', '2025-09-30 16:36:13', 0),
-       ('frankyoung', '123456', 'Frank Young', 1, '13309090021', 5, 5200, '01.png', '2015-01-01', 3,
-        '2025-07-10 16:35:33', '2025-10-05 16:36:15', 0),
-       ('garyscott', '123456', 'Gary Scott', 1, '13309090022', 5, 5500, '01.png', '2016-01-01', 3,
-        '2025-07-15 16:35:33', '2025-10-10 16:36:17', 0),
-       ('henrycooper', '123456', 'Henry Cooper', 1, '13309090023', 5, 5800, '01.png', '2012-01-01', 3,
-        '2025-07-20 16:35:33', '2025-10-15 16:36:19', 0),
-       ('ianward', '123456', 'Ian Ward', 1, '13309090024', 5, 5000, '01.png', '2006-01-01', 3, '2025-07-25 16:35:33',
-        '2025-10-20 16:36:21', 0),
-       ('jackbaker', '123456', 'Jack Baker', 1, '13309090025', 5, 4800, '01.png', '2002-01-01', 3,
-        '2025-07-30 16:35:33', '2025-10-25 16:36:23', 0),
-       ('keithcollins', '123456', 'Keith Collins', 1, '13309090026', 5, 5400, '01.png', '2011-01-01', 3,
-        '2025-08-01 16:35:33', '2025-11-01 22:12:46', 0),
-       ('leoanderson', '123456', 'Leo Anderson', 1, '13309090027', 2, 6600, '8.png', '2004-01-01', 2,
-        '2025-08-05 16:35:33', '2025-11-05 17:56:59', 0),
-       ('matthewrobinson', '123456', 'Matthew Robinson', 1, '13309090028', 5, 5000, '6.png', '2007-01-01', 3,
-        '2025-08-10 16:35:33', '2025-11-10 16:34:22', 0),
-       ('olivertaylor', '123456', 'Oliver Taylor', 1, '13309090030', 2, 5000, '01.png', '2020-03-01', 2,
-        '2025-08-15 16:35:33', '2025-11-15 16:36:31', 0),
-       ('patrickwhite', '123456', 'Patrick White', 1, '18809091212', 2, 6800, '1.png', '2023-10-19', 2,
-        '2025-08-20 20:44:54', '2025-11-20 09:41:04', 0);
+INSERT INTO employee (username, name, gender, phone, job_title, salary, hire_date, dept_id, create_time, update_time,
+                      is_deleted)
+VALUES ('john.doe', 'John Doe', 1, '01012345678', 1, 5000, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        NOW(), NOW(), 0),
+       ('jane.smith', 'Jane Smith', 2, '01023456789', 2, 5500, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        2, NOW(), NOW(), 0),
+       ('michael.jones', 'Michael Jones', 1, '01034567890', 3, 6000,
+        DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 3, NOW(), NOW(), 0),
+       ('emily.wang', 'Emily Wang', 2, '01045678901', 2, 5200, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        2, NOW(), NOW(), 0),
+       ('david.lee', 'David Lee', 1, '01056789012', 1, 5800, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        NOW(), NOW(), 0),
+       ('sophia.kim', 'Sophia Kim', 2, '01067890123', 3, 5300, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        3, NOW(), NOW(), 0),
+       ('daniel.chen', 'Daniel Chen', 1, '01078901234', 2, 6100,
+        DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2, NOW(), NOW(), 0),
+       ('olivia.li', 'Olivia Li', 2, '01089012345', 1, 5400, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        NOW(), NOW(), 0),
+       ('james.ho', 'James Ho', 1, '01090123456', 3, 5700, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 3,
+        NOW(), NOW(), 0),
+       ('lily.zhang', 'Lily Zhang', 2, '01001234567', 2, 5600, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        2, NOW(), NOW(), 0),
+       ('alex.yang', 'Alex Yang', 1, '01011223344', 1, 5900, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        NOW(), NOW(), 0),
+       ('chloe.tan', 'Chloe Tan', 2, '01022334455', 2, 5500, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2,
+        NOW(), NOW(), 0),
+       ('ryan.huang', 'Ryan Huang', 1, '01033445566', 3, 6200, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        3, NOW(), NOW(), 0),
+       ('mia.fang', 'Mia Fang', 2, '01044556677', 1, 5100, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        NOW(), NOW(), 0),
+       ('ethan.wu', 'Ethan Wu', 1, '01055667788', 2, 6000, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2,
+        NOW(), NOW(), 0);
 
 -- Work Experience
 CREATE TABLE work_experience
@@ -172,6 +141,7 @@ CREATE TABLE activity_log
     INDEX idx_is_deleted (is_deleted)
 ) COMMENT ='Activity Log';
 
+-- Class
 CREATE TABLE clazz
 (
     id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
@@ -197,21 +167,24 @@ CREATE TABLE clazz
 
 ) COMMENT ='Class table';
 
+INSERT INTO clazz (name, start_date, end_date, teacher_id, subject, create_time, update_time, is_deleted)
+VALUES ('Java Spring Boot Developer Bootcamp - Batch 01', '2025-03-05', '2027-03-07', 2, 1, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 02', '2025-03-15', '2025-03-18', 4, 1, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 03', '2025-04-02', '2025-04-05', 7, 1, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 01', '2025-03-20', '2025-03-23', 10, 2, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 02', '2025-04-10', '2025-04-12', 12, 2, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 03', '2025-05-02', '2025-05-06', 15, 2, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 04', '2025-06-01', '2025-06-03', 2, 2, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 01', '2025-03-12', '2025-03-15', 4, 3, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 02', '2025-04-05', '2025-04-07', 7, 3, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 03', '2025-05-08', '2025-05-11', 10, 3, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 04', '2025-05-20', '2025-05-23', 12, 3, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 04', '2025-06-05', '2025-06-09', 15, 1, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 05', '2025-06-10', '2025-06-12', 2, 2, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 05', '2025-06-15', '2025-06-18', 4, 3, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 05', '2027-06-20', '2028-06-22', 7, 1, NOW(), NOW(), 0);
 
-INSERT INTO clazz (id, name, start_date, end_date, teacher_id, subject, create_time, update_time, is_deleted)
-VALUES (1, 'Java Spring Boot Developer Bootcamp - Batch 01', '2023-04-30', '2023-06-29', 10, 1, '2023-06-01 17:08:23',
-        '2023-06-01 17:39:58', 0),
-       (2, 'Frontend Web Development - Batch 01', '2023-07-10', '2024-01-20', 3, 2, '2023-06-01 17:45:12',
-        '2023-06-01 17:45:12', 0),
-       (3, 'Java Spring Boot Developer Bootcamp - Batch 02', '2023-06-15', '2023-12-25', 6, 1, '2023-06-01 17:45:40',
-        '2023-06-01 17:45:40', 0),
-       (4, 'Java Spring Boot Developer Bootcamp - Batch 03', '2023-07-20', '2024-02-20', 20, 1, '2023-06-01 17:46:10',
-        '2023-06-01 17:46:10', 0),
-       (5, 'Python Data Science & Machine Learning - Batch 01', '2023-08-01', '2024-02-15', 7, 3, '2023-06-01 17:51:21',
-        '2023-06-01 17:51:21', 0),
-       (6, 'Frontend Web Development - Batch 02', '2023-11-20', '2024-05-10', 36, 2,
-        '2023-11-15 11:35:46', '2023-12-13 14:31:24', 0);
-
+-- Job Title
 CREATE TABLE job_title
 (
     id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
@@ -234,7 +207,7 @@ VALUES ('Student Affairs Coordinator', NOW(), NOW(), 0),
        ('HR Manager', NOW(), NOW(), 0),
        ('Administrative Officer', NOW(), NOW(), 0);
 
-
+-- Subject
 CREATE TABLE subject
 (
     id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
@@ -249,7 +222,6 @@ CREATE TABLE subject
     INDEX idx_is_deleted (is_deleted)
 ) COMMENT = 'Subject Table';
 
-
 INSERT INTO subject (name, create_time, update_time, is_deleted)
 VALUES ('Java', NOW(), NOW(), 0),
        ('JavaScript', NOW(), NOW(), 0),
@@ -257,28 +229,28 @@ VALUES ('Java', NOW(), NOW(), 0),
        ('C++', NOW(), NOW(), 0),
        ('Go', NOW(), NOW(), 0);
 
-
+-- Student
 CREATE TABLE student
 (
-    id                INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
-    name              VARCHAR(50)      NOT NULL COMMENT 'Name',
-    no                CHAR(15)         NOT NULL COMMENT 'Student number',
-    gender            TINYINT UNSIGNED NOT NULL COMMENT 'Gender: 1 = Male, 2 = Female',
-    birthdate         DATE             NOT NULL COMMENT 'Birthdate',
-    phone             VARCHAR(15)      NOT NULL COMMENT 'Phone number',
-    email             VARCHAR(50)      NOT NULL COMMENT 'Email address',
-    address           VARCHAR(100)     NOT NULL COMMENT 'Address',
-    highest_education TINYINT UNSIGNED COMMENT 'Highest education, refer education_level table',
-    graduation_date   DATE COMMENT 'Graduation date',
-    clazz_id          INT UNSIGNED     NOT NULL COMMENT 'Class ID, link to clazz table',
-    intake_date       DATE             NOT NULL COMMENT 'Student intake date',
-    create_time       DATETIME         NOT NULL COMMENT 'Creation Time',
-    update_time       DATETIME         NOT NULL COMMENT 'Update Time',
-    is_deleted        TINYINT(1)       NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+    id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
+    name            VARCHAR(50)      NOT NULL COMMENT 'Name',
+    no              CHAR(15)         NOT NULL COMMENT 'Student number',
+    gender          TINYINT UNSIGNED NOT NULL COMMENT 'Gender: 1 = Male, 2 = Female',
+    birthdate       DATE             NOT NULL COMMENT 'Birthdate',
+    phone           VARCHAR(15)      NOT NULL COMMENT 'Phone number',
+    email           VARCHAR(50)      NOT NULL COMMENT 'Email address',
+    address         VARCHAR(100)     NOT NULL COMMENT 'Address',
+    education_level TINYINT UNSIGNED COMMENT 'Education level, refer education_level table',
+    graduation_date DATE COMMENT 'Graduation date',
+    clazz_id        INT UNSIGNED     NOT NULL COMMENT 'Class ID, link to clazz table',
+    intake_date     DATE             NOT NULL COMMENT 'Student intake date',
+    create_time     DATETIME         NOT NULL COMMENT 'Creation Time',
+    update_time     DATETIME         NOT NULL COMMENT 'Update Time',
+    is_deleted      TINYINT(1)       NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
 
-    active_no         CHAR(15) AS (CASE WHEN is_deleted = 0 THEN no ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) student number',
-    active_phone      VARCHAR(15) AS (CASE WHEN is_deleted = 0 THEN phone ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) phone',
-    active_email      VARCHAR(50) AS (CASE WHEN is_deleted = 0 THEN email ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) email',
+    active_no       CHAR(15) AS (CASE WHEN is_deleted = 0 THEN no ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) student number',
+    active_phone    VARCHAR(15) AS (CASE WHEN is_deleted = 0 THEN phone ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) phone',
+    active_email    VARCHAR(50) AS (CASE WHEN is_deleted = 0 THEN email ELSE NULL END) STORED COMMENT 'Active (is_deleted = 0) email',
 
     UNIQUE INDEX idx_active_no (active_no),
     UNIQUE INDEX idx_active_phone (active_phone),
@@ -291,7 +263,7 @@ CREATE TABLE student
     INDEX idx_phone (phone),
     INDEX idx_email (email),
     INDEX idx_address (address),
-    INDEX idx_highest_education (highest_education),
+    INDEX idx_education_level (education_level),
     INDEX idx_graduation_date (graduation_date),
     INDEX idx_clazz_id (clazz_id),
     INDEX idx_create_time (create_time),
@@ -299,30 +271,40 @@ CREATE TABLE student
     INDEX idx_is_deleted (is_deleted)
 ) COMMENT 'Student table';
 
-INSERT INTO student
-(name, no, gender, birthdate, phone, email, address, highest_education, graduation_date, clazz_id, intake_date,
- create_time, update_time, is_deleted)
-VALUES ('Alice Tan', '20250501000001', 2, '1998-03-15', '01234567890', 'alice.tan@example.com', 'Kuala Lumpur', 4,
-        '2020-06-30', 101, '2025-05-01', NOW(), NOW(), 0),
-       ('Bob Lim', '20250501000002', 1, '1995-07-22', '01234567891', 'bob.lim@example.com', 'Penang', 5, '2018-07-15',
-        101, '2025-05-01', NOW(), NOW(), 0),
-       ('Catherine Ong', '20250501000003', 2, '2000-01-10', '01234567892', 'catherine.ong@example.com', 'Johor Bahru',
-        3, '2019-05-20', 102, '2025-05-01', NOW(), NOW(), 0),
-       ('David Chew', '20250501000004', 1, '1992-12-05', '01234567893', 'david.chew@example.com', 'Kuala Lumpur', 6,
-        '2015-11-30', 102, '2025-05-01', NOW(), NOW(), 0),
-       ('Emily Wong', '20250501000005', 2, '1997-08-18', '01234567894', 'emily.wong@example.com', 'Selangor', 4,
-        '2019-12-10', 103, '2025-05-01', NOW(), NOW(), 0),
-       ('Frank Lee', '20250501000006', 1, '1994-04-25', '01234567895', 'frank.lee@example.com', 'Penang', 5,
-        '2016-07-20', 103, '2025-05-01', NOW(), NOW(), 0),
-       ('Grace Lim', '20250501000007', 2, '1999-11-30', '01234567896', 'grace.lim@example.com', 'Johor Bahru', 3,
-        '2021-05-15', 104, '2025-05-01', NOW(), NOW(), 0),
-       ('Henry Tan', '20250501000008', 1, '1996-02-14', '01234567897', 'henry.tan@example.com', 'Kuala Lumpur', 4,
-        '2018-06-30', 104, '2025-05-01', NOW(), NOW(), 0),
-       ('Isabella Chua', '20250501000009', 2, '2001-09-08', '01234567898', 'isabella.chua@example.com', 'Selangor', 2,
-        '2019-11-15', 105, '2025-05-01', NOW(), NOW(), 0),
-       ('Jason Koh', '20250501000010', 1, '1993-05-12', '01234567899', 'jason.koh@example.com', 'Penang', 7,
-        '2012-06-30', 105, '2025-05-01', NOW(), NOW(), 0);
+INSERT INTO student (name, no, gender, birthdate, phone, email, address, education_level, clazz_id, intake_date,
+                     graduation_date, create_time, update_time, is_deleted)
+VALUES ('Aaron Tan', '2025060700001', 1, '1999-05-14', '01012345678', 'aaron.tan@example.com',
+        '123 Jalan A, Kuala Lumpur', 1, 3, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Bella Lim', '2025060700002', 2, '2000-03-22', '01023456789', 'bella.lim@example.com',
+        '456 Jalan B, Kuala Lumpur', 2, 7, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Caleb Ong', '2025060700003', 1, '1998-11-09', '01034567890', 'caleb.ong@example.com',
+        '789 Jalan C, Kuala Lumpur', 3, 2, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Diana Goh', '2025060700004', 2, '2001-07-30', '01045678901', 'diana.goh@example.com',
+        '321 Jalan D, Kuala Lumpur', 1, 3, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Evan Chua', '2025060700005', 1, '1999-12-18', '01056789012', 'evan.chua@example.com',
+        '654 Jalan E, Kuala Lumpur', 2, 7, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Fiona Neo', '2025060700006', 2, '2000-08-05', '01067890123', 'fiona.neo@example.com',
+        '987 Jalan F, Kuala Lumpur', 3, 5, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Gavin Tan', '2025060700007', 1, '1998-02-27', '01078901234', 'gavin.tan@example.com',
+        '159 Jalan G, Kuala Lumpur', 2, 2, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Hannah Lim', '2025060700008', 2, '2001-06-11', '01089012345', 'hannah.lim@example.com',
+        '753 Jalan H, Kuala Lumpur', 1, 3, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Isaac Lee', '2025060700009', 1, '1999-09-19', '01090123456', 'isaac.lee@example.com',
+        '852 Jalan I, Kuala Lumpur', 3, 5, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Jasmine Koh', '2025060700010', 2, '2000-01-03', '01001234567', 'jasmine.koh@example.com',
+        '951 Jalan J, Kuala Lumpur', 2, 7, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Kyle Wong', '2025060700011', 1, '1998-10-21', '01011223344', 'kyle.wong@example.com',
+        '357 Jalan K, Kuala Lumpur', 1, 3, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Leona Teo', '2025060700012', 2, '2001-03-15', '01022334455', 'leona.teo@example.com',
+        '258 Jalan L, Kuala Lumpur', 2, 2, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Mason Quek', '2025060700013', 1, '1999-04-07', '01033445566', 'mason.quek@example.com',
+        '147 Jalan M, Kuala Lumpur', 3, 5, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Nadia Sim', '2025060700014', 2, '2000-12-29', '01044556677', 'nadia.sim@example.com',
+        '369 Jalan N, Kuala Lumpur', 1, 7, '2025-06-07', '2026-06-07', NOW(), NOW(), 0),
+       ('Owen Tan', '2025060700015', 1, '1998-06-16', '01055667788', 'owen.tan@example.com',
+        '741 Jalan O, Kuala Lumpur', 2, 2, '2025-06-07', '2026-06-07', NOW(), NOW(), 0);
 
+-- Education Level
 CREATE TABLE education_level
 (
     id          INT UNSIGNED PRIMARY KEY COMMENT 'ID, primary key',
@@ -346,7 +328,7 @@ VALUES (1, 'Middle School', NOW(), NOW(), 0),
        (6, 'Doctorate', NOW(), NOW(), 0),
        (7, 'Other', NOW(), NOW(), 0);
 
-
+-- Student Number Sequence
 CREATE TABLE student_number_sequence
 (
     id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
@@ -360,3 +342,6 @@ CREATE TABLE student_number_sequence
     INDEX idx_update_time (update_time),
     INDEX idx_is_deleted (is_deleted)
 ) COMMENT ='Tracks the latest student number sequence per intake date';
+
+INSERT INTO student_number_sequence (intake_date, last_seq, create_time, update_time, is_deleted)
+VALUES ('2025-06-07', 15, NOW(), NOW(), 0);

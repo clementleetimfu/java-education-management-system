@@ -13,24 +13,25 @@
         WHEN 1 THEN 'Male'
         WHEN 2 THEN 'Female'
         END AS gender,
-        el.name AS highest_education,
+        el.name AS educationLevel,
         c.name AS clazz_name,
         s.intake_date,
         s.update_time
         FROM student s
         LEFT JOIN clazz c
         ON s.clazz_id = c.id
+        AND c.is_deleted = 0
         LEFT JOIN education_level el
-        ON s.highest_education = el.id
+        ON s.education_level = el.id
+        AND el.is_deleted = 0
         <where>
             s.is_deleted = 0
-            AND c.is_deleted = 0
-            AND el.is_deleted = 0
+
             <if test="name != null and name != ''">
                 AND s.name LIKE CONCAT('%', #{name}, '%')
             </if>
-            <if test="highestEducation != null">
-                AND el.id = #{highestEducation}
+            <if test="educationLevel != null">
+                AND el.id = #{educationLevel}
             </if>
             <if test="clazzId != null">
                 AND s.clazz_id = #{clazzId}
@@ -39,23 +40,22 @@
         ORDER BY s.update_time DESC
     </select>
 
-
     <resultMap id="searchStudentResultMap"
                type="io.clementleetimfu.educationmanagementsystem.pojo.dto.student.StudentSearchResponseDTO">
         <id property="id" column="id"/>
         <result property="name" column="student_name"/>
         <result property="no" column="no"/>
         <result property="gender" column="gender"/>
-        <result property="highestEducation" column="highest_education"/>
+        <result property="educationLevel" column="educationLevel"/>
         <result property="clazzName" column="clazz_name"/>
         <result property="intakeDate" column="intake_date"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <insert id="insertStudent">
-        INSERT INTO student(name, no, gender, birthdate, phone, email, address, highest_education, graduation_date,
+        INSERT INTO student(name, no, gender, birthdate, phone, email, address, education_level, graduation_date,
         clazz_id, intake_date, create_time, update_time, is_deleted)
-        VALUES (#{name}, #{no}, #{gender}, #{birthdate}, #{phone}, #{email}, #{address}, #{highestEducation},
+        VALUES (#{name}, #{no}, #{gender}, #{birthdate}, #{phone}, #{email}, #{address}, #{educationLevel},
         #{graduationDate}, #{clazzId}, #{intakeDate}, #{createTime}, #{updateTime}, #{isDeleted})
     </insert>
 
@@ -68,7 +68,7 @@
         s.phone,
         s.email,
         s.address,
-        el.id AS highest_education,
+        el.id AS educationLevel,
         s.graduation_date,
         c.id as clazz_id,
         s.intake_date,
@@ -78,7 +78,7 @@
         ON s.clazz_id = c.id
         AND c.is_deleted = 0
         LEFT JOIN education_level el
-        ON s.highest_education = el.id
+        ON s.education_level = el.id
         AND el.is_deleted = 0
         WHERE s.is_deleted = 0
         AND s.id = #{id}
@@ -93,22 +93,25 @@
         <result property="phone" column="phone"/>
         <result property="email" column="email"/>
         <result property="address" column="address"/>
-        <result property="highestEducation" column="highest_education"/>
+        <result property="educationLevel" column="educationLevel"/>
         <result property="graduationDate" column="graduation_date"/>
         <result property="clazzId" column="clazz_id"/>
         <result property="intakeDate" column="intake_date"/>
     </resultMap>
 
     <update id="deleteStudentByIds">
-        update student
-        set is_deleted = 1
-        where id in
+        UPDATE student
+        SET
+        is_deleted = 1,
+        update_time = NOW()
+        WHERE
+        is_deleted = 0
         <if test="ids != null and ids.size() > 0">
-            <foreach collection="ids" item="id" separator="," open="(" close=")">
+            AND id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
                 #{id}
             </foreach>
         </if>
-        and is_deleted = 0
     </update>
 
     <update id="updateStudent">
@@ -120,14 +123,42 @@
             <if test="phone != null and phone != ''">phone = #{phone},</if>
             <if test="email != null and email != ''">email = #{email},</if>
             <if test="address != null and address != ''">address = #{address},</if>
-            <if test="highestEducation != null">highest_education = #{highestEducation},</if>
+            <if test="educationLevel != null">education_level = #{educationLevel},</if>
             <if test="graduationDate != null">graduation_date = #{graduationDate},</if>
             <if test="clazzId != null">clazz_id = #{clazzId},</if>
-            <if test="intakeDate != null">intake_date = #{intakeDate},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </set>
         WHERE id = #{id}
         AND is_deleted = 0
     </update>
+
+    <select id="findStudentEduLevelCount" resultType="java.util.Map">
+        SELECT
+        el.name AS educationLevel,
+        COUNT(*) AS count
+        FROM student s
+        LEFT JOIN education_level el
+        ON s.education_level = el.id
+        AND el.is_deleted = 0
+        WHERE s.is_deleted = 0
+        GROUP BY s.education_level, el.name;
+    </select>
+
+    <select id="findStudentCountByClazz" resultType="java.util.Map">
+        select c.name as clazzName,
+        count(*) as count
+        from student s
+        left join clazz c
+        on s.clazz_id = c.id
+        where s.is_deleted = 0
+        group by s.clazz_id, c.name
+    </select>
+
+    <select id="selectStudentCountByClazzId" resultType="java.lang.Long">
+        select count(*)
+        from student
+        where clazz_id = #{clazzId}
+        and is_deleted = 0
+    </select>
 
 </mapper>

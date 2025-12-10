@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeJobTitleCountDTO {
+public class EmployeeJobTitleCountRequestDTO {
     private List<String> jobTitleList;
     private List<Integer> jobTitleCountList;
 }

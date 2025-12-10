@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -54,19 +55,22 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean addStudent(StudentAddDTO studentAddDTO) {
-        Student student = modelMapper.map(studentAddDTO, Student.class);
+    public Boolean addStudent(StudentAddRequestDTO studentAddRequestDTO) {
 
-        LocalDate intakeDate = studentAddDTO.getIntakeDate();
+        Student student = modelMapper.map(studentAddRequestDTO, Student.class);
+
+        LocalDate intakeDate = studentAddRequestDTO.getIntakeDate();
         String datePart = intakeDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
-        Boolean intakeExist = studentNumberSequenceService.isIntakeExist(intakeDate);
-        if (intakeExist) {
-            StudentNumberSequence studentNumberSequence = studentNumberSequenceService.findStudentNumberSequence(intakeDate);
-            String seqPart = String.format("%05d", studentNumberSequence.getLastSeq());
+        StudentNumberSequence studentNumberSequence = studentNumberSequenceService.findStudentNumberSequence(intakeDate);
+        if (studentNumberSequence != null) {
+            Integer latestSeq = studentNumberSequence.getLastSeq() + 1;
+            String seqPart = String.format("%05d", latestSeq); // fixed 5 character padding
             student.setNo(datePart + seqPart);
+            studentNumberSequenceService.updateStudentNumberSequence(intakeDate, latestSeq);
+            
         } else {
-            studentNumberSequenceService.addStudentNumberSequence(studentAddDTO.getIntakeDate());
+            studentNumberSequenceService.addStudentNumberSequence(studentAddRequestDTO.getIntakeDate());
             student.setNo(datePart + "00001");
         }
 
@@ -91,22 +95,26 @@ public class StudentServiceImpl implements StudentService {
             log.warn("Student with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.STUDENT_NOT_FOUND);
         }
+
         return studentFindByIdResponseDTO;
     }
 
     @Override
     public Boolean deleteStudentByIds(List<Integer> ids) {
+
         Integer deleteStudentRowsAffected = studentMapper.deleteStudentByIds(ids);
         if (deleteStudentRowsAffected == 0) {
             log.warn("Failed to delete student with ids:{}", ids);
             throw new BusinessException(ErrorCodeEnum.STUDENT_DELETE_FAILED);
         }
+
         return Boolean.TRUE;
     }
 
     @Override
-    public Boolean updateStudent(StudentUpdateDTO studentUpdateDTO) {
-        Student student = modelMapper.map(studentUpdateDTO, Student.class);
+    public Boolean updateStudent(StudentUpdateRequestDTO studentUpdateRequestDTO) {
+
+        Student student = modelMapper.map(studentUpdateRequestDTO, Student.class);
         student.setUpdateTime(LocalDateTime.now());
         Integer updateStudentRowsAffected = studentMapper.updateStudent(student);
 
@@ -118,5 +126,45 @@ public class StudentServiceImpl implements StudentService {
         return Boolean.TRUE;
     }
 
+    @Override
+    public List<Map<String, Object>> findStudentEduLevelCount() {
+
+        List<Map<String, Object>> studentEduLevelCountList = studentMapper.findStudentEduLevelCount();
+
+        if (studentEduLevelCountList.isEmpty()) {
+            log.warn("Student education level count list is empty");
+            throw new BusinessException(ErrorCodeEnum.STUDENT_NOT_FOUND);
+        }
+
+        return studentEduLevelCountList;
+    }
+
+    @Override
+    public Boolean isStudentExistsInClazz(Integer clazzId) {
+        return studentMapper.selectStudentCountByClazzId(clazzId) > 0;
+    }
+
+    @Override
+    public StudentFindCountByClazzDTO findStudentCountByClazz() {
+
+        List<Map<String, Object>> studentCountByClazzMapList = studentMapper.findStudentCountByClazz();
+
+        log.info("studentCountByClazzMapList:{}", studentCountByClazzMapList);
+
+
+        if (studentCountByClazzMapList.isEmpty()) {
+            log.warn("Student count by clazz list is empty");
+            throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
+        }
+
+        StudentFindCountByClazzDTO studentFindCountByClazzDTO = new StudentFindCountByClazzDTO();
+        studentFindCountByClazzDTO
+                .setClazzNameList(studentCountByClazzMapList.stream().map(map -> (String) map.get("clazzName")).toList());
+
+        studentFindCountByClazzDTO
+                .setStudentCountList(studentCountByClazzMapList.stream().map(map -> ((Number) map.get("count")).intValue()).toList());
+
+        return studentFindCountByClazzDTO;
+    }
 
 }

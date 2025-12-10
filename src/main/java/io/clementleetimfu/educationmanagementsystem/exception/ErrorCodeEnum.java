@@ -13,6 +13,7 @@ public enum ErrorCodeEnum {
     DEPARTMENT_DELETE_FAILED(2002, "Department delete failed"),
     DEPARTMENT_ADD_FAILED(2003, "Department add failed"),
     DEPARTMENT_UPDATE_FAILED(2003, "Department update failed"),
+    DEPARTMENT_DELETE_NOT_ALLOWED(2004, "Department still has employees"),
 
     EMPLOYEE_NOT_FOUND(3001, "Employee not found"),
     EMPLOYEE_ADD_FAILED(3002, "Employee add failed"),
@@ -24,10 +25,11 @@ public enum ErrorCodeEnum {
 
     ACTIVITY_LOG_NOT_FOUND(5001, "Activity log not found"),
 
-    CLAZZ_NOT_FOUND(6001, "Clazz not found"),
-    CLAZZ_ADD_FAILED(6002, "Clazz add failed"),
-    CLAZZ_UPDATE_FAILED(6003, "Clazz update failed"),
-    CLAZZ_DELETE_FAILED(6004, "Clazz delete failed"),
+    CLAZZ_NOT_FOUND(6001, "Class not found"),
+    CLAZZ_ADD_FAILED(6002, "Class add failed"),
+    CLAZZ_UPDATE_FAILED(6003, "Class update failed"),
+    CLAZZ_DELETE_FAILED(6004, "Class delete failed"),
+    CLAZZ_DELETE_NOT_ALLOWED(6005, "Class still has students"),
 
     JOB_TITLE_NOT_FOUND(7001, "Job title not found"),
 
@@ -39,7 +41,7 @@ public enum ErrorCodeEnum {
     STUDENT_UPDATE_FAILED(9004, "Student update failed"),
 
     STUDENT_NUMBER_SEQUENCE_ADD_FAILED(10001, "Student number sequence add failed"),
-    STUDENT_NUMBER_SEQUENCE_NOT_FOUND(10002, "Student number sequence not found"),
+    STUDENT_NUMBER_SEQUENCE_UPDATE_FAILED(10002, "Student number sequence update failed"),
 
     EDUCATION_LEVEL_NOT_FOUND(11001, "Education level not found");
 

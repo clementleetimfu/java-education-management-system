@@ -1,18 +1,18 @@
 package io.clementleetimfu.educationmanagementsystem.service;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddRequestDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllResponseDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateRequestDTO;
 
 import java.util.List;
 
 public interface DepartmentService {
 
-    List<DepartmentFindAllDTO> findAllDepartment();
+    List<DepartmentFindAllResponseDTO> findAllDepartment();
 
     Boolean deleteDepartmentById(Integer id);
 
-    Boolean addDepartment(DepartmentAddDTO departmentAddDTO);
+    Boolean addDepartment(DepartmentAddRequestDTO departmentAddRequestDTO);
 
-    Boolean updateDepartmentName(DepartmentUpdateDTO departmentUpdateDTO);
+    Boolean updateDepartmentName(DepartmentUpdateRequestDTO departmentUpdateRequestDTO);
 }

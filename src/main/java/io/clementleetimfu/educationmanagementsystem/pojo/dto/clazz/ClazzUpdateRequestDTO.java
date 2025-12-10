@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClazzFindByIdDTO {
+public class ClazzUpdateRequestDTO {
     private Integer id;
     private String name;
     private LocalDate startDate;

@@ -25,30 +25,30 @@ public class EmployeeController {
     }
 
     @AddActivityLog
+    @PostMapping
+    public Result<Boolean> addEmployee(@RequestBody EmployeeAddRequestDTO employeeAddRequestDTO) {
+        return Result.success(employeeService.addEmployee(employeeAddRequestDTO));
+    }
+
+    @AddActivityLog
     @DeleteMapping
     public Result<Boolean> deleteEmployeeByIds(@RequestParam("ids") List<Integer> ids) {
         return Result.success(employeeService.deleteEmployeeByIds(ids));
     }
 
-    @AddActivityLog
-    @PostMapping
-    public Result<Boolean> addEmployee(@RequestBody EmployeeAddDTO employeeAddDTO) {
-        return Result.success(employeeService.addEmployee(employeeAddDTO));
-    }
-
     @GetMapping("/{id}")
-    public Result<EmployeeFindByIdDTO> findEmployeeById(@PathVariable("id") Integer id) {
+    public Result<EmployeeFindByIdRequestDTO> findEmployeeById(@PathVariable("id") Integer id) {
         return Result.success(employeeService.findEmployeeById(id));
     }
 
     @AddActivityLog
     @PutMapping
-    public Result<Boolean> updateEmployee(@RequestBody EmployeeUpdateDTO employeeUpdateDTO) {
-        return Result.success(employeeService.updateEmployee(employeeUpdateDTO));
+    public Result<Boolean> updateEmployee(@RequestBody EmployeeUpdateRequestDTO employeeUpdateRequestDTO) {
+        return Result.success(employeeService.updateEmployee(employeeUpdateRequestDTO));
     }
 
     @GetMapping("/jobTitle/count")
-    public Result<EmployeeJobTitleCountDTO> findEmployeeJobTitleCount() {
+    public Result<EmployeeJobTitleCountRequestDTO> findEmployeeJobTitleCount() {
         return Result.success(employeeService.findEmployeeJobTitleCount());
     }
 

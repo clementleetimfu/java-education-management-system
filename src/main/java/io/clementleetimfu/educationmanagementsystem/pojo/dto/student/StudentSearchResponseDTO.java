@@ -15,7 +15,7 @@ public class StudentSearchResponseDTO {
     private String name;
     private String no;
     private String gender;
-    private String highestEducation;
+    private String educationLevel;
     private String clazzName;
     private LocalDate intakeDate;
     private LocalDateTime updateTime;

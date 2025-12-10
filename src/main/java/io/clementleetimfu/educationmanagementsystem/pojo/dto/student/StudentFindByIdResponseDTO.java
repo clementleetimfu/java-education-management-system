@@ -17,7 +17,7 @@ public class StudentFindByIdResponseDTO {
     private String phone;
     private String email;
     private String address;
-    private Integer highestEducation;
+    private Integer educationLevel;
     private LocalDate graduationDate;
     private Integer clazzId;
     private LocalDate intakeDate;

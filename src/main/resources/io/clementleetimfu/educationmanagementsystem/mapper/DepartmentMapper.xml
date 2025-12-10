@@ -5,24 +5,34 @@
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.DepartmentMapper">
 
     <select id="selectAllDepartment" resultMap="selectAllDepartmentResultMap">
-        select id, name, update_time
-        from department
-        where is_deleted = 0
-        order by update_time desc
+        SELECT
+        id,
+        name,
+        update_time
+        FROM
+        department
+        WHERE
+        is_deleted = 0
+        ORDER BY
+        update_time DESC;
     </select>
 
     <resultMap id="selectAllDepartmentResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllResponseDTO">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <update id="deleteDepartmentById">
-        update department
-        set is_deleted = 1
-        where id = #{id}
-        and is_deleted = 0
+        UPDATE
+        department
+        SET
+        is_deleted = 1,
+        update_time = NOW()
+        WHERE
+        id = #{id}
+        AND is_deleted = 0;
     </update>
 
     <insert id="insertDepartment">

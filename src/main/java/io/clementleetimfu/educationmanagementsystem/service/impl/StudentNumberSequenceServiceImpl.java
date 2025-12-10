@@ -20,12 +20,8 @@ public class StudentNumberSequenceServiceImpl implements StudentNumberSequenceSe
     private StudentNumberSequenceMapper studentNumberSequenceMapper;
 
     @Override
-    public Boolean isIntakeExist(LocalDate intakeDate) {
-        return studentNumberSequenceMapper.isIntakeExist(intakeDate) > 0;
-    }
-
-    @Override
     public Boolean addStudentNumberSequence(LocalDate intakeDate) {
+
         StudentNumberSequence studentNumberSequence = new StudentNumberSequence();
         studentNumberSequence.setIntakeDate(intakeDate);
         studentNumberSequence.setLastSeq(1);
@@ -38,16 +34,24 @@ public class StudentNumberSequenceServiceImpl implements StudentNumberSequenceSe
             log.warn("Failed to add student number sequence:{}", studentNumberSequence);
             throw new BusinessException(ErrorCodeEnum.STUDENT_NUMBER_SEQUENCE_ADD_FAILED);
         }
+
         return Boolean.TRUE;
     }
 
     @Override
     public StudentNumberSequence findStudentNumberSequence(LocalDate intakeDate) {
-        StudentNumberSequence studentNumberSequence = studentNumberSequenceMapper.selectStudentNumberSequenceByIntakeDate(intakeDate);
-        if (studentNumberSequence == null) {
-            log.warn("Student number sequence is null");
-            throw new BusinessException(ErrorCodeEnum.STUDENT_NUMBER_SEQUENCE_NOT_FOUND);
+        return studentNumberSequenceMapper.selectStudentNumberSequenceByIntakeDate(intakeDate);
+    }
+
+    @Override
+    public Boolean updateStudentNumberSequence(LocalDate intakeDate, Integer seq) {
+
+        Integer updateSnsRowsAffected = studentNumberSequenceMapper.updateStudentNumberSequence(intakeDate, seq);
+        if (updateSnsRowsAffected == 0) {
+            log.warn("Failed to update student number sequence:{}", updateSnsRowsAffected);
+            throw new BusinessException(ErrorCodeEnum.STUDENT_NUMBER_SEQUENCE_UPDATE_FAILED);
         }
-        return studentNumberSequence;
+
+        return Boolean.TRUE;
     }
 }

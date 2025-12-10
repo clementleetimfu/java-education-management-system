@@ -29,19 +29,19 @@ public class ClazzController {
     }
 
     @GetMapping("/{id}")
-    public Result<ClazzFindByIdDTO> findClazzById(@PathVariable Integer id) {
+    public Result<ClazzFindByIdResponseDTO> findClazzById(@PathVariable("id") Integer id) {
         return Result.success(clazzService.findClazzById(id));
     }
 
     @AddActivityLog
     @PutMapping
-    public Result<Boolean> updateClazzName(@RequestBody ClazzUpdateDTO clazzUpdateDTO) {
-        return Result.success(clazzService.updateClazzName(clazzUpdateDTO));
+    public Result<Boolean> updateClazzName(@RequestBody ClazzUpdateRequestDTO clazzUpdateRequestDTO) {
+        return Result.success(clazzService.updateClazzName(clazzUpdateRequestDTO));
     }
 
     @AddActivityLog
     @DeleteMapping("/{id}")
-    public Result<Boolean> deleteClazzById(@PathVariable Integer id) {
+    public Result<Boolean> deleteClazzById(@PathVariable("id") Integer id) {
         return Result.success(clazzService.deleteClazzById(id));
     }
 

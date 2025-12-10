@@ -18,7 +18,7 @@ public class StudentFindByIdDTO {
     private String phone;
     private String email;
     private String address;
-    private Integer highest_education;
+    private Integer educationLevel;
     private LocalDate graduationDate;
     private Integer clazzId;
     private LocalDate intakeDate;

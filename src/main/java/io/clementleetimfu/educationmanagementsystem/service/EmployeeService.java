@@ -9,17 +9,19 @@ import java.util.Map;
 public interface EmployeeService {
     PageResult<EmployeeSearchResponseDTO> searchEmployee(EmployeeSearchRequestDTO employeeSearchRequestDTO);
 
-    Boolean addEmployee(EmployeeAddDTO employeeAddDTO);
+    Boolean addEmployee(EmployeeAddRequestDTO employeeAddRequestDTO);
 
     Boolean deleteEmployeeByIds(List<Integer> ids);
 
-    EmployeeFindByIdDTO findEmployeeById(Integer id);
+    EmployeeFindByIdRequestDTO findEmployeeById(Integer id);
 
-    Boolean updateEmployee(EmployeeUpdateDTO employeeUpdateDTO);
+    Boolean updateEmployee(EmployeeUpdateRequestDTO employeeUpdateRequestDTO);
 
-    EmployeeJobTitleCountDTO findEmployeeJobTitleCount();
+    EmployeeJobTitleCountRequestDTO findEmployeeJobTitleCount();
 
     List<Map<String, Object>> findEmployeeGenderCount();
 
     List<EmployeeFindClassTeachersDTO> findAllTeachers();
+
+    Boolean isEmployeeExistsInDepartment(Integer deptId);
 }

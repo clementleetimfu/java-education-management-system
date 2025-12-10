@@ -1,9 +1,10 @@
 package io.clementleetimfu.educationmanagementsystem.pojo.dto.employee;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceFindByEmpIdDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceAddDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,16 +12,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeFindByIdDTO {
-    private Integer id;
+public class EmployeeAddRequestDTO {
+    private String image;
     private String username;
     private String name;
     private Integer gender;
     private Integer jobTitle;
-    private Integer salary;
-    private String image;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate hireDate;
     private Integer deptId;
     private String phone;
-    private List<WorkExperienceFindByEmpIdDTO> workExpList;
+    private Integer salary;
+    private List<WorkExperienceAddDTO> workExpList;
 }

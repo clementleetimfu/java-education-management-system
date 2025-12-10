@@ -1,6 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.pojo.dto.employee;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceAddDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceUpdateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeAddDTO {
+public class EmployeeUpdateRequestDTO {
+    private Integer id;
     private String image;
     private String username;
     private String name;
@@ -23,5 +24,5 @@ public class EmployeeAddDTO {
     private Integer deptId;
     private String phone;
     private Integer salary;
-    private List<WorkExperienceAddDTO> workExpList;
+    private List<WorkExperienceUpdateDTO> workExpList;
 }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentUpdateDTO {
-    private Integer id;
+public class DepartmentAddRequestDTO {
     private String name;
 }
