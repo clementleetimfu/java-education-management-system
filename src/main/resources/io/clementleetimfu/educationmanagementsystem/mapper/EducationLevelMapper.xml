@@ -9,7 +9,8 @@
         SELECT id,
         name
         FROM education_level
-        WHERE is_deleted = 0;
+        WHERE is_deleted = 0
+        ORDER BY name;
     </select>
 
 </mapper>

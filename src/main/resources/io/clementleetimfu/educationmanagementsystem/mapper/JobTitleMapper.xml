@@ -6,8 +6,15 @@
 
     <select id="selectAllJobTitle"
             resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.jobTitle.JobTitleFindAllDTO">
-        select id, name
-        from job_title
-        where is_deleted = 0
+        SELECT
+        id,
+        name
+        FROM
+        job_title
+        WHERE
+        is_deleted = 0
+        ORDER BY
+        name;
     </select>
+
 </mapper>

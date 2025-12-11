@@ -106,6 +106,7 @@
         name
         FROM clazz
         WHERE is_deleted = 0
+        ORDER BY name;
     </select>
 
 </mapper>

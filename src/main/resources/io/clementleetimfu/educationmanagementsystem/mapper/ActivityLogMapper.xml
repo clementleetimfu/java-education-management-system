@@ -45,6 +45,7 @@
         ON al.operate_emp_id = emp.id
         WHERE al.is_deleted = 0
         AND emp.is_deleted = 0
+        ORDER BY al.operate_time DESC
     </select>
 
     <resultMap id="findActivityLogResultMap"

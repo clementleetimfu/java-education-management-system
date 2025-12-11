@@ -19,11 +19,9 @@ cloudflare:
     secretKey: aaaa
     publicUrl: aaaa
 
-
 logging:
   level:
     org.springframework.jdbc.support.JdbcTransactionManager: debug
-
 
 auth:
   jwt:

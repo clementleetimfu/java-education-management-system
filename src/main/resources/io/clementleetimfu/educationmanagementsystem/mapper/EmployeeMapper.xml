@@ -194,7 +194,8 @@
         AND jt.is_deleted = 0
         WHERE
         e.is_deleted = 0
-        AND jt.name LIKE '%Class Teacher%';
+        AND jt.name LIKE '%Class Teacher%'
+        ORDER BY e.name;
     </select>
 
     <select id="selectEmployeeCountByDeptId" resultType="java.lang.Long">
