@@ -27,8 +27,8 @@ ENV LC_ALL=en_US.UTF-8
 RUN mkdir -p /ems
 WORKDIR /ems
 
-COPY education-management-system-0.0.1-SNAPSHOT.jar education-management-system-0.0.1-SNAPSHOT.jar
+COPY ems-0.0.1-SNAPSHOT.jar ems-0.0.1-SNAPSHOT.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","/ems/education-management-system-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/ems/ems-0.0.1-SNAPSHOT.jar"]

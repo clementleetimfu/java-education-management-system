@@ -1,3 +1,7 @@
+CREATE DATABASE education_management_system;
+
+USE `education_management_system`;
+
 -- Department
 CREATE TABLE department
 (
