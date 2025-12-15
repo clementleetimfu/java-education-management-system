@@ -91,6 +91,7 @@
         FROM employee
         WHERE is_deleted = 0
         AND id = #{id}
+        FOR UPDATE
     </select>
 
     <select id="findWorkExperienceByEmpId"

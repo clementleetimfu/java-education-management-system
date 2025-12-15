@@ -82,6 +82,7 @@
         AND el.is_deleted = 0
         WHERE s.is_deleted = 0
         AND s.id = #{id}
+        FOR UPDATE
     </select>
 
     <resultMap id="selectStudentByIdResultMap"

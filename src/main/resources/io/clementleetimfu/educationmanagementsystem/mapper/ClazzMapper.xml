@@ -54,6 +54,7 @@
         FROM clazz AS c
         WHERE is_deleted = 0
         AND id = #{id}
+        FOR UPDATE
     </select>
 
     <resultMap id="selectClazzByIdResultMap"
