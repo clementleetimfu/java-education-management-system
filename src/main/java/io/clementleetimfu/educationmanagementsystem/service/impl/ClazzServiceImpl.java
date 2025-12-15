@@ -64,6 +64,7 @@ public class ClazzServiceImpl implements ClazzService {
         return Boolean.TRUE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ClazzFindByIdResponseDTO findClazzById(Integer id) {
 

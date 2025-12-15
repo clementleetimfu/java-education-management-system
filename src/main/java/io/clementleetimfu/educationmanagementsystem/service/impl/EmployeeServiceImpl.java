@@ -113,6 +113,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Boolean.TRUE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public EmployeeFindByIdRequestDTO findEmployeeById(Integer id) {
 

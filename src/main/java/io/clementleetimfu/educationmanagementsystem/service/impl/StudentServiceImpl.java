@@ -87,6 +87,7 @@ public class StudentServiceImpl implements StudentService {
         return Boolean.TRUE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public StudentFindByIdResponseDTO findStudentById(Integer id) {
 
