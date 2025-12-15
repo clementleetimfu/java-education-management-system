@@ -61,6 +61,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return Boolean.TRUE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean addDepartment(DepartmentAddRequestDTO departmentAddRequestDTO) {
 
@@ -78,6 +79,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return Boolean.TRUE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateDepartmentName(DepartmentUpdateRequestDTO departmentUpdateRequestDTO) {
 

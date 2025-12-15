@@ -99,6 +99,7 @@ public class StudentServiceImpl implements StudentService {
         return studentFindByIdResponseDTO;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean deleteStudentByIds(List<Integer> ids) {
 
@@ -111,6 +112,7 @@ public class StudentServiceImpl implements StudentService {
         return Boolean.TRUE;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateStudent(StudentUpdateRequestDTO studentUpdateRequestDTO) {
 

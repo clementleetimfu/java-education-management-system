@@ -8,6 +8,7 @@ import io.clementleetimfu.educationmanagementsystem.service.StudentNumberSequenc
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class StudentNumberSequenceServiceImpl implements StudentNumberSequenceSe
     @Autowired
     private StudentNumberSequenceMapper studentNumberSequenceMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean addStudentNumberSequence(LocalDate intakeDate) {
 
@@ -43,6 +45,7 @@ public class StudentNumberSequenceServiceImpl implements StudentNumberSequenceSe
         return studentNumberSequenceMapper.selectStudentNumberSequenceByIntakeDate(intakeDate);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean updateStudentNumberSequence(LocalDate intakeDate, Integer seq) {
 
