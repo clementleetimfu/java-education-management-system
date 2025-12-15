@@ -1,0 +1,34 @@
+FROM centos:7
+
+COPY jdk-17.0.12.tar.gz /usr/local/
+RUN tar -xzf /usr/local/jdk-17.0.12.tar.gz -C /usr/local/ &&  rm /usr/local/jdk-17.0.12.tar.gz
+
+ENV JAVA_HOME=/usr/local/jdk-17.0.12
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+ENV MYSQL_HOST=
+ENV MYSQL_PORT=
+ENV MYSQL_DB=
+ENV MYSQL_USER=
+ENV MYSQL_PASSWORD=
+
+ENV CLOUDFLARE_R2_BUCKET_NAME=
+ENV CLOUDFLARE_R2_ACCOUNT_ID=
+ENV CLOUDFLARE_R2_ACCESS_KEY=
+ENV CLOUDFLARE_R2_SECRET_KEY=
+ENV CLOUDFLARE_R2_PUBLIC_URL=
+
+ENV AUTH_JWT_SECRET_KEY=
+
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+RUN mkdir -p /ems
+WORKDIR /ems
+
+COPY education-management-system-0.0.1-SNAPSHOT.jar education-management-system-0.0.1-SNAPSHOT.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","/ems/education-management-system-0.0.1-SNAPSHOT.jar"]
