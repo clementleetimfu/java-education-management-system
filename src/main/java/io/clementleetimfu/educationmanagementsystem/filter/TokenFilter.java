@@ -34,7 +34,7 @@ public class TokenFilter implements Filter {
 
             String requestUri = request.getRequestURI();
 
-            if (requestUri.contains("/login")) {
+            if (requestUri.contains("/auth")) {
                 filterChain.doFilter(request, response);
                 return;
             }

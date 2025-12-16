@@ -139,19 +139,22 @@
             <if test="salary != null">salary = #{salary},</if>
             <if test="image != null and image != ''">image = #{image},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="isFirstLogged != null and isFirstLogged != ''">is_first_logged = #{isFirstLogged},</if>
         </set>
         WHERE id = #{id}
         AND is_deleted = 0
     </update>
 
-    <select id="selectEmployeeByUsernameAndPassWord"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.LoginResponseDTO">
+    <select id="selectEmployeeByUsername"
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginResponseDTO">
         SELECT id,
-        username
+        username,
+        password,
+        is_first_logged as isFirstLogged
         FROM employee
         WHERE is_deleted = 0
         AND username = #{username}
-        AND password = #{password};
     </select>
 
     <select id="selectEmployeeJobTitleCount" resultType="java.util.Map">

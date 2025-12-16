@@ -33,7 +33,7 @@ CREATE TABLE employee
 (
     id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
     username        VARCHAR(50)      NOT NULL COMMENT 'Username',
-    password        VARCHAR(128)     NOT NULL DEFAULT 'abc123' COMMENT 'Password',
+    password        VARCHAR(128)     NOT NULL DEFAULT '$2a$10$EPvtiNWUunW9w.zGmC9DSudn2Hcc/UDC6MTUX7QTZOuNz7XLrLFEm' COMMENT 'Password - abc123',
     name            VARCHAR(50)      NOT NULL COMMENT 'Full Name',
     gender          TINYINT UNSIGNED NOT NULL COMMENT 'Gender, 1: Male, 2: Female',
     phone           VARCHAR(15)      NOT NULL COMMENT 'Phone Number',
@@ -42,6 +42,7 @@ CREATE TABLE employee
     image           VARCHAR(255) COMMENT 'Avatar',
     hire_date       DATE             NOT NULL COMMENT 'Hire Date',
     dept_id         INT UNSIGNED     NOT NULL COMMENT 'Department ID',
+    is_first_logged TINYINT(1)       NOT NULL DEFAULT 0 CHECK (is_first_logged IN (0, 1)) COMMENT 'First logged flag, 0: never logged, 1: first login completed',
     create_time     DATETIME         NOT NULL COMMENT 'Creation Time',
     update_time     DATETIME         NOT NULL COMMENT 'Update Time',
     is_deleted      TINYINT(1)       NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',

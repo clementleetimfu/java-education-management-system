@@ -24,6 +24,7 @@ public class Employee {
     private String image;
     private LocalDate hireDate;
     private Integer deptId;
+    private Boolean isFirstLogged;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private Boolean isDeleted;

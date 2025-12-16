@@ -1,5 +1,6 @@
-package io.clementleetimfu.educationmanagementsystem.pojo.dto.employee;
+package io.clementleetimfu.educationmanagementsystem.pojo.dto.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +11,8 @@ import lombok.NoArgsConstructor;
 public class LoginResponseDTO {
     private Integer id;
     private String username;
+    @JsonIgnore
+    private String password;
     private String token;
+    private Boolean isFirstLogged;
 }

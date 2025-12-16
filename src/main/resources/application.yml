@@ -26,3 +26,5 @@ logging:
 auth:
   jwt:
     secretKey: ${AUTH_JWT_SECRET_KEY}
+  bcrypt:
+    pepper: ${AUTH_BCRYPT_PEPPER}
