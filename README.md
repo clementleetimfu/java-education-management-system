@@ -2,6 +2,15 @@
 
 A comprehensive backend system for education management built with Spring Boot, MyBatis, and MySQL.
 
+![Java](https://img.shields.io/badge/Java-17-red)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.7-green)
+![MySQL](https://img.shields.io/badge/MySQL-8.x-blue)
+![MyBatis](https://img.shields.io/badge/MyBatis-3.x-red)
+![Maven](https://img.shields.io/badge/Maven-3.x-orange)
+![JWT](https://img.shields.io/badge/JWT-black)
+![Docker](https://img.shields.io/badge/Docker-blue)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 ## Table of Contents
 
 - [Overview](#overview)
