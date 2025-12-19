@@ -17,6 +17,7 @@ A comprehensive backend system for education management built with Spring Boot, 
 - [Features](#features)
 - [Technology Stack](#technology-stack)
 - [Architecture](#architecture)
+- [Multi-Module Structure](#multi-module-structure)
 - [API Endpoints](#api-endpoints)
   - [Authentication](#authentication)
   - [Students](#students)
@@ -34,12 +35,18 @@ A comprehensive backend system for education management built with Spring Boot, 
 - [Deployment](#deployment)
 - [Getting Started](#getting-started)
 - [Docker Support](#docker-support)
-- [Project Structure](#project-structure)
 - [License](#license)
 
 ## Overview
 
-The Education Management System is RESTful API designed to manage various aspects of an educational institution including student records, employee information, class management, and administrative functions. The system provides secure authentication, data validation, and maintains detailed logs for certain activities.
+The Education Management System is a RESTful API designed to manage various aspects of an educational institution including student records, employee information, class management, and administrative functions. The system provides secure authentication, data validation, and maintains detailed logs for certain activities.
+
+This project follows a multi-module Maven structure to separate concerns and improve maintainability:
+
+- `ems-parent`: Parent Maven project containing common configurations
+- `ems-common`: Shared utilities and helper classes
+- `ems-model`: Data models, entities, DTOs, and response wrappers
+- `ems-service`: Main business logic with controllers, services, and data mappers
 
 ## Features
 
@@ -48,7 +55,8 @@ The Education Management System is RESTful API designed to manage various aspect
 - **Employee Management**: CRUD operations for employee records with search capabilities
 - **Class Management**: CRUD operations for class records with search capabilities
 - **Department Management**: CRUD operations for department records
-- **Activity Logging**: Automatic logging of important operations
+- **Subject Management**: CRUD operations for subject records
+- **Activity Logging**: Automatic logging of important operations using AOP
 - **File Upload**: Integration with Cloudflare R2 for file storage
 - **Data Analytics**: Statistical reports on students and employees
 - **Security**: Password hashing with BCrypt and JWT token validation
@@ -60,32 +68,73 @@ The Education Management System is RESTful API designed to manage various aspect
 - **Build Tool**: Maven
 - **Database**: MySQL
 - **ORM**: MyBatis
-- **Security**: JWT, BCrypt
+- **Security**: JWT, BCrypt with Pepper
 - **Storage**: Cloudflare R2 (AWS S3 compatible)
-- **Documentation**: OpenAPI/Swagger
 - **Utilities**: Lombok, ModelMapper, PageHelper
 
 ## Architecture
 
-The system follows a layered architecture pattern:
+The system follows a layered architecture pattern with multi-module organization:
 
 ```
 Client <-> Controller <-> Service <-> Mapper <-> Database
                  ↕
             Validation & DTOs
                  ↕
-             Security Layer
+             Security Layer (JWT, Filter)
 ```
 
-### Key Components
+### Design Patterns
 
-- **Controllers**: Handle HTTP requests and responses
-- **Services**:Business logic implementation
-- **Mappers**: Data access layer using MyBatis
-- **Entities**: Database table representations
-- **DTOs**: Data Transfer Objects for API communication
-- **Utils**: Utility classes for JWT, encryption, etc.
-- **AOP**: Aspect-Oriented Programming for logging
+- **Layered Architecture**: Clear separation between Controllers, Services, and Data Access layers
+- **Aspect-Oriented Programming**: Used for automatic activity logging
+- **DTO Pattern**: Separation of internal entities and external API representations
+- **Singleton Pattern**: Configuration beans and utility classes
+
+## Multi-Module Structure
+
+```
+education-management-system/
+├── ems-parent/                 # Parent Maven project
+│   └── pom.xml                 # Parent POM with common configurations
+├── ems-common/                 # Shared utilities
+│   ├── src/
+│   │   └── main/java/          
+│   │       └── io/clementleetimfu/educationmanagementsystem/utils/
+│   │           ├── bcrypt/     # BCrypt password hashing utilities
+│   │           ├── jwt/        # JWT token utilities
+│   │           └── thread/     # Thread utilities
+│   └── pom.xml
+├── ems-model/                  # Data models and POJOs
+│   ├── src/
+│   │   └── main/java/
+│   │       └── io/clementleetimfu/educationmanagementsystem/pojo/
+│   │           ├── dto/        # Data Transfer Objects
+│   │           ├── entity/     # Entity classes representing DB tables
+│   │           ├── PageResult.java  # Pagination result wrapper
+│   │           └── Result.java      # Standard API response wrapper
+│   └── pom.xml
+├── ems-service/                # Main application with business logic
+│   ├── src/
+│   │   ├── main/java/
+│   │   │   └── io/clementleetimfu/educationmanagementsystem/
+│   │   │       ├── annotation/      # Custom annotations
+│   │   │       ├── aop/             # Aspect-oriented programming components
+│   │   │       ├── config/          # Configuration classes
+│   │   │       ├── controller/      # REST controllers
+│   │   │       ├── exception/       # Exception handling
+│   │   │       ├── filter/          # Servlet filters
+│   │   │       ├── mapper/          # MyBatis mappers
+│   │   │       ├── service/         # Business logic services
+│   │   │       └── EducationManagementSystemApplication.java
+│   │   └── resources/
+│   │       ├── mapper/              # MyBatis XML mapper files
+│   │       ├── sql/                 # SQL scripts
+│   │       ├── application.yml      # Application configuration
+│   │       └── logback.xml          # Logging configuration
+│   └── pom.xml
+└── Dockerfile
+```
 
 ## API Endpoints
 
@@ -248,9 +297,9 @@ AUTH_BCRYPT_PEPPER=
    ./mvnw clean package
    ```
 
-4.Run the application:
+4. Run the application:
    ```bash
-   java -jar target/education-management-system-0.0.1-SNAPSHOT.jar
+   java -jar ems-service/target/education-management-system-0.0.1-SNAPSHOT.jar
    ```
 
 ## Getting Started
@@ -258,7 +307,7 @@ AUTH_BCRYPT_PEPPER=
 1. Set up MySQL database
 2. Configure environment variables
 3. Run the application using one of the deployment methods
-4. Access the APIat `http://localhost:8080`
+4. Access the API at `http://localhost:8080`
 
 ## Docker Support
 
@@ -273,32 +322,6 @@ docker run -p 8080:8080 education-management-system
 ```
 
 Configuration through environment variables is recommended when using Docker.
-
-## Project Structure
-
-```
-src/
-├── main/
-│   ├── java/
-│   │   └── io/clementleetimfu/educationmanagementsystem/
-│   │       ├── annotation/      # Custom annotations
-│   │       ├──aop/             # Aspect-oriented programming components
-│   │       ├── config/          # Configuration classes
-│   │       ├── controller/      # REST controllers
-│   │       ├── exception/       # Exception handling
-│   │       ├── filter/          # Servlet filters
-│   │       ├── mapper/# MyBatis mappers
-│   │       ├── pojo/            # Entities, DTOs, and utility classes
-│   │       ├── service/         # Business logic services
-│   │       ├── utils/           # Utility classes
-│   │       └── EducationManagementSystemApplication.java
-│   └── resources/
-│       ├── mapper/              # MyBatis XML mapper files
-│       ├── sql/                 # SQL scripts
-│       ├── application.yml      # Application configuration
-│       └── logback.xml          # Logging configuration
-└── test/                        # Unit and integration tests
-```
 
 ## License
 
