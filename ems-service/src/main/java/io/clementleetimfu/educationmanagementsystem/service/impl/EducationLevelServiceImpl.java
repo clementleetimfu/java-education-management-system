@@ -3,7 +3,7 @@ package io.clementleetimfu.educationmanagementsystem.service.impl;
 import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.EducationLevelMapper;
-import io.clementleetimfu.educationmanagementsystem.pojo.educationLevel.EduLevelFindAllDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.educationLevel.EduLevelFindAllDTO;
 import io.clementleetimfu.educationmanagementsystem.service.EducationLevelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

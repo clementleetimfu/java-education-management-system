@@ -1,6 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.service;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.educationLevel.EduLevelFindAllDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.educationLevel.EduLevelFindAllDTO;
 
 import java.util.List;
 

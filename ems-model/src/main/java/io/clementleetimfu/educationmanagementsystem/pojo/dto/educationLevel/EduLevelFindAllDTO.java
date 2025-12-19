@@ -1,4 +1,4 @@
-package io.clementleetimfu.educationmanagementsystem.pojo.educationLevel;
+package io.clementleetimfu.educationmanagementsystem.pojo.dto.educationLevel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
