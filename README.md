@@ -1,6 +1,8 @@
-# Education Management System
+# Education Management System (Backend)
 
 A comprehensive backend system for education management built with Spring Boot, MyBatis, and MySQL.
+
+**Frontend Repository:** [Vue3 Frontend](https://github.com/clementleetimfu/vue-education-management-system)
 
 ![Java](https://img.shields.io/badge/Java-17-red)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.7-green)
@@ -195,15 +197,12 @@ education-management-system/
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `GET /subjects` | GET | Get all subjects |
-| `POST /subjects` | POST | Add a new subject |
-| `PUT /subjects` | PUT | Update subject information |
-| `DELETE /subjects` | DELETE | Delete subjects by IDs |
 
 ### Job Titles
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `GET /job-titles` | GET | Get all job titles |
+| Endpoint    | Method | Description |
+|-------------|--------|-------------|
+| `GET /jobs` | GET | Get all job titles |
 
 ### Education Levels
 
@@ -213,9 +212,9 @@ education-management-system/
 
 ### Activity Logs
 
-| Endpoint | Method| Description |
-|----------|--------|-------------|
-| `GET /activity-logs/search` | GET | Search activity logs with pagination |
+| Endpoint    | Method| Description |
+|-------------|--------|-------------|
+| `GET /logs` | GET | Search activity logs with pagination |
 
 ### Upload
 
