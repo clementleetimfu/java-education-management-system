@@ -6,11 +6,11 @@ io\clementleetimfu\educationmanagementsystem\pojo\dto\jobTitle\JobTitleFindAllDT
 io\clementleetimfu\educationmanagementsystem\pojo\dto\workExperience\WorkExperienceUpdateDTO.class
 io\clementleetimfu\educationmanagementsystem\pojo\entity\Employee.class
 io\clementleetimfu\educationmanagementsystem\pojo\dto\workExperience\WorkExperienceFindByEmpIdDTO.class
+io\clementleetimfu\educationmanagementsystem\pojo\dto\educationLevel\EduLevelFindAllDTO.class
 io\clementleetimfu\educationmanagementsystem\pojo\entity\Subject.class
 io\clementleetimfu\educationmanagementsystem\pojo\dto\activityLog\FindActivityLogRequestDTO.class
 io\clementleetimfu\educationmanagementsystem\pojo\dto\employee\EmployeeFindByIdRequestDTO.class
 io\clementleetimfu\educationmanagementsystem\pojo\dto\employee\EmployeeSearchResponseDTO.class
-io\clementleetimfu\educationmanagementsystem\pojo\educationLevel\EduLevelFindAllDTO.class
 io\clementleetimfu\educationmanagementsystem\pojo\entity\WorkExperience.class
 io\clementleetimfu\educationmanagementsystem\pojo\dto\clazz\ClazzAddDTO.class
 io\clementleetimfu\educationmanagementsystem\pojo\dto\employee\EmployeeFindClassTeachersDTO.class

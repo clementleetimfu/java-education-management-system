@@ -5,7 +5,7 @@
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.SubjectMapper">
 
     <select id="selectAllSubjects"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.subject.SubjectFindAllDTO">
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.vo.subject.SubjectFindAllVO">
         SELECT
         id,
         name

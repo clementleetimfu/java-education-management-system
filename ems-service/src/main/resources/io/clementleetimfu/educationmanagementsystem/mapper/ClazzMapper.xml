@@ -30,7 +30,7 @@
     </select>
 
     <resultMap id="searchClazzResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzSearchResponseDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzSearchVO">
         <id property="id" column="id"/>
         <result property="clazzName" column="clazzName"/>
         <result property="teacherName" column="teacherName"/>
@@ -58,7 +58,7 @@
     </select>
 
     <resultMap id="selectClazzByIdResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzFindByIdResponseDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindByIdVO">
         <result property="name" column="name"/>
         <result property="startDate" column="start_date"/>
         <result property="endDate" column="end_date"/>
@@ -101,7 +101,7 @@
     </update>
 
     <select id="selectAllClazz"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.ClazzFindAllDTO">
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindAllVO">
         SELECT
         id,
         name

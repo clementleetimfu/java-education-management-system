@@ -5,7 +5,10 @@ import com.github.pagehelper.PageHelper;
 import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.ClazzMapper;
-import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindAllVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzSearchVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.*;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Clazz;
 import io.clementleetimfu.educationmanagementsystem.service.ClazzService;
@@ -31,18 +34,18 @@ public class ClazzServiceImpl implements ClazzService {
     private StudentService studentService;
 
     @Override
-    public PageResult<ClazzSearchResponseDTO> searchClazz(ClazzSearchRequestDTO clazzSearchRequestDTO) {
+    public PageResult<ClazzSearchVO> searchClazz(ClazzSearchDTO clazzSearchDTO) {
 
-        PageHelper.startPage(clazzSearchRequestDTO.getPage(), clazzSearchRequestDTO.getPageSize());
+        PageHelper.startPage(clazzSearchDTO.getPage(), clazzSearchDTO.getPageSize());
 
-        List<ClazzSearchResponseDTO> clazzSearchResponseDTOList = clazzMapper.searchClazz(clazzSearchRequestDTO);
+        List<ClazzSearchVO> clazzSearchVOList = clazzMapper.searchClazz(clazzSearchDTO);
 
-        if (clazzSearchResponseDTOList.isEmpty()) {
+        if (clazzSearchVOList.isEmpty()) {
             log.warn("Clazz list is empty");
             throw new BusinessException(ErrorCodeEnum.CLAZZ_NOT_FOUND);
         }
 
-        Page<ClazzSearchResponseDTO> page = (Page<ClazzSearchResponseDTO>) clazzSearchResponseDTOList;
+        Page<ClazzSearchVO> page = (Page<ClazzSearchVO>) clazzSearchVOList;
         return new PageResult<>(page.getTotal(), page.getResult());
     }
 
@@ -66,22 +69,22 @@ public class ClazzServiceImpl implements ClazzService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public ClazzFindByIdResponseDTO findClazzById(Integer id) {
+    public ClazzFindByIdVO findClazzById(Integer id) {
 
-        ClazzFindByIdResponseDTO clazzFindByIdResponseDTO = clazzMapper.selectClazzById(id);
-        if (clazzFindByIdResponseDTO == null) {
+        ClazzFindByIdVO clazzFindByIdVO = clazzMapper.selectClazzById(id);
+        if (clazzFindByIdVO == null) {
             log.warn("Clazz with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.CLAZZ_NOT_FOUND);
         }
 
-        return clazzFindByIdResponseDTO;
+        return clazzFindByIdVO;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateClazzName(ClazzUpdateRequestDTO clazzUpdateRequestDTO) {
+    public Boolean updateClazzName(ClazzUpdateDTO clazzUpdateDTO) {
 
-        Clazz clazz = modelMapper.map(clazzUpdateRequestDTO, Clazz.class);
+        Clazz clazz = modelMapper.map(clazzUpdateDTO, Clazz.class);
         clazz.setUpdateTime(LocalDateTime.now());
 
         Integer rowsAffected = clazzMapper.updateClazz(clazz);
@@ -111,15 +114,15 @@ public class ClazzServiceImpl implements ClazzService {
     }
 
     @Override
-    public List<ClazzFindAllDTO> findAllClazz() {
+    public List<ClazzFindAllVO> findAllClazz() {
 
-        List<ClazzFindAllDTO> clazzFindAllDTOList = clazzMapper.selectAllClazz();
-        if (clazzFindAllDTOList.isEmpty()) {
+        List<ClazzFindAllVO> clazzFindAllVOList = clazzMapper.selectAllClazz();
+        if (clazzFindAllVOList.isEmpty()) {
             log.warn("Clazz list is empty");
             throw new BusinessException(ErrorCodeEnum.CLAZZ_NOT_FOUND);
         }
 
-        return clazzFindAllDTOList;
+        return clazzFindAllVOList;
     }
 
 }

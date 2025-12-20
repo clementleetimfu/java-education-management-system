@@ -1,23 +1,26 @@
 package io.clementleetimfu.educationmanagementsystem.service;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.student.*;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentFindCountByClazzVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentSearchVO;
 
 import java.util.List;
 import java.util.Map;
 
 public interface StudentService {
-    PageResult<StudentSearchResponseDTO> searchStudent(StudentSearchRequestDTO studentSearchRequestDTO);
+    PageResult<StudentSearchVO> searchStudent(StudentSearchDTO studentSearchDTO);
 
-    Boolean addStudent(StudentAddRequestDTO studentAddRequestDTO);
+    Boolean addStudent(StudentAddDTO studentAddDTO);
 
-    StudentFindByIdResponseDTO findStudentById(Integer id);
+    StudentFindByIdVO findStudentById(Integer id);
 
     Boolean deleteStudentByIds(List<Integer> ids);
 
-    Boolean updateStudent(StudentUpdateRequestDTO studentUpdateRequestDTO);
+    Boolean updateStudent(StudentUpdateDTO studentUpdateDTO);
 
-    StudentFindCountByClazzDTO findStudentCountByClazz();
+    StudentFindCountByClazzVO findStudentCountByClazz();
 
     List<Map<String, Object>> findStudentEduLevelCount();
 

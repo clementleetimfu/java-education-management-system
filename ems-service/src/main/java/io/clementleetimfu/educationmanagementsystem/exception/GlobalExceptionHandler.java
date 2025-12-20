@@ -1,6 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.exception;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.Result;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -41,7 +41,7 @@
     </select>
 
     <resultMap id="searchStudentResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.student.StudentSearchResponseDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentSearchVO">
         <id property="id" column="id"/>
         <result property="name" column="student_name"/>
         <result property="no" column="no"/>
@@ -86,7 +86,7 @@
     </select>
 
     <resultMap id="selectStudentByIdResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.student.StudentFindByIdResponseDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentFindByIdVO">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="gender" column="gender"/>

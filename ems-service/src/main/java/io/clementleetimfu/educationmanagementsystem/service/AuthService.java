@@ -1,11 +1,11 @@
 package io.clementleetimfu.educationmanagementsystem.service;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginResponseDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.UpdatePasswordRequestDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.auth.LoginVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.UpdatePasswordDTO;
 
 public interface AuthService {
-    LoginResponseDTO login(LoginRequestDTO loginRequestDTO);
+    LoginVO login(LoginDTO loginDTO);
 
-    Boolean updatePassword(UpdatePasswordRequestDTO updatePasswordRequestDTO);
+    Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO);
 }

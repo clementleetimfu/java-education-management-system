@@ -5,7 +5,7 @@
 <mapper namespace="io.clementleetimfu.educationmanagementsystem.mapper.EducationLevelMapper">
 
     <select id="selectAllEduLevel"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.educationLevel.EduLevelFindAllDTO">
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.vo.educationLevel.EduLevelFindAllVO">
         SELECT id,
         name
         FROM education_level

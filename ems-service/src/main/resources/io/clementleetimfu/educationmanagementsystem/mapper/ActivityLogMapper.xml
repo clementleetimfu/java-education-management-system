@@ -49,7 +49,7 @@
     </select>
 
     <resultMap id="findActivityLogResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.activityLog.FindActivityLogResponseDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.activityLog.FindActivityLogVO">
         <result column="username" property="operator"/>
         <result column="operate_time" property="operateTime"/>
         <result column="class_name" property="className"/>

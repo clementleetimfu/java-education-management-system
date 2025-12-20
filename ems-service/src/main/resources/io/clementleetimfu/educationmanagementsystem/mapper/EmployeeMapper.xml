@@ -41,7 +41,7 @@
     </select>
 
     <resultMap id="searchResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchResponseDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeSearchVO">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="gender" column="gender"/>
@@ -95,7 +95,7 @@
     </select>
 
     <select id="findWorkExperienceByEmpId"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceFindByEmpIdDTO">
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.vo.workExperience.WorkExperienceFindByEmpIdVO">
         SELECT
         company_name AS companyName,
         job_title AS jobTitle,
@@ -108,7 +108,7 @@
     </select>
 
     <resultMap id="findEmployeeByIdResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdRequestDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindByIdVO">
 
         <id property="id" column="id"/>
         <result property="username" column="username"/>
@@ -147,7 +147,7 @@
     </update>
 
     <select id="selectEmployeeByUsername"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginResponseDTO">
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.vo.auth.LoginVO">
         SELECT id,
         username,
         password,
@@ -186,7 +186,7 @@
     </select>
 
     <select id="selectAllTeachers"
-            resultType="io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindClassTeachersDTO">
+            resultType="io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindClassTeachersVO">
         SELECT
         e.id,
         e.name

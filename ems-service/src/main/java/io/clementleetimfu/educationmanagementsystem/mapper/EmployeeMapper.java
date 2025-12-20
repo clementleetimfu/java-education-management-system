@@ -1,10 +1,10 @@
 package io.clementleetimfu.educationmanagementsystem.mapper;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginResponseDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindByIdRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeFindClassTeachersDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchResponseDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.auth.LoginVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindClassTeachersVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.EmployeeSearchDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeSearchVO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Employee;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Param;
@@ -13,17 +13,17 @@ import java.util.List;
 import java.util.Map;
 
 public interface EmployeeMapper {
-    List<EmployeeSearchResponseDTO> searchEmployee(EmployeeSearchRequestDTO employeeSearchRequestDTO);
+    List<EmployeeSearchVO> searchEmployee(EmployeeSearchDTO employeeSearchDTO);
 
     Integer insertEmployee(Employee employee);
 
     Integer deleteEmployeeByIds(List<Integer> ids);
 
-    EmployeeFindByIdRequestDTO selectEmployeeById(@Param("id") Integer id);
+    EmployeeFindByIdVO selectEmployeeById(@Param("id") Integer id);
 
     Integer updateEmployee(Employee employee);
 
-    LoginResponseDTO selectEmployeeByUsername(@Param("username") String username);
+    LoginVO selectEmployeeByUsername(@Param("username") String username);
 
     @MapKey("jobTitle")
     List<Map<String, Object>> selectEmployeeJobTitleCount();
@@ -31,7 +31,7 @@ public interface EmployeeMapper {
     @MapKey("gender")
     List<Map<String, Object>> selectEmployeeGenderCount();
 
-    List<EmployeeFindClassTeachersDTO> selectAllTeachers();
+    List<EmployeeFindClassTeachersVO> selectAllTeachers();
 
     Long selectEmployeeCountByDeptId(@Param("deptId") Integer deptId);
 }

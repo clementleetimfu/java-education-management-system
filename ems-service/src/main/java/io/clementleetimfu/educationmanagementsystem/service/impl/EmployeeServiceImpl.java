@@ -6,7 +6,11 @@ import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper;
 import io.clementleetimfu.educationmanagementsystem.mapper.WorkExperienceMapper;
-import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindClassTeachersVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeJobTitleCountVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeSearchVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.*;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceAddDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.workExperience.WorkExperienceUpdateDTO;
@@ -38,26 +42,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     private WorkExperienceMapper workExperienceMapper;
 
     @Override
-    public PageResult<EmployeeSearchResponseDTO> searchEmployee(EmployeeSearchRequestDTO employeeSearchRequestDTO) {
+    public PageResult<EmployeeSearchVO> searchEmployee(EmployeeSearchDTO employeeSearchDTO) {
 
-        PageHelper.startPage(employeeSearchRequestDTO.getPage(), employeeSearchRequestDTO.getPageSize());
+        PageHelper.startPage(employeeSearchDTO.getPage(), employeeSearchDTO.getPageSize());
 
-        List<EmployeeSearchResponseDTO> employeeSearchResponseDTOList = employeeMapper.searchEmployee(employeeSearchRequestDTO);
+        List<EmployeeSearchVO> employeeSearchVOList = employeeMapper.searchEmployee(employeeSearchDTO);
 
-        if (employeeSearchResponseDTOList.isEmpty()) {
+        if (employeeSearchVOList.isEmpty()) {
             log.warn("Employee list is empty");
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
-        Page<EmployeeSearchResponseDTO> page = (Page<EmployeeSearchResponseDTO>) employeeSearchResponseDTOList;
+        Page<EmployeeSearchVO> page = (Page<EmployeeSearchVO>) employeeSearchVOList;
         return new PageResult<>(page.getTotal(), page.getResult());
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean addEmployee(EmployeeAddRequestDTO employeeAddRequestDTO) {
+    public Boolean addEmployee(EmployeeAddDTO employeeAddDTO) {
 
-        Employee employee = modelMapper.map(employeeAddRequestDTO, Employee.class);
+        Employee employee = modelMapper.map(employeeAddDTO, Employee.class);
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setIsDeleted(false);
@@ -68,7 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_ADD_FAILED);
         }
 
-        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddRequestDTO.getWorkExpList();
+        List<WorkExperienceAddDTO> workExperienceAddDTOList = employeeAddDTO.getWorkExpList();
         if (!workExperienceAddDTOList.isEmpty()) {
             List<WorkExperience> workExperienceList = workExperienceAddDTOList.stream()
                     .map(workExperienceAddDTO -> {
@@ -115,22 +119,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public EmployeeFindByIdRequestDTO findEmployeeById(Integer id) {
+    public EmployeeFindByIdVO findEmployeeById(Integer id) {
 
-        EmployeeFindByIdRequestDTO employeeFindByIdRequestDTO = employeeMapper.selectEmployeeById(id);
-        if (employeeFindByIdRequestDTO == null) {
+        EmployeeFindByIdVO employeeFindByIdVO = employeeMapper.selectEmployeeById(id);
+        if (employeeFindByIdVO == null) {
             log.warn("Employee with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
-        return employeeFindByIdRequestDTO;
+        return employeeFindByIdVO;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateEmployee(EmployeeUpdateRequestDTO employeeUpdateRequestDTO) {
+    public Boolean updateEmployee(EmployeeUpdateDTO employeeUpdateDTO) {
 
-        Employee employee = modelMapper.map(employeeUpdateRequestDTO, Employee.class);
+        Employee employee = modelMapper.map(employeeUpdateDTO, Employee.class);
         employee.setUpdateTime(LocalDateTime.now());
         Integer updateEmployeeRowsAffected = employeeMapper.updateEmployee(employee);
 
@@ -150,7 +154,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
         }
 
-        List<WorkExperienceUpdateDTO> workExperienceUpdateDTOList = employeeUpdateRequestDTO.getWorkExpList();
+        List<WorkExperienceUpdateDTO> workExperienceUpdateDTOList = employeeUpdateDTO.getWorkExpList();
         if (!workExperienceUpdateDTOList.isEmpty()) {
             List<WorkExperience> workExperienceList = workExperienceUpdateDTOList.stream().map(workExperienceUpdateDTO -> {
                 WorkExperience workExperience = modelMapper.map(workExperienceUpdateDTO, WorkExperience.class);
@@ -172,7 +176,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeJobTitleCountRequestDTO findEmployeeJobTitleCount() {
+    public EmployeeJobTitleCountVO findEmployeeJobTitleCount() {
         List<Map<String, Object>> jobTitleCountMapList = employeeMapper.selectEmployeeJobTitleCount();
 
         if (jobTitleCountMapList.isEmpty()) {
@@ -180,14 +184,14 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
-        EmployeeJobTitleCountRequestDTO employeeJobTitleCountRequestDTO = new EmployeeJobTitleCountRequestDTO();
-        employeeJobTitleCountRequestDTO
+        EmployeeJobTitleCountVO employeeJobTitleCountVO = new EmployeeJobTitleCountVO();
+        employeeJobTitleCountVO
                 .setJobTitleList(jobTitleCountMapList.stream().map(map -> (String) map.get("jobTitle")).toList());
 
-        employeeJobTitleCountRequestDTO
+        employeeJobTitleCountVO
                 .setJobTitleCountList(jobTitleCountMapList.stream().map(map -> ((Number) map.get("count")).intValue()).toList());
 
-        return employeeJobTitleCountRequestDTO;
+        return employeeJobTitleCountVO;
     }
 
     @Override
@@ -203,13 +207,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeFindClassTeachersDTO> findAllTeachers() {
-        List<EmployeeFindClassTeachersDTO> employeeFindClassTeachersDTOList = employeeMapper.selectAllTeachers();
-        if (employeeFindClassTeachersDTOList.isEmpty()) {
+    public List<EmployeeFindClassTeachersVO> findAllTeachers() {
+        List<EmployeeFindClassTeachersVO> employeeFindClassTeachersVOList = employeeMapper.selectAllTeachers();
+        if (employeeFindClassTeachersVOList.isEmpty()) {
             log.warn("Class teacher list is empty");
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
-        return employeeFindClassTeachersDTOList;
+        return employeeFindClassTeachersVOList;
     }
 
     @Override

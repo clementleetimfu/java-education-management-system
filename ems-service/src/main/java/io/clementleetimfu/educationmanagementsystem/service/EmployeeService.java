@@ -1,27 +1,31 @@
 package io.clementleetimfu.educationmanagementsystem.service;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindClassTeachersVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeJobTitleCountVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeSearchVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.employee.*;
 
 import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
-    PageResult<EmployeeSearchResponseDTO> searchEmployee(EmployeeSearchRequestDTO employeeSearchRequestDTO);
+    PageResult<EmployeeSearchVO> searchEmployee(EmployeeSearchDTO employeeSearchDTO);
 
-    Boolean addEmployee(EmployeeAddRequestDTO employeeAddRequestDTO);
+    Boolean addEmployee(EmployeeAddDTO employeeAddDTO);
 
     Boolean deleteEmployeeByIds(List<Integer> ids);
 
-    EmployeeFindByIdRequestDTO findEmployeeById(Integer id);
+    EmployeeFindByIdVO findEmployeeById(Integer id);
 
-    Boolean updateEmployee(EmployeeUpdateRequestDTO employeeUpdateRequestDTO);
+    Boolean updateEmployee(EmployeeUpdateDTO employeeUpdateDTO);
 
-    EmployeeJobTitleCountRequestDTO findEmployeeJobTitleCount();
+    EmployeeJobTitleCountVO findEmployeeJobTitleCount();
 
     List<Map<String, Object>> findEmployeeGenderCount();
 
-    List<EmployeeFindClassTeachersDTO> findAllTeachers();
+    List<EmployeeFindClassTeachersVO> findAllTeachers();
 
     Boolean isEmployeeExistsInDepartment(Integer deptId);
 }

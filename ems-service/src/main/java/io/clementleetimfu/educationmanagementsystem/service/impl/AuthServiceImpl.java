@@ -3,9 +3,9 @@ package io.clementleetimfu.educationmanagementsystem.service.impl;
 import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginResponseDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.UpdatePasswordRequestDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.LoginDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.auth.LoginVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.auth.UpdatePasswordDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Employee;
 import io.clementleetimfu.educationmanagementsystem.service.AuthService;
 import io.clementleetimfu.educationmanagementsystem.utils.bcrypt.BcryptUtil;
@@ -33,43 +33,43 @@ public class AuthServiceImpl implements AuthService {
     private BcryptUtil bcryptUtil;
 
     @Override
-    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+    public LoginVO login(LoginDTO loginDTO) {
 
-        LoginResponseDTO loginResponseDTO = employeeMapper.selectEmployeeByUsername(loginRequestDTO.getUsername());
+        LoginVO loginVo = employeeMapper.selectEmployeeByUsername(loginDTO.getUsername());
 
-        if (loginResponseDTO == null) {
-            log.warn("User with username:{} not found", loginRequestDTO.getUsername());
+        if (loginVo == null) {
+            log.warn("User with username:{} not found", loginDTO.getUsername());
             throw new BusinessException(ErrorCodeEnum.INVALID_CREDENTIALS);
         }
 
-        String hashedPassword = loginResponseDTO.getPassword();
-        boolean verifyResult = bcryptUtil.verify(loginRequestDTO.getPassword(), hashedPassword);
+        String hashedPassword = loginVo.getPassword();
+        boolean verifyResult = bcryptUtil.verify(loginDTO.getPassword(), hashedPassword);
 
         if (!verifyResult) {
             log.warn("Invalid password");
             throw new BusinessException(ErrorCodeEnum.INVALID_CREDENTIALS);
         }
 
-        if (!loginResponseDTO.getIsFirstLogged()) {
-            return loginResponseDTO;
+        if (!loginVo.getIsFirstLogged()) {
+            return loginVo;
         }
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", loginResponseDTO.getId());
-        claims.put("username", loginRequestDTO.getUsername());
+        claims.put("id", loginVo.getId());
+        claims.put("username", loginDTO.getUsername());
 
-        loginResponseDTO.setToken(jwtUtil.generateToken(claims));
-        return loginResponseDTO;
+        loginVo.setToken(jwtUtil.generateToken(claims));
+        return loginVo;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updatePassword(UpdatePasswordRequestDTO updatePasswordRequestDTO) {
+    public Boolean updatePassword(UpdatePasswordDTO updatePasswordDTO) {
 
-        String hashedPassword = bcryptUtil.hash(updatePasswordRequestDTO.getPassword());
+        String hashedPassword = bcryptUtil.hash(updatePasswordDTO.getPassword());
 
         Employee employee = new Employee();
-        employee.setId(updatePasswordRequestDTO.getId());
+        employee.setId(updatePasswordDTO.getId());
         employee.setPassword(hashedPassword);
         employee.setIsFirstLogged(Boolean.TRUE);
         employee.setUpdateTime(LocalDateTime.now());

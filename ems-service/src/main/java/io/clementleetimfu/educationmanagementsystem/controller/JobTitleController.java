@@ -1,7 +1,7 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.Result;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.jobTitle.JobTitleFindAllDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.Result;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.jobTitle.JobTitleFindAllVO;
 import io.clementleetimfu.educationmanagementsystem.service.JobTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class JobTitleController {
     private JobTitleService jobTitleService;
 
     @GetMapping
-    public Result<List<JobTitleFindAllDTO>> findAllJobTitle() {
+    public Result<List<JobTitleFindAllVO>> findAllJobTitle() {
         return Result.success(jobTitleService.findAllJobTitle());
 
     }

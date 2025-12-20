@@ -1,9 +1,9 @@
 package io.clementleetimfu.educationmanagementsystem.service;
 
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.subject.SubjectFindAllDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.subject.SubjectFindAllVO;
 
 import java.util.List;
 
 public interface SubjectService {
-    List<SubjectFindAllDTO> findAllSubjects();
+    List<SubjectFindAllVO> findAllSubjects();
 }

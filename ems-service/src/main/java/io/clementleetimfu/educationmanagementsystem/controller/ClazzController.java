@@ -1,8 +1,11 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
 import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
-import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
-import io.clementleetimfu.educationmanagementsystem.pojo.Result;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindAllVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzSearchVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.Result;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.clazz.*;
 import io.clementleetimfu.educationmanagementsystem.service.ClazzService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +21,8 @@ public class ClazzController {
     private ClazzService clazzService;
 
     @GetMapping("/search")
-    public Result<PageResult<ClazzSearchResponseDTO>> searchClazz(@ModelAttribute("clazzSearchRequestDTO") ClazzSearchRequestDTO clazzSearchRequestDTO) {
-        return Result.success(clazzService.searchClazz(clazzSearchRequestDTO));
+    public Result<PageResult<ClazzSearchVO>> searchClazz(@ModelAttribute("clazzSearchRequestDTO") ClazzSearchDTO clazzSearchDTO) {
+        return Result.success(clazzService.searchClazz(clazzSearchDTO));
     }
 
     @AddActivityLog
@@ -29,14 +32,14 @@ public class ClazzController {
     }
 
     @GetMapping("/{id}")
-    public Result<ClazzFindByIdResponseDTO> findClazzById(@PathVariable("id") Integer id) {
+    public Result<ClazzFindByIdVO> findClazzById(@PathVariable("id") Integer id) {
         return Result.success(clazzService.findClazzById(id));
     }
 
     @AddActivityLog
     @PutMapping
-    public Result<Boolean> updateClazzName(@RequestBody ClazzUpdateRequestDTO clazzUpdateRequestDTO) {
-        return Result.success(clazzService.updateClazzName(clazzUpdateRequestDTO));
+    public Result<Boolean> updateClazzName(@RequestBody ClazzUpdateDTO clazzUpdateDTO) {
+        return Result.success(clazzService.updateClazzName(clazzUpdateDTO));
     }
 
     @AddActivityLog
@@ -46,7 +49,7 @@ public class ClazzController {
     }
 
     @GetMapping
-    public Result<List<ClazzFindAllDTO>> findAllClazz() {
+    public Result<List<ClazzFindAllVO>> findAllClazz() {
         return Result.success(clazzService.findAllClazz());
     }
 }

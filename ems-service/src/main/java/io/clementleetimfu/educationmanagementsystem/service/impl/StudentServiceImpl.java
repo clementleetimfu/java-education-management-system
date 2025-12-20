@@ -5,10 +5,13 @@ import com.github.pagehelper.PageHelper;
 import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.StudentMapper;
-import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.student.*;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Student;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.StudentNumberSequence;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentFindCountByClazzVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentSearchVO;
 import io.clementleetimfu.educationmanagementsystem.service.StudentNumberSequenceService;
 import io.clementleetimfu.educationmanagementsystem.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,29 +40,29 @@ public class StudentServiceImpl implements StudentService {
     private StudentNumberSequenceService studentNumberSequenceService;
 
     @Override
-    public PageResult<StudentSearchResponseDTO> searchStudent(StudentSearchRequestDTO studentSearchRequestDTO) {
+    public PageResult<StudentSearchVO> searchStudent(StudentSearchDTO studentSearchDTO) {
 
-        PageHelper.startPage(studentSearchRequestDTO.getPage(), studentSearchRequestDTO.getPageSize());
+        PageHelper.startPage(studentSearchDTO.getPage(), studentSearchDTO.getPageSize());
 
-        List<StudentSearchResponseDTO> studentSearchResponseDTOList = studentMapper.searchStudent(studentSearchRequestDTO);
+        List<StudentSearchVO> studentSearchVOList = studentMapper.searchStudent(studentSearchDTO);
 
-        if (studentSearchResponseDTOList.isEmpty()) {
+        if (studentSearchVOList.isEmpty()) {
             log.warn("Student list is empty");
             throw new BusinessException(ErrorCodeEnum.STUDENT_NOT_FOUND);
         }
 
-        Page<StudentSearchResponseDTO> page = (Page<StudentSearchResponseDTO>) studentSearchResponseDTOList;
+        Page<StudentSearchVO> page = (Page<StudentSearchVO>) studentSearchVOList;
         return new PageResult<>(page.getTotal(), page.getResult());
 
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean addStudent(StudentAddRequestDTO studentAddRequestDTO) {
+    public Boolean addStudent(StudentAddDTO studentAddDTO) {
 
-        Student student = modelMapper.map(studentAddRequestDTO, Student.class);
+        Student student = modelMapper.map(studentAddDTO, Student.class);
 
-        LocalDate intakeDate = studentAddRequestDTO.getIntakeDate();
+        LocalDate intakeDate = studentAddDTO.getIntakeDate();
         String datePart = intakeDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         StudentNumberSequence studentNumberSequence = studentNumberSequenceService.findStudentNumberSequence(intakeDate);
@@ -70,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
             studentNumberSequenceService.updateStudentNumberSequence(intakeDate, latestSeq);
             
         } else {
-            studentNumberSequenceService.addStudentNumberSequence(studentAddRequestDTO.getIntakeDate());
+            studentNumberSequenceService.addStudentNumberSequence(studentAddDTO.getIntakeDate());
             student.setNo(datePart + "00001");
         }
 
@@ -89,15 +92,15 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public StudentFindByIdResponseDTO findStudentById(Integer id) {
+    public StudentFindByIdVO findStudentById(Integer id) {
 
-        StudentFindByIdResponseDTO studentFindByIdResponseDTO = studentMapper.selectStudentById(id);
-        if (studentFindByIdResponseDTO == null) {
+        StudentFindByIdVO studentFindByIdVO = studentMapper.selectStudentById(id);
+        if (studentFindByIdVO == null) {
             log.warn("Student with id:{} not found", id);
             throw new BusinessException(ErrorCodeEnum.STUDENT_NOT_FOUND);
         }
 
-        return studentFindByIdResponseDTO;
+        return studentFindByIdVO;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -115,9 +118,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateStudent(StudentUpdateRequestDTO studentUpdateRequestDTO) {
+    public Boolean updateStudent(StudentUpdateDTO studentUpdateDTO) {
 
-        Student student = modelMapper.map(studentUpdateRequestDTO, Student.class);
+        Student student = modelMapper.map(studentUpdateDTO, Student.class);
         student.setUpdateTime(LocalDateTime.now());
         Integer updateStudentRowsAffected = studentMapper.updateStudent(student);
 
@@ -148,7 +151,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentFindCountByClazzDTO findStudentCountByClazz() {
+    public StudentFindCountByClazzVO findStudentCountByClazz() {
 
         List<Map<String, Object>> studentCountByClazzMapList = studentMapper.findStudentCountByClazz();
 
@@ -160,14 +163,14 @@ public class StudentServiceImpl implements StudentService {
             throw new BusinessException(ErrorCodeEnum.EMPLOYEE_NOT_FOUND);
         }
 
-        StudentFindCountByClazzDTO studentFindCountByClazzDTO = new StudentFindCountByClazzDTO();
-        studentFindCountByClazzDTO
+        StudentFindCountByClazzVO studentFindCountByClazzVO = new StudentFindCountByClazzVO();
+        studentFindCountByClazzVO
                 .setClazzNameList(studentCountByClazzMapList.stream().map(map -> (String) map.get("clazzName")).toList());
 
-        studentFindCountByClazzDTO
+        studentFindCountByClazzVO
                 .setStudentCountList(studentCountByClazzMapList.stream().map(map -> ((Number) map.get("count")).intValue()).toList());
 
-        return studentFindCountByClazzDTO;
+        return studentFindCountByClazzVO;
     }
 
 }

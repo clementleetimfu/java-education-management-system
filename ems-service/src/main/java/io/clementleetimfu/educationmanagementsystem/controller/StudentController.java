@@ -1,9 +1,12 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
 import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
-import io.clementleetimfu.educationmanagementsystem.pojo.PageResult;
-import io.clementleetimfu.educationmanagementsystem.pojo.Result;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.Result;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.student.*;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentFindByIdVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentFindCountByClazzVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.student.StudentSearchVO;
 import io.clementleetimfu.educationmanagementsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,18 +21,18 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("/search")
-    public Result<PageResult<StudentSearchResponseDTO>> searchStudent(@ModelAttribute("studentSearchRequestDTO") StudentSearchRequestDTO studentSearchRequestDTO) {
-        return Result.success(studentService.searchStudent(studentSearchRequestDTO));
+    public Result<PageResult<StudentSearchVO>> searchStudent(@ModelAttribute("studentSearchRequestDTO") StudentSearchDTO studentSearchDTO) {
+        return Result.success(studentService.searchStudent(studentSearchDTO));
     }
 
     @AddActivityLog
     @PostMapping
-    public Result<Boolean> addStudent(@RequestBody StudentAddRequestDTO studentAddRequestDTO) {
-        return Result.success(studentService.addStudent(studentAddRequestDTO));
+    public Result<Boolean> addStudent(@RequestBody StudentAddDTO studentAddDTO) {
+        return Result.success(studentService.addStudent(studentAddDTO));
     }
 
     @GetMapping("/{id}")
-    public Result<StudentFindByIdResponseDTO> findStudentById(@PathVariable("id") Integer id) {
+    public Result<StudentFindByIdVO> findStudentById(@PathVariable("id") Integer id) {
         return Result.success(studentService.findStudentById(id));
     }
 
@@ -41,12 +44,12 @@ public class StudentController {
 
     @AddActivityLog
     @PutMapping
-    public Result<Boolean> updateStudent(@RequestBody StudentUpdateRequestDTO studentUpdateRequestDTO) {
-        return Result.success(studentService.updateStudent(studentUpdateRequestDTO));
+    public Result<Boolean> updateStudent(@RequestBody StudentUpdateDTO studentUpdateDTO) {
+        return Result.success(studentService.updateStudent(studentUpdateDTO));
     }
 
     @GetMapping("/clazz/count")
-    public Result<StudentFindCountByClazzDTO> findStudentCountByClazz() {
+    public Result<StudentFindCountByClazzVO> findStudentCountByClazz() {
         return Result.success(studentService.findStudentCountByClazz());
     }
 

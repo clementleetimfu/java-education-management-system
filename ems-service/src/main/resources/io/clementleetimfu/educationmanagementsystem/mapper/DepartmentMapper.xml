@@ -18,7 +18,7 @@
     </select>
 
     <resultMap id="selectAllDepartmentResultMap"
-               type="io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllResponseDTO">
+               type="io.clementleetimfu.educationmanagementsystem.pojo.vo.department.DepartmentFindAllVO">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="updateTime" column="update_time"/>

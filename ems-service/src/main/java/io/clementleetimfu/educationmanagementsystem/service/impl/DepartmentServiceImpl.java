@@ -3,9 +3,9 @@ package io.clementleetimfu.educationmanagementsystem.service.impl;
 import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.DepartmentMapper;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllResponseDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateRequestDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.department.DepartmentFindAllVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateDTO;
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.Department;
 import io.clementleetimfu.educationmanagementsystem.service.DepartmentService;
 import io.clementleetimfu.educationmanagementsystem.service.EmployeeService;
@@ -32,15 +32,15 @@ public class DepartmentServiceImpl implements DepartmentService {
     private EmployeeService employeeService;
 
     @Override
-    public List<DepartmentFindAllResponseDTO> findAllDepartment() {
+    public List<DepartmentFindAllVO> findAllDepartment() {
 
-        List<DepartmentFindAllResponseDTO> departmentFindAllResponseDTOList = departmentMapper.selectAllDepartment();
-        if (departmentFindAllResponseDTOList.isEmpty()) {
+        List<DepartmentFindAllVO> departmentFindAllVOList = departmentMapper.selectAllDepartment();
+        if (departmentFindAllVOList.isEmpty()) {
             log.warn("Department list is empty");
             throw new BusinessException(ErrorCodeEnum.DEPARTMENT_NOT_FOUND);
         }
 
-        return departmentFindAllResponseDTOList;
+        return departmentFindAllVOList;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -63,9 +63,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean addDepartment(DepartmentAddRequestDTO departmentAddRequestDTO) {
+    public Boolean addDepartment(DepartmentAddDTO departmentAddDTO) {
 
-        Department department = modelMapper.map(departmentAddRequestDTO, Department.class);
+        Department department = modelMapper.map(departmentAddDTO, Department.class);
         department.setCreateTime(LocalDateTime.now());
         department.setUpdateTime(LocalDateTime.now());
         department.setIsDeleted(Boolean.FALSE);
@@ -81,9 +81,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateDepartmentName(DepartmentUpdateRequestDTO departmentUpdateRequestDTO) {
+    public Boolean updateDepartmentName(DepartmentUpdateDTO departmentUpdateDTO) {
 
-        Department department = modelMapper.map(departmentUpdateRequestDTO, Department.class);
+        Department department = modelMapper.map(departmentUpdateDTO, Department.class);
         department.setUpdateTime(LocalDateTime.now());
 
         Integer rowsAffected = departmentMapper.updateDepartmentName(department);

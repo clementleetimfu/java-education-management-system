@@ -1,7 +1,7 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
 import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
-import io.clementleetimfu.educationmanagementsystem.pojo.Result;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.Result;
 import io.clementleetimfu.educationmanagementsystem.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

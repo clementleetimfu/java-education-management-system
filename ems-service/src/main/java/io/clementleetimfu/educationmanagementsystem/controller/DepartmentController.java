@@ -1,10 +1,10 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
 import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
-import io.clementleetimfu.educationmanagementsystem.pojo.Result;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddRequestDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentFindAllResponseDTO;
-import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateRequestDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.Result;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentAddDTO;
+import io.clementleetimfu.educationmanagementsystem.pojo.vo.department.DepartmentFindAllVO;
+import io.clementleetimfu.educationmanagementsystem.pojo.dto.department.DepartmentUpdateDTO;
 import io.clementleetimfu.educationmanagementsystem.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @GetMapping
-    public Result<List<DepartmentFindAllResponseDTO>> findAllDepartment() {
+    public Result<List<DepartmentFindAllVO>> findAllDepartment() {
         return Result.success(departmentService.findAllDepartment());
     }
 
@@ -31,14 +31,14 @@ public class DepartmentController {
 
     @AddActivityLog
     @PostMapping
-    public Result<Boolean> addDepartment(@RequestBody DepartmentAddRequestDTO departmentAddRequestDTO) {
-        return Result.success(departmentService.addDepartment(departmentAddRequestDTO));
+    public Result<Boolean> addDepartment(@RequestBody DepartmentAddDTO departmentAddDTO) {
+        return Result.success(departmentService.addDepartment(departmentAddDTO));
     }
 
     @AddActivityLog
     @PutMapping
-    public Result<Boolean> updateDepartmentName(@RequestBody DepartmentUpdateRequestDTO departmentUpdateRequestDTO) {
-        return Result.success(departmentService.updateDepartmentName(departmentUpdateRequestDTO));
+    public Result<Boolean> updateDepartmentName(@RequestBody DepartmentUpdateDTO departmentUpdateDTO) {
+        return Result.success(departmentService.updateDepartmentName(departmentUpdateDTO));
     }
 
 }
