@@ -1,5 +1,6 @@
 package io.clementleetimfu.educationmanagementsystem.exception;
 
+import io.clementleetimfu.educationmanagementsystem.constants.ErrorCodeEnum;
 import lombok.Getter;
 
 @Getter

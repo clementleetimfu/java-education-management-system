@@ -1,7 +1,7 @@
 package io.clementleetimfu.educationmanagementsystem.service.impl;
 
 import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
-import io.clementleetimfu.educationmanagementsystem.exception.ErrorCodeEnum;
+import io.clementleetimfu.educationmanagementsystem.constants.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.JobTitleMapper;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.jobTitle.JobTitleFindAllVO;
 import io.clementleetimfu.educationmanagementsystem.service.JobTitleService;

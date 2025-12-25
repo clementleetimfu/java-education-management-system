@@ -1,6 +1,7 @@
 package io.clementleetimfu.educationmanagementsystem.filter;
 
 import io.clementleetimfu.educationmanagementsystem.utils.jwt.JwtUtil;
+import io.clementleetimfu.educationmanagementsystem.utils.redis.RedisUtil;
 import io.clementleetimfu.educationmanagementsystem.utils.thread.CurrentEmployee;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
@@ -18,12 +19,18 @@ public class TokenFilter implements Filter {
 
     private JwtUtil jwtUtil;
 
+    private RedisUtil redisUtil;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Get jwtUtil from Spring application context
         this.jwtUtil = WebApplicationContextUtils
                 .getRequiredWebApplicationContext(filterConfig.getServletContext())
                 .getBean(JwtUtil.class);
+        // Get redisUtil from Spring application context
+        this.redisUtil = WebApplicationContextUtils
+                .getRequiredWebApplicationContext(filterConfig.getServletContext())
+                .getBean(RedisUtil.class);
     }
 
     @Override
@@ -34,7 +41,7 @@ public class TokenFilter implements Filter {
 
             String requestUri = request.getRequestURI();
 
-            if (requestUri.contains("/auth")) {
+            if (requestUri.contains("/auth/login") || requestUri.contains("/auth/update-password")) {
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -47,6 +54,12 @@ public class TokenFilter implements Filter {
             }
 
             String token = authHeader.substring(7).trim(); // remove "Bearer "
+
+            if (redisUtil.isTokenBlacklisted(token)) {
+                log.warn("Unauthorized request to {}: blacklisted token", requestUri);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
 
             if (!jwtUtil.validateToken(token)) {
                 log.warn("Unauthorized request to {}: invalid token", requestUri);

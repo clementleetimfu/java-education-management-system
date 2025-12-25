@@ -1,4 +1,4 @@
-package io.clementleetimfu.educationmanagementsystem.exception;
+package io.clementleetimfu.educationmanagementsystem.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
