@@ -26,7 +26,7 @@
                 AND c.end_date BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
-        ORDER BY c.update_time DESC
+        ORDER BY c.update_time DESC, c.id DESC
     </select>
 
     <resultMap id="searchClazzResultMap"

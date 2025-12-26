@@ -184,21 +184,21 @@ CREATE TABLE clazz
 ) COMMENT ='Class table';
 
 INSERT INTO clazz (name, start_date, end_date, teacher_id, subject, create_time, update_time, is_deleted)
-VALUES ('Java Spring Boot Developer Bootcamp - Batch 01', '2025-03-05', '2027-03-07', 2, 1, NOW(), NOW(), 0),
-       ('Java Spring Boot Developer Bootcamp - Batch 02', '2025-03-15', '2025-03-18', 4, 1, NOW(), NOW(), 0),
-       ('Java Spring Boot Developer Bootcamp - Batch 03', '2025-04-02', '2025-04-05', 7, 1, NOW(), NOW(), 0),
-       ('Front End Web Development - Batch 01', '2025-03-20', '2025-03-23', 10, 2, NOW(), NOW(), 0),
-       ('Front End Web Development - Batch 02', '2025-04-10', '2025-04-12', 12, 2, NOW(), NOW(), 0),
-       ('Front End Web Development - Batch 03', '2025-05-02', '2025-05-06', 15, 2, NOW(), NOW(), 0),
-       ('Front End Web Development - Batch 04', '2025-06-01', '2025-06-03', 2, 2, NOW(), NOW(), 0),
-       ('Data Science & Machine Learning - Batch 01', '2025-03-12', '2025-03-15', 4, 3, NOW(), NOW(), 0),
-       ('Data Science & Machine Learning - Batch 02', '2025-04-05', '2025-04-07', 7, 3, NOW(), NOW(), 0),
-       ('Data Science & Machine Learning - Batch 03', '2025-05-08', '2025-05-11', 10, 3, NOW(), NOW(), 0),
-       ('Data Science & Machine Learning - Batch 04', '2025-05-20', '2025-05-23', 12, 3, NOW(), NOW(), 0),
-       ('Java Spring Boot Developer Bootcamp - Batch 04', '2025-06-05', '2025-06-09', 15, 1, NOW(), NOW(), 0),
-       ('Front End Web Development - Batch 05', '2025-06-10', '2025-06-12', 2, 2, NOW(), NOW(), 0),
-       ('Data Science & Machine Learning - Batch 05', '2025-06-15', '2025-06-18', 4, 3, NOW(), NOW(), 0),
-       ('Java Spring Boot Developer Bootcamp - Batch 05', '2027-06-20', '2028-06-22', 7, 1, NOW(), NOW(), 0);
+VALUES ('Java Spring Boot Developer Bootcamp - Batch 01', '2025-03-05', '2027-03-07', 3, 1, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 02', '2025-03-15', '2025-03-18', 5, 1, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 03', '2025-04-02', '2025-04-05', 8, 1, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 01', '2025-03-20', '2025-03-23', 11, 2, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 02', '2025-04-10', '2025-04-12', 13, 2, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 03', '2025-05-02', '2025-05-06', 16, 2, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 04', '2025-06-01', '2025-06-03', 3, 2, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 01', '2025-03-12', '2025-03-15', 5, 3, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 02', '2025-04-05', '2025-04-07', 8, 3, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 03', '2025-05-08', '2025-05-11', 11, 3, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 04', '2025-05-20', '2025-05-23', 13, 3, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 04', '2025-06-05', '2025-06-09', 16, 1, NOW(), NOW(), 0),
+       ('Front End Web Development - Batch 05', '2025-06-10', '2025-06-12', 3, 2, NOW(), NOW(), 0),
+       ('Data Science & Machine Learning - Batch 05', '2025-06-15', '2025-06-18', 5, 3, NOW(), NOW(), 0),
+       ('Java Spring Boot Developer Bootcamp - Batch 05', '2027-06-20', '2028-06-22', 8, 1, NOW(), NOW(), 0);
 
 -- Job Title
 CREATE TABLE job_title

@@ -26,6 +26,7 @@
         AND jt.is_deleted = 0
         <where>
             e.is_deleted = 0
+            AND e.username != 'admin'
 
             <if test="name != null and name != ''">
                 AND e.name LIKE CONCAT('%', #{name}, '%')
@@ -37,7 +38,7 @@
                 AND e.hire_date BETWEEN #{startDate} AND #{endDate}
             </if>
         </where>
-        ORDER BY e.update_time DESC
+        ORDER BY e.update_time DESC, e.id DESC
     </select>
 
     <resultMap id="searchResultMap"
@@ -68,11 +69,11 @@
     <insert id="insertEmployee" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO employee
         ( image, username, name, gender, job_title, hire_date, dept_id,
-        phone, salary, create_time, update_time, is_deleted
+        phone, salary, role_id, create_time, update_time, is_deleted
         )
         VALUES
         ( #{image}, #{username}, #{name}, #{gender}, #{jobTitle}, #{hireDate}, #{deptId},
-        #{phone}, #{salary}, #{createTime}, #{updateTime}, #{isDeleted}
+        #{phone}, #{salary}, #{roleId}, #{createTime}, #{updateTime}, #{isDeleted}
         )
     </insert>
 
@@ -178,6 +179,7 @@
         COUNT(*) AS count
         FROM employee
         WHERE is_deleted = 0
+        AND username != 'admin'
         GROUP BY job_title
     </select>
 

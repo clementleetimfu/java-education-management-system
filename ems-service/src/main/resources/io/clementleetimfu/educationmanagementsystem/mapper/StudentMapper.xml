@@ -37,7 +37,7 @@
                 AND s.clazz_id = #{clazzId}
             </if>
         </where>
-        ORDER BY s.update_time DESC
+        ORDER BY s.update_time DESC, s.id DESC
     </select>
 
     <resultMap id="searchStudentResultMap"

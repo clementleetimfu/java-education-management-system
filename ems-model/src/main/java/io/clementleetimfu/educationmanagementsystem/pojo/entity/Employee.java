@@ -26,6 +26,7 @@ public class Employee {
     private LocalDate hireDate;
     private Integer deptId;
     private Boolean isFirstLogged;
+    private Integer roleId;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private Boolean isDeleted;

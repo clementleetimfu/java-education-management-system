@@ -2,10 +2,13 @@ package io.clementleetimfu.educationmanagementsystem.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import io.clementleetimfu.educationmanagementsystem.constants.RoleEnum;
 import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
 import io.clementleetimfu.educationmanagementsystem.constants.ErrorCodeEnum;
 import io.clementleetimfu.educationmanagementsystem.mapper.EmployeeMapper;
+import io.clementleetimfu.educationmanagementsystem.mapper.RoleMapper;
 import io.clementleetimfu.educationmanagementsystem.mapper.WorkExperienceMapper;
+import io.clementleetimfu.educationmanagementsystem.pojo.entity.Role;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindByIdVO;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindClassTeachersVO;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeJobTitleCountVO;
@@ -41,6 +44,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private WorkExperienceMapper workExperienceMapper;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Override
     public PageResult<EmployeeSearchVO> searchEmployee(EmployeeSearchDTO employeeSearchDTO) {
 
@@ -61,7 +67,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Boolean addEmployee(EmployeeAddDTO employeeAddDTO) {
 
+        Role role = roleMapper.selectRoleByName(RoleEnum.ROLE_EMPLOYEE.getValue());
+
         Employee employee = modelMapper.map(employeeAddDTO, Employee.class);
+        employee.setRoleId(role.getId());
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setIsDeleted(false);
