@@ -2,7 +2,8 @@ package io.clementleetimfu.educationmanagementsystem.filter;
 
 import io.clementleetimfu.educationmanagementsystem.utils.jwt.JwtUtil;
 import io.clementleetimfu.educationmanagementsystem.utils.redis.RedisUtil;
-import io.clementleetimfu.educationmanagementsystem.utils.thread.CurrentEmployee;
+import io.clementleetimfu.educationmanagementsystem.utils.threadLocal.CurrentEmployee;
+import io.clementleetimfu.educationmanagementsystem.utils.threadLocal.CurrentRole;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -69,6 +70,7 @@ public class TokenFilter implements Filter {
 
             Claims claims = jwtUtil.parseToken(token);
             CurrentEmployee.set(claims.get("id", Integer.class));
+            CurrentRole.set(claims.get("roleName", String.class));
 
             filterChain.doFilter(request, response);
         } finally {

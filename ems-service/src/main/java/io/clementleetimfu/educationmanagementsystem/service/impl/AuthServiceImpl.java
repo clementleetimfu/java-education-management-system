@@ -12,7 +12,7 @@ import io.clementleetimfu.educationmanagementsystem.service.AuthService;
 import io.clementleetimfu.educationmanagementsystem.utils.bcrypt.BcryptUtil;
 import io.clementleetimfu.educationmanagementsystem.utils.jwt.JwtUtil;
 import io.clementleetimfu.educationmanagementsystem.utils.redis.RedisUtil;
-import io.clementleetimfu.educationmanagementsystem.utils.thread.CurrentEmployee;
+import io.clementleetimfu.educationmanagementsystem.utils.threadLocal.CurrentEmployee;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +65,7 @@ public class AuthServiceImpl implements AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", loginVo.getId());
         claims.put("username", loginDTO.getUsername());
+        claims.put("roleName", loginVo.getRoleName());
 
         loginVo.setToken(jwtUtil.generateToken(claims));
         return loginVo;

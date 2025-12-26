@@ -1,4 +1,4 @@
-package io.clementleetimfu.educationmanagementsystem.utils.thread;
+package io.clementleetimfu.educationmanagementsystem.utils.threadLocal;
 
 public class CurrentEmployee {
     private static final ThreadLocal<Integer> EMPLOYEE_ID = new ThreadLocal<>();

@@ -43,7 +43,9 @@ public enum ErrorCodeEnum {
     STUDENT_NUMBER_SEQUENCE_ADD_FAILED(10001, "Student number sequence add failed"),
     STUDENT_NUMBER_SEQUENCE_UPDATE_FAILED(10002, "Student number sequence update failed"),
 
-    EDUCATION_LEVEL_NOT_FOUND(11001, "Education level not found");
+    EDUCATION_LEVEL_NOT_FOUND(11001, "Education level not found"),
+
+    PERMISSION_DENIED(12001, "Permission denied");
 
     private final int code;
     private final String message;

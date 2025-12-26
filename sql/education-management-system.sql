@@ -43,6 +43,7 @@ CREATE TABLE employee
     hire_date       DATE             NOT NULL COMMENT 'Hire Date',
     dept_id         INT UNSIGNED     NOT NULL COMMENT 'Department ID',
     is_first_logged TINYINT(1)       NOT NULL DEFAULT 0 CHECK (is_first_logged IN (0, 1)) COMMENT 'First logged flag, 0: never logged, 1: first login completed',
+    role_id         INT UNSIGNED     NOT NULL COMMENT 'Role ID',
     create_time     DATETIME         NOT NULL COMMENT 'Creation Time',
     update_time     DATETIME         NOT NULL COMMENT 'Update Time',
     is_deleted      TINYINT(1)       NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
@@ -57,44 +58,54 @@ CREATE TABLE employee
     INDEX idx_salary (salary),
     INDEX idx_hire_date (hire_date),
     INDEX idx_dept_id (dept_id),
+    INDEX idx_is_first_logged (is_first_logged),
+    INDEX idx_role_id (role_id),
     INDEX idx_create_time (create_time),
     INDEX idx_update_time (update_time),
     INDEX idx_is_deleted (is_deleted)
 
 ) COMMENT ='Employee Table';
 
-INSERT INTO employee (username, name, gender, phone, job_title, salary, hire_date, dept_id, create_time, update_time,
-                      is_deleted)
-VALUES ('john.doe', 'John Doe', 1, '01012345678', 1, 5000, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
-        NOW(), NOW(), 0),
-       ('jane.smith', 'Jane Smith', 2, '01023456789', 2, 5500, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
-        2, NOW(), NOW(), 0),
-       ('michael.jones', 'Michael Jones', 1, '01034567890', 3, 6000,
-        DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 3, NOW(), NOW(), 0),
-       ('emily.wang', 'Emily Wang', 2, '01045678901', 2, 5200, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
-        2, NOW(), NOW(), 0),
-       ('david.lee', 'David Lee', 1, '01056789012', 1, 5800, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
-        NOW(), NOW(), 0),
-       ('sophia.kim', 'Sophia Kim', 2, '01067890123', 3, 5300, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
-        3, NOW(), NOW(), 0),
-       ('daniel.chen', 'Daniel Chen', 1, '01078901234', 2, 6100,
-        DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2, NOW(), NOW(), 0),
-       ('olivia.li', 'Olivia Li', 2, '01089012345', 1, 5400, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
-        NOW(), NOW(), 0),
-       ('james.ho', 'James Ho', 1, '01090123456', 3, 5700, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 3,
-        NOW(), NOW(), 0),
-       ('lily.zhang', 'Lily Zhang', 2, '01001234567', 2, 5600, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
-        2, NOW(), NOW(), 0),
-       ('alex.yang', 'Alex Yang', 1, '01011223344', 1, 5900, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
-        NOW(), NOW(), 0),
-       ('chloe.tan', 'Chloe Tan', 2, '01022334455', 2, 5500, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2,
-        NOW(), NOW(), 0),
-       ('ryan.huang', 'Ryan Huang', 1, '01033445566', 3, 6200, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
-        3, NOW(), NOW(), 0),
-       ('mia.fang', 'Mia Fang', 2, '01044556677', 1, 5100, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
-        NOW(), NOW(), 0),
-       ('ethan.wu', 'Ethan Wu', 1, '01055667788', 2, 6000, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2,
+-- Admin (role_id = 1)
+INSERT INTO employee (username, password, name, gender, phone, job_title, salary, hire_date, dept_id, role_id, is_first_logged,
+                      create_time, update_time, is_deleted)
+VALUES ('admin', '$2a$10$rhiOHO4oLAN7rPZ1ObDimO2r6dcuunTtPhOM0wEmi8dUtXxojKl3G', 'Admin', 1, '0000000000', 0, 0, '2025-01-01', 0, 1, 1,
         NOW(), NOW(), 0);
+
+-- Employee (role_id = 2)
+INSERT INTO employee (username, name, gender, phone, job_title, salary, hire_date, dept_id, role_id, create_time,
+                      update_time, is_deleted)
+VALUES ('john.doe', 'John Doe', 1, '01012345678', 1, 5000, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        2, NOW(), NOW(), 0),
+       ('jane.smith', 'Jane Smith', 2, '01023456789', 2, 5500, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        2, 2, NOW(), NOW(), 0),
+       ('michael.jones', 'Michael Jones', 1, '01034567890', 3, 6000,
+        DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 3, 2, NOW(), NOW(), 0),
+       ('emily.wang', 'Emily Wang', 2, '01045678901', 2, 5200, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        2, 2, NOW(), NOW(), 0),
+       ('david.lee', 'David Lee', 1, '01056789012', 1, 5800, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        2, NOW(), NOW(), 0),
+       ('sophia.kim', 'Sophia Kim', 2, '01067890123', 3, 5300, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        3, 2, NOW(), NOW(), 0),
+       ('daniel.chen', 'Daniel Chen', 1, '01078901234', 2, 6100,
+        DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2, 2, NOW(), NOW(), 0),
+       ('olivia.li', 'Olivia Li', 2, '01089012345', 1, 5400, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        2, NOW(), NOW(), 0),
+       ('james.ho', 'James Ho', 1, '01090123456', 3, 5700, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 3,
+        2, NOW(), NOW(), 0),
+       ('lily.zhang', 'Lily Zhang', 2, '01001234567', 2, 5600, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        2, 2, NOW(), NOW(), 0),
+       ('alex.yang', 'Alex Yang', 1, '01011223344', 1, 5900, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        2, NOW(), NOW(), 0),
+       ('chloe.tan', 'Chloe Tan', 2, '01022334455', 2, 5500, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2,
+        2, NOW(), NOW(), 0),
+       ('ryan.huang', 'Ryan Huang', 1, '01033445566', 3, 6200, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY),
+        3, 2, NOW(), NOW(), 0),
+       ('mia.fang', 'Mia Fang', 2, '01044556677', 1, 5100, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 1,
+        2, NOW(), NOW(), 0),
+       ('ethan.wu', 'Ethan Wu', 1, '01055667788', 2, 6000, DATE_ADD('2025-01-01', INTERVAL FLOOR(RAND() * 90) DAY), 2,
+        2, NOW(), NOW(), 0);
+
 
 -- Work Experience
 CREATE TABLE work_experience
@@ -350,3 +361,22 @@ CREATE TABLE student_number_sequence
 
 INSERT INTO student_number_sequence (intake_date, last_seq, create_time, update_time, is_deleted)
 VALUES ('2025-06-07', 15, NOW(), NOW(), 0);
+
+-- Role
+CREATE TABLE role
+(
+    id          INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
+    name        ENUM ('ROLE_ADMIN', 'ROLE_EMPLOYEE') NOT NULL COMMENT 'Role name',
+    create_time DATETIME                             NOT NULL COMMENT 'Creation Time',
+    update_time DATETIME                             NOT NULL COMMENT 'Update Time',
+    is_deleted  TINYINT(1)                           NOT NULL CHECK (is_deleted IN (0, 1)) COMMENT 'Soft delete flag, 0: active, 1: deleted',
+
+    INDEX idx_name (name),
+    INDEX idx_create_time (create_time),
+    INDEX idx_update_time (update_time),
+    INDEX idx_is_deleted (is_deleted)
+) COMMENT ='Role table';
+
+INSERT INTO role (name, create_time, update_time, is_deleted)
+VALUES ('ROLE_ADMIN', NOW(), NOW(), 0),
+       ('ROLE_EMPLOYEE', NOW(), NOW(), 0);

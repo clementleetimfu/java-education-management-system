@@ -1,6 +1,8 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
 import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
+import io.clementleetimfu.educationmanagementsystem.annotation.Permission;
+import io.clementleetimfu.educationmanagementsystem.constants.RoleEnum;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindByIdVO;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeFindClassTeachersVO;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.employee.EmployeeJobTitleCountVO;
@@ -28,12 +30,14 @@ public class EmployeeController {
         return Result.success(employeeService.searchEmployee(employeeSearchDTO));
     }
 
+    @Permission(role = RoleEnum.ROLE_ADMIN)
     @AddActivityLog
     @PostMapping
     public Result<Boolean> addEmployee(@RequestBody EmployeeAddDTO employeeAddDTO) {
         return Result.success(employeeService.addEmployee(employeeAddDTO));
     }
 
+    @Permission(role = RoleEnum.ROLE_ADMIN)
     @AddActivityLog
     @DeleteMapping
     public Result<Boolean> deleteEmployeeByIds(@RequestParam("ids") List<Integer> ids) {
@@ -45,6 +49,7 @@ public class EmployeeController {
         return Result.success(employeeService.findEmployeeById(id));
     }
 
+    @Permission(role = RoleEnum.ROLE_ADMIN)
     @AddActivityLog
     @PutMapping
     public Result<Boolean> updateEmployee(@RequestBody EmployeeUpdateDTO employeeUpdateDTO) {

@@ -2,7 +2,7 @@ package io.clementleetimfu.educationmanagementsystem.aop;
 
 import io.clementleetimfu.educationmanagementsystem.pojo.entity.ActivityLog;
 import io.clementleetimfu.educationmanagementsystem.service.ActivityLogService;
-import io.clementleetimfu.educationmanagementsystem.utils.thread.CurrentEmployee;
+import io.clementleetimfu.educationmanagementsystem.utils.threadLocal.CurrentEmployee;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

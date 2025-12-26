@@ -1,5 +1,7 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
+import io.clementleetimfu.educationmanagementsystem.annotation.Permission;
+import io.clementleetimfu.educationmanagementsystem.constants.RoleEnum;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.PageResult;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.result.Result;
 import io.clementleetimfu.educationmanagementsystem.pojo.dto.activityLog.FindActivityLogDTO;
@@ -17,6 +19,7 @@ public class ActivityLogController {
     @Autowired
     private ActivityLogService activityLogService;
 
+    @Permission(role = RoleEnum.ROLE_ADMIN)
     @GetMapping
     public Result<PageResult<FindActivityLogVO>> findActivityLog(FindActivityLogDTO findActivityLogDTO) {
         return Result.success(activityLogService.findActivityLog(findActivityLogDTO));

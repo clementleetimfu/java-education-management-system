@@ -1,6 +1,8 @@
 package io.clementleetimfu.educationmanagementsystem.controller;
 
 import io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog;
+import io.clementleetimfu.educationmanagementsystem.annotation.Permission;
+import io.clementleetimfu.educationmanagementsystem.constants.RoleEnum;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindAllVO;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzFindByIdVO;
 import io.clementleetimfu.educationmanagementsystem.pojo.vo.clazz.ClazzSearchVO;
@@ -25,6 +27,7 @@ public class ClazzController {
         return Result.success(clazzService.searchClazz(clazzSearchDTO));
     }
 
+    @Permission(role = RoleEnum.ROLE_ADMIN)
     @AddActivityLog
     @PostMapping
     public Result<Boolean> addClazz(@RequestBody ClazzAddDTO clazzAddDTO) {
@@ -36,12 +39,14 @@ public class ClazzController {
         return Result.success(clazzService.findClazzById(id));
     }
 
+    @Permission(role = RoleEnum.ROLE_ADMIN)
     @AddActivityLog
     @PutMapping
     public Result<Boolean> updateClazzName(@RequestBody ClazzUpdateDTO clazzUpdateDTO) {
         return Result.success(clazzService.updateClazzName(clazzUpdateDTO));
     }
 
+    @Permission(role = RoleEnum.ROLE_ADMIN)
     @AddActivityLog
     @DeleteMapping("/{id}")
     public Result<Boolean> deleteClazzById(@PathVariable("id") Integer id) {

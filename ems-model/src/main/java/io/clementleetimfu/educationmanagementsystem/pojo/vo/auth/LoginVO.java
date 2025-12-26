@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginVO {
     private Integer id;
+    @JsonIgnore
     private String username;
     @JsonIgnore
     private String password;
     private String token;
     private Boolean isFirstLogged;
+    private String roleName;
 }

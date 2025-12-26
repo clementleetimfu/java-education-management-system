@@ -148,13 +148,21 @@
 
     <select id="selectEmployeeByUsername"
             resultType="io.clementleetimfu.educationmanagementsystem.pojo.vo.auth.LoginVO">
-        SELECT id,
-        username,
-        password,
-        is_first_logged as isFirstLogged
-        FROM employee
-        WHERE is_deleted = 0
-        AND username = #{username}
+        SELECT
+        e.id,
+        e.username,
+        e.password,
+        e.is_first_logged AS isFirstLogged,
+        r.name AS roleName
+        FROM
+        employee e
+        LEFT JOIN
+        role r
+        ON e.role_id = r.id
+        AND r.is_deleted = 0
+        WHERE
+        e.is_deleted = 0
+        AND e.username = #{username}
     </select>
 
     <select id="selectEmployeeJobTitleCount" resultType="java.util.Map">
