@@ -307,51 +307,62 @@ AUTH_BCRYPT_PEPPER=
 
 ### Prerequisites
 
-- Java 17
+- JDK 17
 - MySQL 8.0+
 - Redis
-- Maven 3.6+
+- Maven 3.6+ (or Docker if using containerized deployment)
 
 ### Steps
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/clementleetimfu/java-education-management-system.git
+
+   cd java-education-management-system
    ```
 
-2. Configure environment variables
+2. Initialize the database by running the SQL script in `sql/education-management-system.sql`
 
-3. Build the project:
+3. Configure all required environment variables as specified in the "Environment Variables" section
+
+4. Build the project using Maven:
    ```bash
-   ./mvnw clean package
+   cd ems-parent
+   mvn package
    ```
 
-4. Run the application:
+5. Run the application:
    ```bash
-   java -jar ems-service/target/education-management-system-0.0.1-SNAPSHOT.jar
+   cd..
+
+   cd ems-service/target
+
+   java -jar ems-service-0.0.1-SNAPSHOT.jar
    ```
 
 ## Getting Started
 
-1. Set up MySQL database
-2. Set up Redis server
-3. Configure environment variables
-4. Run the application using one of the deployment methods
-5. Access the API at `http://localhost:8080`
+1. Ensure all prerequisites are installed and running (JDK 17, MySQL, Redis)
+2. Set up MySQL database by running `sql/education-management-system.sql` script
+3. Set up Redis server and ensure it's running
+4. Configure all required environment variables
+5. Build and run the application using one of the deployment methods
+6. The API will be accessible at `http://localhost:8080`
+
+The application will start on port 8080 by default. If you need to change the port, you can modify the `server.port` property in `application.yml` or set the `SERVER_PORT` environment variable.
 
 ## Docker Support
 
-The project includes a Dockerfile for containerization:
+The project includes a `Dockerfile` and `docker-compose.yml` for containerization.
 
-```bash
-# Build the Docker image
-docker build -t education-management-system .
+## Design Patterns
 
-# Run the container
-docker run -p 8080:8080 education-management-system
-```
+The project implements several design patterns as part of its architecture:
 
-Configuration through environment variables is recommended when using Docker.
+- **Layered Architecture**: Clear separation between Controllers, Services, and Data Access layers
+- **Aspect-Oriented Programming (AOP)**: Used for automatic activity logging and role-based permission checking
+- **DTO Pattern**: Separation of internal entities and external API representations
+- **Singleton Pattern**: Configuration beans and utility classes managed by Spring
 
 ## License
 
