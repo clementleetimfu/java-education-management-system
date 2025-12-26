@@ -59,6 +59,8 @@ This project follows a multi-module Maven structure to separate concerns and imp
 - **Department Management**: CRUD operations for department records
 - **Subject Management**: CRUD operations for subject records
 - **Activity Logging**: Automatic logging of important operations using AOP
+- **Role-Based Access Control**: Permission checking via AOP annotations to restrict access to administrative endpoints
+- **Token Management**: Redis implementation to handle blacklisted tokens when users logout, preventing further usage until token expiration
 - **File Upload**: Integration with Cloudflare R2 for file storage
 - **Data Analytics**: Statistical reports on students and employees
 - **Security**: Password hashing with BCrypt and JWT token validation
@@ -71,6 +73,7 @@ This project follows a multi-module Maven structure to separate concerns and imp
 - **Database**: MySQL
 - **ORM**: MyBatis
 - **Security**: JWT, BCrypt with Pepper
+- **Caching**: Redis
 - **Storage**: Cloudflare R2 (AWS S3 compatible)
 - **Utilities**: Lombok, ModelMapper, PageHelper
 
@@ -89,7 +92,7 @@ Client <-> Controller <-> Service <-> Mapper <-> Database
 ### Design Patterns
 
 - **Layered Architecture**: Clear separation between Controllers, Services, and Data Access layers
-- **Aspect-Oriented Programming**: Used for automatic activity logging
+- **Aspect-Oriented Programming**: Used for automatic activity logging and role-based permission checking
 - **DTO Pattern**: Separation of internal entities and external API representations
 - **Singleton Pattern**: Configuration beans and utility classes
 
@@ -105,6 +108,7 @@ education-management-system/
 │   │       └── io/clementleetimfu/educationmanagementsystem/utils/
 │   │           ├── bcrypt/     # BCrypt password hashing utilities
 │   │           ├── jwt/        # JWT token utilities
+│   │           ├── redis/      # Redis utilities for token management
 │   │           └── thread/     # Thread utilities
 │   └── pom.xml
 ├── ems-model/                  # Data models and POJOs
@@ -146,6 +150,7 @@ education-management-system/
 |----------|--------|-------------|
 | `/auth/login` | POST | User login with username/password |
 | `/auth/update-password` | POST | Update user password |
+| `/auth/logout` | POST | Logout user and blacklist token |
 
 ### Students
 
@@ -164,10 +169,10 @@ education-management-system/
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `GET /emps/search` | GET | Search employees with pagination |
-| `POST /emps` | POST | Add a new employee |
+| `POST /emps` | POST | Add a new employee (requires admin role and logs activity) |
 | `GET /emps/{id}` | GET | Get employee by ID |
-| `PUT /emps` | PUT | Update employee information |
-| `DELETE /emps` |DELETE | Delete employees by IDs |
+| `PUT /emps` | PUT | Update employee information (requires admin role and logs activity) |
+| `DELETE /emps` |DELETE | Delete employees by IDs (requires admin role and logs activity) |
 | `GET /emps/jobTitle/count` | GET | Get employee count by job title |
 | `GET /emps/gender/count` | GET | Get employee count by gender |
 | `GET /emps/teachers` | GET | Get all teachers |
@@ -177,10 +182,11 @@ education-management-system/
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `GET /clazz/search` | GET | Search classes with pagination |
-| `POST /clazz` | POST | Add a new class |
+| `POST /clazz` | POST | Add a new class (requires admin role and logs activity) |
 | `GET /clazz/{id}` | GET | Get class by ID |
-| `PUT /clazz`| PUT | Update class information |
-| `DELETE /clazz` | DELETE | Delete classes by IDs |
+| `PUT /clazz`| PUT | Update class information (requires admin role and logs activity) |
+| `DELETE /clazz/{id}` | DELETE | Delete class by ID (requires admin role and logs activity) |
+| `GET /clazz` | GET | Get all classes |
 | `GET /clazz/student/count` | GET | Get student count by class |
 
 ### Departments
@@ -188,9 +194,9 @@ education-management-system/
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `GET /depts` | GET |Get all departments |
-| `POST /depts` | POST | Add a new department |
-| `PUT /depts` | PUT | Update department information |
-| `DELETE /depts` | DELETE | Delete departments by IDs |
+| `POST /depts` | POST | Add a new department (requires admin role and logs activity) |
+| `PUT /depts` | PUT | Update department information (requires admin role and logs activity) |
+| `DELETE /depts/{id}` | DELETE | Delete department by ID (requires admin role and logs activity) |
 
 ### Subjects
 
@@ -214,13 +220,13 @@ education-management-system/
 
 | Endpoint    | Method| Description |
 |-------------|--------|-------------|
-| `GET /logs` | GET | Search activity logs with pagination |
+| `GET /logs` | GET | Search activity logs with pagination (requires admin role) |
 
 ### Upload
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `POST /upload` | POST | Upload files to Cloudflare R2 |
+| `POST /upload` | POST | Upload files to Cloudflare R2 (logs activity) |
 
 ## Database Schema
 The system uses MySQL as the primary database with the following main entities:
@@ -234,16 +240,33 @@ The system uses MySQL as the primary database with the following main entities:
 - **Education Levels**: Student education levels
 - **Activity Logs**: Record of system operations
 - **Work Experience**: Employee work history
+- **Student Number Sequence**: Tracks the latest student number sequence per intake date (used for generating unique student numbers)
 
 ## Authentication & Authorization
 
-The system implements JWT-based authentication:
+The system implements JWT-based authentication with role-based access control and token blacklisting using Redis:
 
 1. Users log in with username and password
 2. Passwords are hashed using BCrypt with a pepper before saving to the database
 3. Upon successful authentication, a JWT token is generated
 4. Tokens expire after 1 hour
 5. All protected endpoints require a valid JWT token in the Authorization header
+6. Role-based permissions are enforced using custom AOP annotations to control access to endpoints
+7. When users logout, tokens are blacklisted in Redis with a timeout matching the token's remaining expiration time to prevent further usage until token expiration
+
+The permission system uses two roles:
+- `ROLE_ADMIN`: Full administrative access to all functions including CRUD operations
+- `ROLE_EMPLOYEE`: Limited access, primarily for viewing and read operations only
+
+Endpoints marked with the `@Permission` annotation require specific role levels to access. For example:
+```java
+@Permission(role = RoleEnum.ROLE_ADMIN)
+@AddActivityLog
+@PostMapping
+public Result<Boolean> addDepartment(@RequestBody DepartmentAddDTO departmentAddDTO) {
+    return Result.success(departmentService.addDepartment(departmentAddDTO));
+}
+```
 
 Example request header:
 ```
@@ -261,6 +284,12 @@ MYSQL_PORT=
 MYSQL_DB=
 MYSQL_USER=
 MYSQL_PASSWORD=
+
+# Redis Configuration
+REDIS_HOST=
+REDIS_PORT=
+REDIS_DATABASE=
+REDIS_PASSWORD=
 
 # Cloudflare R2 Configuration
 CLOUDFLARE_R2_BUCKET_NAME=
@@ -280,6 +309,7 @@ AUTH_BCRYPT_PEPPER=
 
 - Java 17
 - MySQL 8.0+
+- Redis
 - Maven 3.6+
 
 ### Steps
@@ -304,9 +334,10 @@ AUTH_BCRYPT_PEPPER=
 ## Getting Started
 
 1. Set up MySQL database
-2. Configure environment variables
-3. Run the application using one of the deployment methods
-4. Access the API at `http://localhost:8080`
+2. Set up Redis server
+3. Configure environment variables
+4. Run the application using one of the deployment methods
+5. Access the API at `http://localhost:8080`
 
 ## Docker Support
 
