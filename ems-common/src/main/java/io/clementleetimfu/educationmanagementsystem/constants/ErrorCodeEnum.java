@@ -45,7 +45,9 @@ public enum ErrorCodeEnum {
 
     EDUCATION_LEVEL_NOT_FOUND(11001, "Education level not found"),
 
-    PERMISSION_DENIED(12001, "Permission denied");
+    PERMISSION_DENIED(12001, "Permission denied"),
+
+    RAW_PASSWORD_IS_NULL(13001, "Raw password is null");
 
     private final int code;
     private final String message;

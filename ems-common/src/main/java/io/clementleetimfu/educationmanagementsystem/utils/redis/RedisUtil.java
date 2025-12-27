@@ -28,18 +28,18 @@ public class RedisUtil {
         redisTemplate.opsForValue().set(key, value, timeout, unit);
     }
 
-    public Set<String> getKeys(String pattern){
+    public Set<String> getKeys(String pattern) {
         return redisTemplate.keys(pattern);
     }
 
     public Boolean isTokenBlacklisted(String token) {
-        Set<String> blacklistTokenKeys = getKeys(RedisEnum.BLACKLIST_TOKEN_PREFIX.getValue() + "*");
-        for (String blacklistTokenKey : blacklistTokenKeys) {
-            String blacklistToken = (String) getValue(blacklistTokenKey);
-            if (blacklistToken.equals(token)) {
-                return Boolean.TRUE;
-            }
+        if (token == null || token.isBlank()) {
+            return Boolean.FALSE;
         }
-        return Boolean.FALSE;
+
+        String key = RedisEnum.BLACKLIST_TOKEN_PREFIX.getValue() + token;
+
+        return redisTemplate.hasKey(key);
     }
+
 }
