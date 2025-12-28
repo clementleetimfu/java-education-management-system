@@ -23,8 +23,7 @@ import java.util.UUID;
 @Slf4j
 public class CloudflareR2Client {
 
-    @Autowired
-    private S3Config s3Config;
+    private final S3Config s3Config;
 
     private final S3Client s3Client;
 
@@ -33,6 +32,7 @@ public class CloudflareR2Client {
      */
     public CloudflareR2Client(S3Config config) {
         this.s3Client = buildS3Client(config);
+        this.s3Config = config;
     }
 
     /**

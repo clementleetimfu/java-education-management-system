@@ -75,6 +75,7 @@ public class TokenFilter implements Filter {
             filterChain.doFilter(request, response);
         } finally {
             CurrentEmployee.remove();
+            CurrentRole.remove();
         }
     }
 }
