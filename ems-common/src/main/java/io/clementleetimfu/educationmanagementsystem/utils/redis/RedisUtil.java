@@ -32,14 +32,18 @@ public class RedisUtil {
         return redisTemplate.keys(pattern);
     }
 
-    public Boolean isTokenBlacklisted(String token) {
+    public Boolean isTokenBlacklisted(String token, Integer employeeId) {
         if (token == null || token.isBlank()) {
             return Boolean.FALSE;
         }
 
-        String key = RedisEnum.BLACKLIST_TOKEN_PREFIX.getValue() + token;
+        String key = RedisEnum.BLACKLIST_TOKEN_PREFIX.getValue() + employeeId;
 
-        return redisTemplate.hasKey(key);
+        if (redisTemplate.hasKey(key)) {
+            return token.equals(redisTemplate.opsForValue().get(key));
+        }
+
+        return Boolean.FALSE;
     }
 
 }

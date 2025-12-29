@@ -56,12 +56,6 @@ public class TokenFilter implements Filter {
 
             String token = authHeader.substring(7).trim(); // remove "Bearer "
 
-            if (redisUtil.isTokenBlacklisted(token)) {
-                log.warn("Unauthorized request to {}: blacklisted token", requestUri);
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
-
             if (!jwtUtil.validateToken(token)) {
                 log.warn("Unauthorized request to {}: invalid token", requestUri);
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -69,7 +63,15 @@ public class TokenFilter implements Filter {
             }
 
             Claims claims = jwtUtil.parseToken(token);
-            CurrentEmployee.set(claims.get("id", Integer.class));
+            Integer employeeId = claims.get("id", Integer.class);
+
+            if (redisUtil.isTokenBlacklisted(token, employeeId)) {
+                log.warn("Unauthorized request to {}: blacklisted token", requestUri);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+
+            CurrentEmployee.set(employeeId);
             CurrentRole.set(claims.get("roleName", String.class));
 
             filterChain.doFilter(request, response);
