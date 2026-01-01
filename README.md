@@ -89,11 +89,11 @@ ems-parent/
 
 ```
 ems-common
-    ├── depends on: None (foundational module)
+    ├── depends on: None
     └── provides: Utilities, Constants, Exceptions
 
 ems-model
-    ├── depends on: None (independent module)
+    ├── depends on: None
     └── provides: Entities, DTOs, VOs
 
 ems-service
@@ -113,12 +113,12 @@ education-management-system/
 │   │   ├── constants/          # Error codes, Redis keys, Role enums
 │   │   ├── exception/          # Business exception
 │   │   └── utils/              # BCrypt, JWT, Redis, ThreadLocal utilities
-│   └── src/test/java/          # Unit tests for utilities
+│   └── src/test/java/          # Unit tests for constants and utilities
 ├── ems-model/                  # Data models and POJOs
 │   ├── src/main/java/io/clementleetimfu/educationmanagementsystem/pojo/
 │   │   ├── dto/                # Request DTOs (activityLog, auth, clazz, department, employee, student, workExperience)
 │   │   ├── entity/             # Database entities (10 entities)
-│   │   └── vo/                 # Response VOs (activityLog, auth, clazz, department, educationLevel, employee, jobTitle, student, subject, workExperience, result)
+│   │   └── vo/                 # Response VOs (activityLog, auth, clazz, department, educationLevel, employee, jobTitle, student, subject, workExperience, result, student, subject, workExperience)
 │   │       └── result/         # Standard API response wrappers (PageResult, Result)
 │   └── pom.xml
 ├── ems-service/                # Main application with business logic
@@ -150,20 +150,20 @@ education-management-system/
 
 ### Core Technologies
 
-| Component | Technology | Version |
-|-----------|------------|---------|
-| **Language** | Java | 17 (LTS) |
-| **Framework** | Spring Boot | 3.5.7 |
-| **Build Tool** | Maven | 3.x |
+| Component | Technology | Version           |
+|-----------|------------|-------------------|
+| **Language** | Java | 17 (LTS)          |
+| **Framework** | Spring Boot | 3.5.7             |
+| **Build Tool** | Maven | 3.9.1              |
 | **Database** | MySQL Connector/J | (via Spring Boot) |
-| **ORM** | MyBatis Spring Boot Starter | 3.0.5 |
-| **Pagination** | PageHelper Spring Boot Starter | 2.1.1 |
+| **ORM** | MyBatis Spring Boot Starter | 3.0.5             |
+| **Pagination** | PageHelper Spring Boot Starter | 2.1.1             |
 | **Caching** | Spring Data Redis | (via Spring Boot) |
-| **Security** | Spring Security Crypto | 7.0.0 |
-| **JWT** | JJWT (JSON Web Token) | 0.13.0 |
-| **Object Mapping** | ModelMapper | 3.2.6 |
-| **Cloud Storage** | AWS SDK for Java | 2.39.2 |
-| **Boilerplate** | Lombok | 1.18.42 |
+| **Security** | Spring Security Crypto | 7.0.0             |
+| **JWT** | JJWT (JSON Web Token) | 0.13.0            |
+| **Object Mapping** | ModelMapper | 3.2.6             |
+| **Cloud Storage** | AWS SDK for Java | 2.39.2            |
+| **Boilerplate** | Lombok | 1.18.42           |
 | **Testing** | JUnit 5 + Mockito | (via Spring Boot) |
 
 ### Maven Dependency Management
@@ -171,15 +171,16 @@ education-management-system/
 ```xml
 <!-- Parent POM Properties -->
 <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <jjwt.version>0.13.0</jjwt.version>
-    <lombok.version>1.18.42</lombok.version>
-    <spring.security.crypto.version>7.0.0</spring.security.crypto.version>
-    <mybatis.version>3.0.5</mybatis.version>
-    <modelmapper.version>3.2.6</modelmapper.version>
-    <pagehelper.version>2.1.1</pagehelper.version>
-    <aws.sdk.version>2.39.2</aws.sdk.version>
+<maven.compiler.source>17</maven.compiler.source>
+<maven.compiler.target>17</maven.compiler.target>
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<jjwt.version>0.13.0</jjwt.version>
+<lombok.version>1.18.42</lombok.version>
+<spring.security.crypto.version>7.0.0</spring.security.crypto.version>
+<mybatis.version>3.0.5</mybatis.version>
+<modelmapper.version>3.2.6</modelmapper.version>
+<pagehelper.version>2.1.1</pagehelper.version>
+<aws.sdk.version>2.39.2</aws.sdk.version>
 </properties>
 ```
 
@@ -264,7 +265,7 @@ education-management-system/
 
 | Endpoint | Method | Description | Access Level |
 |----------|--------|-------------|--------------|
-| `/upload` | POST | Upload file to Cloudflare R2 | Authenticated |
+| `/upload` | POST | Upload file to Cloudflare R2 | Admin Only   |
 
 ---
 
@@ -313,7 +314,6 @@ public boolean verify(String rawPassword, String hashedPassword) {
 - BCrypt cost factor of 10 for optimal security/performance balance
 - Pepper value injected from environment variable (`AUTH_BCRYPT_PEPPER`)
 - Each hash operation generates a unique salt automatically
-- 60-character fixed-length hash output (prefix: `$2a$10$`)
 
 ### 2. JWT Token Management
 
@@ -374,6 +374,7 @@ public Boolean isTokenBlacklisted(String token, Integer employeeId) {
     if (redisTemplate.hasKey(key)) {
         return token.equals(redisTemplate.opsForValue().get(key));
     }
+
     return Boolean.FALSE;
 }
 ```
@@ -389,11 +390,10 @@ public Boolean isTokenBlacklisted(String token, Integer employeeId) {
 
 **Request Flow**:
 1. Extract `Authorization` header
-2. Validate Bearer token format
+2. Validate Bearer token
 3. Check Redis blacklist
-4. Validate JWT signature and expiration
-5. Extract user claims (id, roleName)
-6. Store in Thread-Local context (`CurrentEmployee`, `CurrentRole`)
+4. Extract user claims (employeeId, roleName)
+5. Store in Thread-Local context (`CurrentEmployee`, `CurrentRole`)
 7. Proceed to controller
 8. Cleanup Thread-Local in finally block
 
@@ -436,6 +436,38 @@ public Object checkPermission(ProceedingJoinPoint pjp) throws Throwable {
 
 **Location**: `ems-service/src/main/java/io/clementleetimfu/educationmanagementsystem/aop/ActivityLogAspect.java`
 
+```java
+@Around("@annotation(io.clementleetimfu.educationmanagementsystem.annotation.AddActivityLog)")
+public Object addActivityLog(ProceedingJoinPoint pjp) throws Throwable {
+
+    long duration = 0;
+    Object result = null;
+    try {
+        long startTime = System.currentTimeMillis();
+
+        result = pjp.proceed();
+
+        long endTime = System.currentTimeMillis();
+        duration = endTime - startTime;
+
+    } finally {
+        ActivityLog activityLog = new ActivityLog();
+        activityLog.setOperateEmpId(CurrentEmployee.get());
+        activityLog.setOperateTime(LocalDateTime.now());
+        activityLog.setClassName(pjp.getTarget().getClass().getName());
+        activityLog.setMethodName(pjp.getSignature().getName());
+        activityLog.setMethodParams(Arrays.toString(pjp.getArgs()));
+        activityLog.setReturnValue(result != null ? result.toString() : "void");
+        activityLog.setDuration(duration);
+        activityLog.setCreateTime(LocalDateTime.now());
+        activityLog.setUpdateTime(LocalDateTime.now());
+        activityLog.setIsDeleted(Boolean.FALSE);
+        activityLogService.addActivityLog(activityLog);
+    }
+    return result;
+}
+```
+
 **Logged Information**:
 - Employee ID (from Thread-Local `CurrentEmployee`)
 - Timestamp
@@ -461,7 +493,7 @@ public Result<Boolean> addDepartment(@RequestBody DepartmentAddDTO dto) {
 ### Test Framework
 
 - **Unit Testing**: JUnit 5 (Jupiter)
-- **Mocking**: Mockito 5.x
+- **Mocking**: Mockito 5.17.0
 - **Static Mocking**: MockedStatic for Thread-Local utilities
 
 ### Test Organization
@@ -483,13 +515,13 @@ ems-service/src/test/java/io/clementleetimfu/educationmanagementsystem/
 └── service/impl/                 # Service implementation tests
     ├── ActivityLogServiceImplTest.java
     ├── AuthServiceImplTest.java
-    ├── ClazzServiceImplTest.java        # NEW
+    ├── ClazzServiceImplTest.java        
     ├── DepartmentServiceImplTest.java
     ├── EducationLevelServiceImplTest.java
-    ├── EmployeeServiceImplTest.java     # NEW
+    ├── EmployeeServiceImplTest.java    
     ├── JobTitleServiceImplTest.java
     ├── StudentNumberSequenceServiceImplTest.java
-    ├── StudentServiceImplTest.java      # NEW
+    ├── StudentServiceImplTest.java
     ├── SubjectServiceImplTest.java
     └── UploadServiceImplTest.java
 
@@ -527,6 +559,22 @@ class PermissionAspectTest {
     @InjectMocks
     private PermissionAspect permissionAspect;
 
+    private MockedStatic<CurrentRole> mockedCurrentRole;
+
+    private static final String DUMMY_METHOD_NAME = "dummyMethod";
+
+    @BeforeEach
+    void setUp() {
+        mockedCurrentRole = mockStatic(CurrentRole.class);
+    }
+
+    @AfterEach
+    void tearDown() {
+        if (mockedCurrentRole != null) {
+            mockedCurrentRole.close();
+        }
+    }
+
     @Test
     @DisplayName("Test Check Permission Admin Role Authorized")
     void testCheckPermissionAdminRoleAuthorized() throws Throwable {
@@ -535,21 +583,35 @@ class PermissionAspectTest {
 
         when(pjp.getSignature()).thenReturn(methodSignature);
 
-        Method dummyMethod = this.getClass().getDeclaredMethod("dummyMethod");
+        Method dummyMethod = this.getClass().getDeclaredMethod(DUMMY_METHOD_NAME);
         when(methodSignature.getMethod()).thenReturn(dummyMethod);
 
-        try (MockedStatic<CurrentRole> mocked = mockStatic(CurrentRole.class)) {
-            mocked.when(CurrentRole::get).thenReturn(currentRole);
+        mockedCurrentRole.when(CurrentRole::get).thenReturn(currentRole);
 
-            when(pjp.proceed()).thenReturn(returnType);
+        when(pjp.proceed()).thenReturn(returnType);
 
-            // Act
-            Object result = permissionAspect.checkPermission(pjp);
+        Object result = permissionAspect.checkPermission(pjp);
 
-            // Assert
-            assertEquals(returnType, result);
-            verify(pjp, times(1)).proceed();
-        }
+        assertEquals(returnType, result);
+        verify(pjp, times(1)).proceed();
+    }
+
+    @Test
+    @DisplayName("Test Check Permission Employee Role Denied")
+    void testCheckPermissionEmployeeRoleDenied() throws Throwable {
+        String currentRole = "ROLE_EMPLOYEE";
+
+        when(pjp.getSignature()).thenReturn(methodSignature);
+
+        Method dummyMethod = this.getClass().getDeclaredMethod(DUMMY_METHOD_NAME);
+        when(methodSignature.getMethod()).thenReturn(dummyMethod);
+
+        mockedCurrentRole.when(CurrentRole::get).thenReturn(currentRole);
+
+        BusinessException exception = assertThrows(BusinessException.class, () -> permissionAspect.checkPermission(pjp));
+        assertEquals(ErrorCodeEnum.PERMISSION_DENIED.getCode(), exception.getCode());
+
+        verify(pjp, never()).proceed();
     }
 
     @Permission(role = RoleEnum.ROLE_ADMIN)
@@ -576,17 +638,6 @@ void testHashGeneratesDifferentValues() {
     assertTrue(hash2.startsWith("$2a$10$"), "Hash should start with BCrypt identifier");
 }
 ```
-
-### Test Coverage Areas
-
-| Component | Test Type | Coverage Focus |
-|-----------|-----------|----------------|
-| Security Utils | Unit | BCrypt hashing, JWT generation/validation, Redis operations |
-| AOP Aspects | Unit | Permission enforcement, activity logging |
-| Services | Integration | Business logic, transaction management |
-| Exception Handler | Unit | Error code mapping, response structure |
-| Configuration | Unit | Bean creation and property binding |
-
 ---
 
 ## Installation & Setup
@@ -594,9 +645,9 @@ void testHashGeneratesDifferentValues() {
 ### Prerequisites
 
 - **Java**: JDK 17 or higher
-- **Maven**: 3.6+ or use Maven wrapper
-- **MySQL**: 8.x
-- **Redis**: 6.x+
+- **Maven**: 3.9.11
+- **MySQL**: 8
+- **Redis**: 8.4
 - **Cloudflare R2**: Account with R2 bucket (for file uploads)
 
 ### Environment Variables
@@ -605,28 +656,28 @@ Create a `.env` file or set the following environment variables:
 
 ```bash
 # Database Configuration
-MYSQL_HOST=localhost
-MYSQL_PORT=3306
-MYSQL_DB=education_management_system
-MYSQL_USER=root
+MYSQL_HOST=your_mysql_host
+MYSQL_PORT=your_mysql_port
+MYSQL_DB=your_mysql_database
+MYSQL_USER=your_mysql_user
 MYSQL_PASSWORD=your_password
 
 # Redis Configuration
 REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_DATABASE=0
+REDIS_PORT=your_redis_port
+REDIS_DATABASE=your_redis_database
 REDIS_PASSWORD=your_redis_password
 
 # Cloudflare R2 Configuration
-CLOUDFLARE_R2_BUCKET_NAME=your-bucket-name
-CLOUDFLARE_R2_ACCOUNT_ID=your-account-id
-CLOUDFLARE_R2_ACCESS_KEY=your-access-key
-CLOUDFLARE_R2_SECRET_KEY=your-secret-key
-CLOUDFLARE_R2_PUBLIC_URL=https://your-bucket.r2.dev
+CLOUDFLARE_R2_BUCKET_NAME=your_bucket_name
+CLOUDFLARE_R2_ACCOUNT_ID=your_account_id
+CLOUDFLARE_R2_ACCESS_KEY=your_access_key
+CLOUDFLARE_R2_SECRET_KEY=your_secret_key
+CLOUDFLARE_R2_PUBLIC_URL=your_bucket_url
 
 # Security Configuration
-AUTH_JWT_SECRET_KEY=your-base64-encoded-secret-key
-AUTH_BCRYPT_PEPPER=your-pepper-value
+AUTH_JWT_SECRET_KEY=your_jwt_secret_key
+AUTH_BCRYPT_PEPPER=your_pepper_value
 ```
 
 ### Build Commands
@@ -673,7 +724,7 @@ mvn spring-boot:run
 
 **Default Admin Credentials**:
 - Username: `admin`
-- Password: `abc123`
+- Password: `admin123`
 
 ---
 
@@ -718,7 +769,6 @@ Response:
   "data": {
     "token": "eyJhbGciOiJIUzI1NiJ9...",
     "id": 1,
-    "username": "admin",
     "roleName": "ROLE_ADMIN",
     "isFirstLogged": false
   }
@@ -744,9 +794,8 @@ POST /auth/update-password
 Content-Type: application/json
 
 {
-  "username": "admin",
-  "oldPassword": "abc123",
-  "newPassword": "newPassword123"
+  "id": "1",
+  "password": "abc1234567",
 }
 
 Response:
@@ -766,49 +815,10 @@ Authorization: Bearer {jwt_token}
 
 ### Pagination Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| page | Integer | 1 | Page number (1-based) |
-| pageSize | Integer | 10 | Items per page |
-
-### Search Endpoint Examples
-
-#### Search Students
-```http
-GET /students/search?page=1&pageSize=10&name=John&clazzId=1
-Authorization: Bearer {token}
-
-Response:
-{
-  "code": 0,
-  "message": "success",
-  "data": {
-    "total": 25,
-    "rows": [
-      {
-        "id": 1,
-        "name": "John Doe",
-        "no": "202401001",
-        "gender": 1,
-        "clazzName": "Class A",
-        ...
-      }
-    ]
-  }
-}
-```
-
-#### Search Employees
-```http
-GET /emps/search?page=1&pageSize=10&name=Jane&deptId=2
-Authorization: Bearer {token}
-```
-
-#### Search Classes
-```http
-GET /clazz/search?page=1&pageSize=10&name=Science
-Authorization: Bearer {token}
-```
+| Parameter | Type | Default |
+|-----------|------|---------|
+| page | Integer | 1 |
+| pageSize | Integer | 10 |
 
 ---
 
@@ -943,33 +953,32 @@ All entities use logical deletion:
 
 ## Error Code Reference
 
-| Code | Message | Category |
-|------|---------|----------|
-| 0 | success | Success |
-| 1001 | Invalid username or password | Authentication |
-| 2001 | Department not found | Department |
-| 2002 | Department delete failed | Department |
-| 2003 | Department add failed | Department |
-| 2003 | Department update failed | Department |
-| 2004 | Department still has employees | Department |
-| 3001 | Employee not found | Employee |
-| 3002 | Employee add failed | Employee |
-| 3002 | Employee delete failed | Employee |
-| 3002 | Employee update failed | Employee |
-| 4002 | Work experience add failed | Work Experience |
-| 4002 | Work experience delete failed | Work Experience |
-| 5001 | Activity log not found | Activity Log |
-| 6001 | Class not found | Class |
-| 6002 | Class add failed | Class |
-| 6003 | Class update failed | Class |
-| 6004 | Class delete failed | Class |
-| 6005 | Class still has students | Class |
-| 7001 | Job title not found | Job Title |
-| 8001 | Subject not found | Subject |
-| 9001 | Student not found | Student |
-| 9002 | Student add failed | Student |
-| 9003 | Student delete failed | Student |
-| 9004 | Student update failed | Student |
+| Code  | Message | Category |
+|-------|---------|----------|
+| 1001  | Invalid username or password | Authentication |
+| 2001  | Department not found | Department |
+| 2002  | Department delete failed | Department |
+| 2003  | Department add failed | Department |
+| 2004  | Department update failed | Department |
+| 2005  | Department still has employees | Department |
+| 3001  | Employee not found | Employee |
+| 3002  | Employee add failed | Employee |
+| 3003  | Employee delete failed | Employee |
+| 3004  | Employee update failed | Employee |
+| 4001  | Work experience add failed | Work Experience |
+| 4002  | Work experience delete failed | Work Experience |
+| 5001  | Activity log not found | Activity Log |
+| 6001  | Class not found | Class |
+| 6002  | Class add failed | Class |
+| 6003  | Class update failed | Class |
+| 6004  | Class delete failed | Class |
+| 6005  | Class still has students | Class |
+| 7001  | Job title not found | Job Title |
+| 8001  | Subject not found | Subject |
+| 9001  | Student not found | Student |
+| 9002  | Student add failed | Student |
+| 9003  | Student delete failed | Student |
+| 9004  | Student update failed | Student |
 | 10001 | Student number sequence add failed | Student Number |
 | 10002 | Student number sequence update failed | Student Number |
 | 11001 | Education level not found | Education Level |
@@ -1004,35 +1013,11 @@ docker build -t education-management-system:latest .
 ### Run Container
 
 ```bash
-docker run -d \
-  -p 8080:8080 \
-  -e MYSQL_HOST=your_mysql_host \
-  -e MYSQL_PORT=3306 \
-  -e MYSQL_DB=education_management_system \
-  -e MYSQL_USER=root \
-  -e MYSQL_PASSWORD=your_password \
-  -e REDIS_HOST=your_redis_host \
-  -e REDIS_PORT=6379 \
-  -e REDIS_DATABASE=0 \
-  -e REDIS_PASSWORD=your_redis_password \
-  -e CLOUDFLARE_R2_BUCKET_NAME=your-bucket \
-  -e CLOUDFLARE_R2_ACCOUNT_ID=your-account-id \
-  -e CLOUDFLARE_R2_ACCESS_KEY=your-access-key \
-  -e CLOUDFLARE_R2_SECRET_KEY=your-secret-key \
-  -e CLOUDFLARE_R2_PUBLIC_URL=https://your-bucket.r2.dev \
-  -e AUTH_JWT_SECRET_KEY=your-secret-key \
-  -e AUTH_BCRYPT_PEPPER=your-pepper \
-  education-management-system:latest
+docker run -d -p 8080:8080 --name ems-app education-management-system:latest
 ```
----
-
-## License
-
-This project is proprietary software. All rights reserved.
-
 ---
 
 ## Document Version
 
-- **Version**: 1.0
-- **Last Updated**: 2025-12-29
+- **Version**: 2.0
+- **Last Updated**: 2026-01-01

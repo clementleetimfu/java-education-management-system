@@ -12,15 +12,15 @@ public enum ErrorCodeEnum {
     DEPARTMENT_NOT_FOUND(2001, "Department not found"),
     DEPARTMENT_DELETE_FAILED(2002, "Department delete failed"),
     DEPARTMENT_ADD_FAILED(2003, "Department add failed"),
-    DEPARTMENT_UPDATE_FAILED(2003, "Department update failed"),
-    DEPARTMENT_DELETE_NOT_ALLOWED(2004, "Department still has employees"),
+    DEPARTMENT_UPDATE_FAILED(2004, "Department update failed"),
+    DEPARTMENT_DELETE_NOT_ALLOWED(2005, "Department still has employees"),
 
     EMPLOYEE_NOT_FOUND(3001, "Employee not found"),
     EMPLOYEE_ADD_FAILED(3002, "Employee add failed"),
-    EMPLOYEE_DELETE_FAILED(3002, "Employee delete failed"),
-    EMPLOYEE_UPDATE_FAILED(3002, "Employee update failed"),
+    EMPLOYEE_DELETE_FAILED(3003, "Employee delete failed"),
+    EMPLOYEE_UPDATE_FAILED(3004, "Employee update failed"),
 
-    WORK_EXPERIENCE_ADD_FAILED(4002, "Work experience add failed"),
+    WORK_EXPERIENCE_ADD_FAILED(4001, "Work experience add failed"),
     WORK_EXPERIENCE_DELETE_FAILED(4002, "Work experience delete failed"),
 
     ACTIVITY_LOG_NOT_FOUND(5001, "Activity log not found"),
