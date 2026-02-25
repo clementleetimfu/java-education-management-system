@@ -1017,8 +1017,3 @@ docker build -t education-management-system:latest .
 docker run -d -p 8080:8080 --name ems-app education-management-system:latest
 ```
 ---
-
-## Document Version
-
-- **Version**: 2.0
-- **Last Updated**: 2026-01-01
