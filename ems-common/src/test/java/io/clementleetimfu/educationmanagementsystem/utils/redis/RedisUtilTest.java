@@ -27,6 +27,8 @@ class RedisUtilTest {
     @InjectMocks
     private RedisUtil redisUtil;
 
+    private static final Integer employeeId = 1234;
+
     @BeforeEach
     void setUp() {
         lenient().when(redisTemplate.opsForValue()).thenReturn(valueOperations);
@@ -84,12 +86,14 @@ class RedisUtilTest {
     @Test
     @DisplayName("Test Is Token Blacklisted Token Found")
     void testIsTokenBlacklistedTokenFound() {
-        String key = "blacklistToken:blacklisted-token";
+
+        String key = "blacklistToken:" + employeeId;
         String token = "blacklisted-token";
 
         when(redisTemplate.hasKey(key)).thenReturn(Boolean.TRUE);
+        when(valueOperations.get(key)).thenReturn(token);
 
-        Boolean result = redisUtil.isTokenBlacklisted(token);
+        Boolean result = redisUtil.isTokenBlacklisted(token, employeeId);
 
         assertTrue(result);
         verify(redisTemplate, times(1)).hasKey(key);
@@ -98,12 +102,12 @@ class RedisUtilTest {
     @Test
     @DisplayName("Test Is Token Blacklisted Token Not Found")
     void testIsTokenBlacklistedTokenNotFound() {
-        String key = "blacklistToken:not-blacklisted-token";
+        String key = "blacklistToken:" + employeeId;
         String token = "not-blacklisted-token";
 
         when(redisTemplate.hasKey(key)).thenReturn(Boolean.FALSE);
 
-        Boolean result = redisUtil.isTokenBlacklisted(token);
+        Boolean result = redisUtil.isTokenBlacklisted(token, employeeId);
 
         assertFalse(result);
         verify(redisTemplate, times(1)).hasKey(key);

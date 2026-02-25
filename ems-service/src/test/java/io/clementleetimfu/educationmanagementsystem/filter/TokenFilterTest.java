@@ -49,6 +49,7 @@ class TokenFilterTest {
 
     private MockedStatic<CurrentEmployee> mockedCurrentEmployee;
     private MockedStatic<CurrentRole> mockedCurrentRole;
+    private static final Integer employeeId = 1234;
 
     @BeforeEach
     void setUp() {
@@ -76,7 +77,7 @@ class TokenFilterTest {
         tokenFilter.doFilter(request, response, filterChain);
 
         verify(filterChain, times(1)).doFilter(request, response);
-        verify(redisUtil, never()).isTokenBlacklisted(anyString());
+        verify(redisUtil, never()).isTokenBlacklisted(anyString(), anyInt());
         verify(jwtUtil, never()).validateToken(anyString());
     }
 
@@ -98,7 +99,10 @@ class TokenFilterTest {
         String token = "bad-token";
         when(request.getRequestURI()).thenReturn("/api/data");
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(redisUtil.isTokenBlacklisted(token)).thenReturn(true);
+        when(jwtUtil.validateToken(token)).thenReturn(true);
+        when(jwtUtil.parseToken(token)).thenReturn(claims);
+        when(claims.get("id", Integer.class)).thenReturn(employeeId);
+        when(redisUtil.isTokenBlacklisted(token, employeeId)).thenReturn(true);
 
         tokenFilter.doFilter(request, response, filterChain);
 
@@ -112,7 +116,6 @@ class TokenFilterTest {
         String token = "invalid-token";
         when(request.getRequestURI()).thenReturn("/api/data");
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
-        when(redisUtil.isTokenBlacklisted(token)).thenReturn(false);
         when(jwtUtil.validateToken(token)).thenReturn(false);
 
         tokenFilter.doFilter(request, response, filterChain);
@@ -128,12 +131,11 @@ class TokenFilterTest {
         when(request.getRequestURI()).thenReturn("/api/data");
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
 
-        when(redisUtil.isTokenBlacklisted(token)).thenReturn(false);
         when(jwtUtil.validateToken(token)).thenReturn(true);
-
         when(jwtUtil.parseToken(token)).thenReturn(claims);
         when(claims.get("id", Integer.class)).thenReturn(1);
         when(claims.get("roleName", String.class)).thenReturn("ROLE_ADMIN");
+        when(redisUtil.isTokenBlacklisted(token, 1)).thenReturn(false);
 
         tokenFilter.doFilter(request, response, filterChain);
 
