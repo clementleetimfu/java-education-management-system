@@ -1,5 +1,13 @@
 # Education Management System (Backend)
 
+![Java](https://img.shields.io/badge/Java-17-red)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.7-green)
+![MySQL](https://img.shields.io/badge/MySQL-8.x-blue)
+![MyBatis](https://img.shields.io/badge/MyBatis-3.0.5-red)
+![Maven](https://img.shields.io/badge/Maven-3.x-orange)
+![JWT](https://img.shields.io/badge/JWT-black)
+![Docker](https://img.shields.io/badge/Docker-blue)
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
@@ -35,14 +43,7 @@ The Education Management System (EMS) is a comprehensive Spring Boot-based backe
 
 **Frontend Repository:** [Vue3 Frontend](https://github.com/clementleetimfu/vue-education-management-system)
 
-![Java](https://img.shields.io/badge/Java-17-red)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.7-green)
-![MySQL](https://img.shields.io/badge/MySQL-8.x-blue)
-![MyBatis](https://img.shields.io/badge/MyBatis-3.0.5-red)
-![Maven](https://img.shields.io/badge/Maven-3.x-orange)
-![JWT](https://img.shields.io/badge/JWT-black)
-![Docker](https://img.shields.io/badge/Docker-blue)
-![License](https://img.shields.io/badge/license-MIT-blue)
+
 
 ---
 
@@ -817,8 +818,8 @@ Authorization: Bearer {jwt_token}
 
 | Parameter | Type | Default |
 |-----------|------|---------|
-| page | Integer | 1 |
-| pageSize | Integer | 10 |
+| page | Integer | 1       |
+| pageSize | Integer | 5       |
 
 ---
 

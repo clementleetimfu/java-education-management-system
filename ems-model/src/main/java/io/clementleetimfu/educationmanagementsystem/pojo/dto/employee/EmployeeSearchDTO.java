@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class EmployeeSearchDTO {
     private Integer page = 1;
-    private Integer pageSize = 10;
+    private Integer pageSize = 5;
     private String name;
     private Integer gender;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

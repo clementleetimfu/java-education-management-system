@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentSearchDTO {
     private Integer page = 1;
-    private Integer pageSize = 10;
+    private Integer pageSize = 5;
     private String name;
     private Integer educationLevel;
     private Integer clazzId;
