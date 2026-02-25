@@ -33,7 +33,7 @@ CREATE TABLE employee
 (
     id              INT UNSIGNED PRIMARY KEY AUTO_INCREMENT COMMENT 'ID, primary key',
     username        VARCHAR(50)      NOT NULL COMMENT 'Username',
-    password        VARCHAR(128)     NOT NULL DEFAULT '$2a$10$EPvtiNWUunW9w.zGmC9DSudn2Hcc/UDC6MTUX7QTZOuNz7XLrLFEm' COMMENT 'Password - abc123',
+    password        VARCHAR(128)     NOT NULL DEFAULT '$2a$10$rhiOHO4oLAN7rPZ1ObDimO2r6dcuunTtPhOM0wEmi8dUtXxojKl3G' COMMENT 'Password - admin123',
     name            VARCHAR(50)      NOT NULL COMMENT 'Full Name',
     gender          TINYINT UNSIGNED NOT NULL COMMENT 'Gender, 1: Male, 2: Female',
     phone           VARCHAR(15)      NOT NULL COMMENT 'Phone Number',
