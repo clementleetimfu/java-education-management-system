@@ -11,18 +11,19 @@
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [System Architecture](#system-architecture)
-3. [Technology Stack](#technology-stack)
-4. [Core Features](#core-features)
-5. [Security Implementation](#security-implementation)
-6. [Testing Strategy](#testing-strategy)
-7. [Installation & Setup](#installation--setup)
-8. [API Reference](#api-reference)
-9. [Database Schema](#database-schema)
-10. [Configuration Management](#configuration-management)
-11. [Design Patterns & Best Practices](#design-patterns--best-practices)
-12. [Error Code Reference](#error-code-reference)
-13. [Deployment](#deployment)
+2. [Demo & Screenshots](#demo--screenshots)
+3. [System Architecture](#system-architecture)
+4. [Technology Stack](#technology-stack)
+5. [Core Features](#core-features)
+6. [Security Implementation](#security-implementation)
+7. [Testing Strategy](#testing-strategy)
+8. [Installation & Setup](#installation--setup)
+9. [API Reference](#api-reference)
+10. [Database Schema](#database-schema)
+11. [Configuration Management](#configuration-management)
+12. [Design Patterns & Best Practices](#design-patterns--best-practices)
+13. [Error Code Reference](#error-code-reference)
+14. [Deployment](#deployment)
 
 ---
 
@@ -43,7 +44,57 @@ The Education Management System (EMS) is a comprehensive Spring Boot-based backe
 
 **Frontend Repository:** [Vue3 Frontend](https://github.com/clementleetimfu/vue-education-management-system)
 
+## Demo & Screenshots
 
+**Video Demo:** [YouTube Video](https://youtu.be/uLk7wINbTYo)
+
+### Login
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Login Light](./screenshots/login_light.png) | ![Login Dark](./screenshots/login_dark.png) |
+
+### Employee Dashboard
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Employee Dashboard Light](./screenshots/employee_dashboard_light.png) | ![Employee Dashboard Dark](./screenshots/employee_dashboard_dark.png) |
+
+### Student Dashboard
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Student Dashboard Light](./screenshots/student_dashboard_light.png) | ![Student Dashboard Dark](./screenshots/student_dashboard_dark.png) |
+
+### Employee Management
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Employee Light](./screenshots/employee_light.png) | ![Employee Dark](./screenshots/employee_dark.png) |
+
+### Student Management
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Student Light](./screenshots/student_light.png) | ![Student Dark](./screenshots/student_dark.png) |
+
+### Department Management
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Department Light](./screenshots/department_light.png) | ![Department Dark](./screenshots/department_dark.png) |
+
+### Class Management
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Class Light](./screenshots/class_light.png) | ![Class Dark](./screenshots/class_dark.png) |
+
+### Activity Logs
+
+| Light Mode | Dark Mode |
+|------------|-----------|
+| ![Log Light](./screenshots/log_light.png) | ![Log Dark](./screenshots/log_dark.png) |
 
 ---
 
