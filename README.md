@@ -1,4 +1,4 @@
-# Education Management System (Backend)
+# Java Education Management System (Backend)
 
 ![Java](https://img.shields.io/badge/Java-17-red)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5.7-green)
