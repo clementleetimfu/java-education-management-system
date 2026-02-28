@@ -206,7 +206,7 @@ education-management-system/
 |-----------|------------|-------------------|
 | **Language** | Java | 17 (LTS)          |
 | **Framework** | Spring Boot | 3.5.7             |
-| **Build Tool** | Maven | 3.9.1              |
+| **Build Tool** | Maven | 3.9+               |
 | **Database** | MySQL Connector/J | (via Spring Boot) |
 | **ORM** | MyBatis Spring Boot Starter | 3.0.5             |
 | **Pagination** | PageHelper Spring Boot Starter | 2.1.1             |
@@ -763,7 +763,7 @@ mvn clean package -DskipTests
 ```bash
 # After successful build
 cd ems-service/target
-java -jar ems-service-0.0.1-SNAPSHOT.jar
+java -jar ems-service-1.0-SNAPSHOT.jar
 
 # Or use Spring Boot Maven plugin
 cd ems-service
@@ -836,7 +836,7 @@ Response:
 {
   "code": 0,
   "message": "success",
-  "data": true
+  "data": null
 }
 ```
 
@@ -846,7 +846,7 @@ POST /auth/update-password
 Content-Type: application/json
 
 {
-  "id": "1",
+  "id": 1,
   "password": "abc1234567",
 }
 

@@ -34,8 +34,8 @@ ENV REDIS_PASSWORD=
 RUN mkdir -p /ems
 WORKDIR /ems
 
-COPY ems-service-0.0.1-SNAPSHOT.jar ems-service-0.0.1-SNAPSHOT.jar
+COPY ems-service-1.0-SNAPSHOT.jar ems-service-1.0-SNAPSHOT.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","/ems/ems-service-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","/ems/ems-service-1.0-SNAPSHOT.jar"]
