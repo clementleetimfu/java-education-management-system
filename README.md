@@ -163,37 +163,37 @@ education-management-system/
 ├── ems-common/                 # Shared utilities
 │   ├── src/main/java/io/clementleetimfu/educationmanagementsystem/
 │   │   ├── constants/          # Error codes, Redis keys, Role enums
-│   │   ├── exception/          # Business exception
-│   │   └── utils/              # BCrypt, JWT, Redis, ThreadLocal utilities
-│   └── src/test/java/          # Unit tests for constants and utilities
+│   │   ├── exception/         # Business exception
+│   │   └── utils/             # BCrypt, JWT, Redis, ThreadLocal utilities
+│   └── src/test/java/         # Unit tests for constants and utilities
 ├── ems-model/                  # Data models and POJOs
 │   ├── src/main/java/io/clementleetimfu/educationmanagementsystem/pojo/
-│   │   ├── dto/                # Request DTOs (activityLog, auth, clazz, department, employee, student, workExperience)
-│   │   ├── entity/             # Database entities (10 entities)
-│   │   └── vo/                 # Response VOs (activityLog, auth, clazz, department, educationLevel, employee, jobTitle, student, subject, workExperience, result, student, subject, workExperience)
-│   │       └── result/         # Standard API response wrappers (PageResult, Result)
+│   │   ├── dto/               # Request DTOs (activityLog, auth, clazz, department, employee, student, workExperience)
+│   │   ├── entity/            # Database entities (10 entities: ActivityLog, Clazz, Department, Employee, JobTitle, Role, Student, StudentNumberSequence, Subject, WorkExperience)
+│   │   └── vo/                # Response VOs (activityLog, auth, clazz, department, educationLevel, employee, jobTitle, student, subject, workExperience)
+│   │       └── result/        # Standard API response wrappers (PageResult, Result)
 │   └── pom.xml
 ├── ems-service/                # Main application with business logic
 │   ├── src/main/java/io/clementleetimfu/educationmanagementsystem/
-│   │   ├── annotation/         # @Permission, @AddActivityLog
-│   │   ├── aop/                # PermissionAspect, ActivityLogAspect
-│   │   ├── config/             # CloudflareR2, ModelMapper, Redis, S3 configs
-│   │   ├── controller/         # 10 REST controllers
-│   │   ├── exception/          # Global exception handler
-│   │   ├── filter/             # JWT token filter
-│   │   ├── mapper/             # 11 MyBatis mappers
-│   │   ├── service/            # Service interfaces
-│   │   ├── service/impl/       # Service implementations
+│   │   ├── annotation/        # @Permission, @AddActivityLog
+│   │   ├── aop/               # PermissionAspect, ActivityLogAspect
+│   │   ├── config/            # CloudflareR2, ModelMapper, Redis, S3 configs
+│   │   ├── controller/        # 10 REST controllers
+│   │   ├── exception/         # Global exception handler
+│   │   ├── filter/            # JWT token filter
+│   │   ├── mapper/            # 11 MyBatis mappers (ActivityLog, Clazz, Department, EducationLevel, Employee, JobTitle, Role, Student, StudentNumberSequence, Subject, WorkExperience)
+│   │   ├── service/           # Service interfaces (12 services)
+│   │   ├── service/impl/      # Service implementations
 │   │   └── EducationManagementSystemApplication.java
 │   ├── src/main/resources/
 │   │   ├── io/clementleetimfu/educationmanagementsystem/mapper/  # MyBatis XML mappers
-│   │   ├── application.yml     # Application configuration
-│   │   └── logback.xml         # Logging configuration
-│   └── src/test/java/          # Integration tests
+│   │   ├── application.yml    # Application configuration
+│   │   └── logback.xml        # Logging configuration
+│   └── src/test/java/         # Integration tests
 ├── sql/                        # SQL scripts
 │   └── education-management-system.sql
 ├── Dockerfile                  # Container configuration
-└── README.md                   # Project overview
+└── README.md                  # Project overview
 ```
 
 ---
@@ -317,7 +317,31 @@ education-management-system/
 
 | Endpoint | Method | Description | Access Level |
 |----------|--------|-------------|--------------|
-| `/upload` | POST | Upload file to Cloudflare R2 | Admin Only   |
+| `/upload` | POST | Upload file to Cloudflare R2 | All Authenticated Users |
+
+### 8. Subject Management
+
+**Location**: `ems-service/controller/SubjectController.java`
+
+| Endpoint | Method | Description | Access Level |
+|----------|--------|-------------|--------------|
+| `/subjects` | GET | Get all subjects | All Roles |
+
+### 9. Job Title Management
+
+**Location**: `ems-service/controller/JobTitleController.java`
+
+| Endpoint | Method | Description | Access Level |
+|----------|--------|-------------|--------------|
+| `/jobs` | GET | Get all job titles | All Roles |
+
+### 10. Education Level Management
+
+**Location**: `ems-service/controller/EducationLevelController.java`
+
+| Endpoint | Method | Description | Access Level |
+|----------|--------|-------------|--------------|
+| `/edu-levels` | GET | Get all education levels | All Roles |
 
 ---
 
@@ -690,6 +714,7 @@ void testHashGeneratesDifferentValues() {
     assertTrue(hash2.startsWith("$2a$10$"), "Hash should start with BCrypt identifier");
 }
 ```
+
 ---
 
 ## Installation & Setup
@@ -697,9 +722,9 @@ void testHashGeneratesDifferentValues() {
 ### Prerequisites
 
 - **Java**: JDK 17 or higher
-- **Maven**: 3.9.11
-- **MySQL**: 8
-- **Redis**: 8.4
+- **Maven**: 3.9+
+- **MySQL**: 8.x
+- **Redis**: 8.x
 - **Cloudflare R2**: Account with R2 bucket (for file uploads)
 
 ### Environment Variables
@@ -1067,4 +1092,3 @@ docker build -t education-management-system:latest .
 ```bash
 docker run -d -p 8080:8080 --name ems-app education-management-system:latest
 ```
----
