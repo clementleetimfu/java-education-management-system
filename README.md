@@ -103,7 +103,9 @@ The Education Management System (EMS) is a comprehensive Spring Boot-based backe
 ### Module Structure (Maven)
 
 ```
-ems-parent/
+education-management-system/
+├── ems-parent/         # Parent Maven project (aggregator POM)
+│   └── pom.xml         # Defines modules with relative paths (../ems-model, ../ems-common, ../ems-service)
 ├── ems-model/          # Data models, DTOs, VOs, and response wrappers
 ├── ems-common/         # Shared utilities (security, Redis, thread-local storage)
 └── ems-service/        # Main application (controllers, services, mappers, aspects)
@@ -160,36 +162,36 @@ ems-service
 education-management-system/
 ├── ems-parent/                 # Parent Maven project
 │   └── pom.xml                 # Parent POM with common configurations
-├── ems-common/                 # Shared utilities
+├── ems-common/                 # Shared utilities (sibling to ems-parent)
 │   ├── src/main/java/io/clementleetimfu/educationmanagementsystem/
 │   │   ├── constants/          # Error codes, Redis keys, Role enums
-│   │   ├── exception/         # Business exception
-│   │   └── utils/             # BCrypt, JWT, Redis, ThreadLocal utilities
-│   └── src/test/java/         # Unit tests for constants and utilities
-├── ems-model/                  # Data models and POJOs
+│   │   ├── exception/          # Business exception
+│   │   └── utils/              # BCrypt, JWT, Redis, ThreadLocal utilities
+│   └── src/test/java/          # Unit tests for constants and utilities
+├── ems-model/                  # Data models and POJOs (sibling to ems-parent)
 │   ├── src/main/java/io/clementleetimfu/educationmanagementsystem/pojo/
-│   │   ├── dto/               # Request DTOs (activityLog, auth, clazz, department, employee, student, workExperience)
-│   │   ├── entity/            # Database entities (10 entities: ActivityLog, Clazz, Department, Employee, JobTitle, Role, Student, StudentNumberSequence, Subject, WorkExperience)
-│   │   └── vo/                # Response VOs (activityLog, auth, clazz, department, educationLevel, employee, jobTitle, student, subject, workExperience)
-│   │       └── result/        # Standard API response wrappers (PageResult, Result)
+│   │   ├── dto/                # Request DTOs (activityLog, auth, clazz, department, employee, student, workExperience)
+│   │   ├── entity/             # Database entities (10 entities: ActivityLog, Clazz, Department, Employee, JobTitle, Role, Student, StudentNumberSequence, Subject, WorkExperience)
+│   │   └── vo/                 # Response VOs (activityLog, auth, clazz, department, educationLevel, employee, jobTitle, student, subject, workExperience)
+│   │       └── result/         # Standard API response wrappers (PageResult, Result)
 │   └── pom.xml
-├── ems-service/                # Main application with business logic
+├── ems-service/                # Main application with business logic (sibling to ems-parent)
 │   ├── src/main/java/io/clementleetimfu/educationmanagementsystem/
-│   │   ├── annotation/        # @Permission, @AddActivityLog
-│   │   ├── aop/               # PermissionAspect, ActivityLogAspect
-│   │   ├── config/            # CloudflareR2, ModelMapper, Redis, S3 configs
-│   │   ├── controller/        # 10 REST controllers
-│   │   ├── exception/         # Global exception handler
-│   │   ├── filter/            # JWT token filter
-│   │   ├── mapper/            # 11 MyBatis mappers (ActivityLog, Clazz, Department, EducationLevel, Employee, JobTitle, Role, Student, StudentNumberSequence, Subject, WorkExperience)
-│   │   ├── service/           # Service interfaces (12 services)
-│   │   ├── service/impl/      # Service implementations
+│   │   ├── annotation/         # @Permission, @AddActivityLog
+│   │   ├── aop/                # PermissionAspect, ActivityLogAspect
+│   │   ├── config/             # CloudflareR2, ModelMapper, Redis, S3 configs
+│   │   ├── controller/         # 10 REST controllers
+│   │   ├── exception/          # Global exception handler
+│   │   ├── filter/             # JWT token filter
+│   │   ├── mapper/             # 11 MyBatis mappers (ActivityLog, Clazz, Department, EducationLevel, Employee, JobTitle, Role, Student, StudentNumberSequence, Subject, WorkExperience)
+│   │   ├── service/            # Service interfaces (11 service interfaces + CloudflareR2Client implementation)
+│   │   ├── service/impl/       # Service implementations (11 implementations)
 │   │   └── EducationManagementSystemApplication.java
 │   ├── src/main/resources/
-│   │   ├── io/clementleetimfu/educationmanagementsystem/mapper/  # MyBatis XML mappers
-│   │   ├── application.yml    # Application configuration
-│   │   └── logback.xml        # Logging configuration
-│   └── src/test/java/         # Integration tests
+│   │   ├── io/clementleetimfu/educationmanagementsystem/mapper/  # MyBatis XML mappers (11 XML files)
+│   │   ├── application.yml     # Application configuration
+│   │   └── logback.xml         # Logging configuration
+│   └── src/test/java/          # Unit tests
 ├── sql/                        # SQL scripts
 │   └── education-management-system.sql
 ├── Dockerfile                  # Container configuration
@@ -576,25 +578,25 @@ public Result<Boolean> addDepartment(@RequestBody DepartmentAddDTO dto) {
 
 ```
 ems-service/src/test/java/io/clementleetimfu/educationmanagementsystem/
-├── aop/                          # AOP Aspect tests
+├── aop/                          # AOP Aspect tests (2 tests)
 │   ├── PermissionAspectTest.java
 │   └── ActivityLogAspectTest.java
-├── config/                       # Configuration tests
+├── config/                       # Configuration tests (4 tests)
 │   ├── CloudflareR2ClientConfigTest.java
 │   ├── ModelMapperConfigTest.java
 │   ├── RedisConfigTest.java
 │   └── S3ConfigTest.java
-├── exception/                    # Exception handling tests
+├── exception/                    # Exception handling tests (1 test)
 │   └── GlobalExceptionHandlerTest.java
-├── filter/                       # Filter tests
+├── filter/                       # Filter tests (1 test)
 │   └── TokenFilterTest.java
-└── service/impl/                 # Service implementation tests
+└── service/impl/                 # Service implementation tests (11 tests)
     ├── ActivityLogServiceImplTest.java
     ├── AuthServiceImplTest.java
-    ├── ClazzServiceImplTest.java        
+    ├── ClazzServiceImplTest.java
     ├── DepartmentServiceImplTest.java
     ├── EducationLevelServiceImplTest.java
-    ├── EmployeeServiceImplTest.java    
+    ├── EmployeeServiceImplTest.java
     ├── JobTitleServiceImplTest.java
     ├── StudentNumberSequenceServiceImplTest.java
     ├── StudentServiceImplTest.java
@@ -602,11 +604,11 @@ ems-service/src/test/java/io/clementleetimfu/educationmanagementsystem/
     └── UploadServiceImplTest.java
 
 ems-common/src/test/java/io/clementleetimfu/educationmanagementsystem/
-├── constants/                    # Enum tests
+├── constants/                    # Enum tests (3 tests)
 │   ├── ErrorCodeEnumTest.java
 │   ├── RedisEnumTest.java
 │   └── RoleEnumTest.java
-└── utils/                        # Utility tests
+└── utils/                        # Utility tests (5 tests)
     ├── bcrypt/BcryptUtilTest.java
     ├── jwt/JwtUtilTest.java
     ├── redis/RedisUtilTest.java
@@ -614,6 +616,8 @@ ems-common/src/test/java/io/clementleetimfu/educationmanagementsystem/
         ├── CurrentEmployeeTest.java
         └── CurrentRoleTest.java
 ```
+
+**Total**: 19 tests in ems-service + 8 tests in ems-common = 27 tests
 
 ### Test Patterns
 
