@@ -202,21 +202,21 @@ education-management-system/
 
 ### Core Technologies
 
-| Component | Technology | Version           |
-|-----------|------------|-------------------|
-| **Language** | Java | 17 (LTS)          |
-| **Framework** | Spring Boot | 3.5.7             |
-| **Build Tool** | Maven | 3.9+               |
-| **Database** | MySQL Connector/J | (via Spring Boot) |
-| **ORM** | MyBatis Spring Boot Starter | 3.0.5             |
-| **Pagination** | PageHelper Spring Boot Starter | 2.1.1             |
-| **Caching** | Spring Data Redis | (via Spring Boot) |
-| **Security** | Spring Security Crypto | 7.0.0             |
-| **JWT** | JJWT (JSON Web Token) | 0.13.0            |
-| **Object Mapping** | ModelMapper | 3.2.6             |
-| **Cloud Storage** | AWS SDK for Java | 2.39.2            |
-| **Boilerplate** | Lombok | 1.18.42           |
-| **Testing** | JUnit 5 + Mockito | (via Spring Boot) |
+| Component | Technology                            | Version           |
+|-----------|---------------------------------------|-------------------|
+| **Language** | Java                                  | 17 (LTS)          |
+| **Framework** | Spring Boot                           | 3.5.7             |
+| **Build Tool** | Maven                                 | 3.9+               |
+| **Database** | MySQL Connector/J                     | (via Spring Boot) |
+| **ORM** | MyBatis Spring Boot Starter           | 3.0.5             |
+| **Pagination** | PageHelper Spring Boot Starter        | 2.1.1             |
+| **Caching** | Spring Data Redis                     | (via Spring Boot) |
+| **Security** | Spring Security Crypto                | 7.0.0             |
+| **JWT** | JJWT (JSON Web Token)                 | 0.13.0            |
+| **Object Mapping** | ModelMapper                           | 3.2.6             |
+| **Cloud Storage** | Cloudflare R2 (AWS S3 API compatible) | 2.39.2            |
+| **Boilerplate** | Lombok                                | 1.18.42           |
+| **Testing** | JUnit 5 + Mockito                     | (via Spring Boot) |
 
 ### Maven Dependency Management
 
