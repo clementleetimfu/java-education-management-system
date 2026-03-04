@@ -2,84 +2,104 @@
 
 ## Project Overview
 - Spring Boot 3.5.7, Java 17, Maven 3.9+
-- Multi-module: ems-parent, ems-model, ems-common, ems-service
-- MySQL 8.x with MyBatis 3.0.5
+- Multi-module Maven project (modules are **siblings** to ems-parent):
+  - `ems-parent/` - Parent aggregator POM with relative paths
+  - `ems-model/` - Entities, DTOs, VOs, Result wrappers
+  - `ems-common/` - Utils, Constants, Exceptions, Security
+  - `ems-service/` - Controllers, Services, Mappers, AOP, Config
+- MySQL 8.x with MyBatis 3.0.5, Redis for token blacklisting
+- Cloudflare R2 for file storage (S3-compatible)
 
-## Module Structure
-```
-ems-parent/
-├── ems-model/    # Entities, DTOs, VOs, Result wrappers
-├── ems-common/   # Utils, Constants, Exceptions, Security
-└── ems-service/  # Controllers, Services, Mappers, AOP, Config
-```
+## Build/Lint/Test Commands
 
-## Build Commands
 ```bash
-# Full build
+# Full build (from project root)
 cd ems-parent && mvn clean package
 
-# Run tests
+# Run all tests
 cd ems-parent && mvn test
+
+# Run single test class
 mvn test -Dtest=PermissionAspectTest
+
+# Run single test method
 mvn test -Dtest=PermissionAspectTest#testCheckPermissionAdminRoleAuthorized
 
-# Module tests
+# Run tests by module
 cd ems-common && mvn test
 cd ems-service && mvn test
 
-# Skip tests
+# Skip tests during build
 mvn clean package -DskipTests
 
-# Run app
+# Run application
 cd ems-service && mvn spring-boot:run
 ```
 
 ## Code Style Guidelines
 
-### Principles
-- Java 17: records, switch expressions, text blocks
-- Lombok: `@Data`, `@Builder`, `@Slf4j`, `@AllArgsConstructor`, `@NoArgsConstructor`
-- Timestamps: `LocalDateTime`
-- Entities: soft delete (`is_deleted`)
-- Services: `@Transactional(readOnly=true)` for queries, `@Transactional` for mutations
+### Core Principles
+- **Java 17 features**: Use records, switch expressions, text blocks where appropriate
+- **Lombok annotations**: `@Data`, `@Builder`, `@Slf4j`, `@AllArgsConstructor`, `@NoArgsConstructor`
+- **Timestamps**: Always use `java.time.LocalDateTime` or `java.time.LocalDate`
+- **Large numbers**: Use `java.math.BigInteger` for salary fields
+- **Soft delete**: All entities have `is_deleted` boolean field
+- **Transaction management**: Use `@Transactional(readOnly = true)` for queries, `@Transactional(rollbackFor = Exception.class)` for mutations
 
-### Naming
-| Classes   | PascalCase   | `StudentController` |
-| Methods   | camelCase    | `findStudentById` |
-| Variables | camelCase    | `studentService` |
-| Constants | UPPER_SNAKE  | `SUCCESS_CODE` |
-| Packages  | lowercase    | `io.clementleetimfu.educationmanagementsystem` |
-| Tables    | snake_case   | `t_student` |
+### Naming Conventions
+| Type | Convention | Example |
+|------|------------|---------|
+| Classes | PascalCase | `StudentController`, `EmployeeServiceImpl` |
+| Methods | camelCase | `findStudentById`, `searchEmployee` |
+| Variables | camelCase | `studentService`, `employeeMapper` |
+| Constants | UPPER_SNAKE | `SUCCESS_CODE`, `FAIL_CODE` |
+| Packages | lowercase | `io.clementleetimfu.educationmanagementsystem` |
+| Tables | snake_case | `employee`, `student` (without `t_` prefix) |
 
-### Import Order: Java/Jakarta → Spring → Third-party → Internal
+### Import Order
+1. Java/Jakarta standard library
+2. Spring Framework imports
+3. Third-party libraries (Lombok, ModelMapper, MyBatis, etc.)
+4. Internal project imports (`io.clementleetimfu.educationmanagementsystem.*`)
 
-### Package Structure (ems-service)
+Example:
+```java
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import lombok.extern.slf4j.Slf4j;
+
+import io.clementleetimfu.educationmanagementsystem.constants.ErrorCodeEnum;
+import io.clementleetimfu.educationmanagementsystem.exception.BusinessException;
+```
+
+### Package Structure
 ```
 io.clementleetimfu.educationmanagementsystem/
-├── annotation/  # @Permission, @AddActivityLog
-├── aop/        # PermissionAspect, ActivityLogAspect
-├── config/     # Configuration classes
-├── controller/  # REST controllers
-├── exception/   # GlobalExceptionHandler
-├── filter/     # TokenFilter (JWT)
-├── mapper/     # MyBatis mappers
+├── annotation/       # Custom annotations (@Permission, @AddActivityLog)
+├── aop/              # Aspect classes (PermissionAspect, ActivityLogAspect)
+├── config/           # Configuration classes
+├── controller/       # REST controllers
+├── exception/        # GlobalExceptionHandler
+├── filter/           # TokenFilter (JWT authentication)
+├── mapper/           # MyBatis mapper interfaces
 └── service/
     ├── Service interfaces
-    └── impl/    # Service implementations
-```
+    └── impl/         # Service implementations
 
-### Model Package Structure (ems-model)
-```
 pojo/
-├── dto/        # Request DTOs
-├── entity/     # Database entities
-└── vo/         # Response VOs
-    └── result/  # Result, PageResult wrappers
+├── dto/              # Request DTOs (Data Transfer Objects)
+├── entity/           # Database entities
+└── vo/               # Response VOs (Value Objects)
+    └── result/       # Result, PageResult wrappers
 ```
 
 ## Common Patterns
 
-### Controller
+### Controller Pattern
 ```java
 @RestController
 @RequestMapping("/resource-name")
@@ -88,103 +108,169 @@ public class ResourceController {
     private ResourceService resourceService;
 
     @GetMapping("/search")
-    public Result<PageResult<ResourceVO>> search(...) { ... }
+    public Result<PageResult<ResourceVO>> search(@ModelAttribute ResourceSearchDTO dto) {
+        return Result.success(resourceService.search(dto));
+    }
 
     @Permission(role = RoleEnum.ROLE_ADMIN)
     @AddActivityLog
     @PostMapping
-    public Result<Boolean> addResource(...) { ... }
+    public Result<Boolean> add(@RequestBody ResourceAddDTO dto) {
+        return Result.success(resourceService.add(dto));
+    }
 }
 ```
 
-### Service
+### Service Pattern
 ```java
+@Slf4j
 @Service
 public class ResourceServiceImpl implements ResourceService {
     @Autowired
     private ResourceMapper resourceMapper;
 
+    @Override
     @Transactional(readOnly = true)
-    public PageResult<ResourceVO> search(...) { ... }
+    public PageResult<ResourceVO> search(ResourceSearchDTO dto) {
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        List<ResourceVO> list = resourceMapper.search(dto);
+        if (list.isEmpty()) {
+            throw new BusinessException(ErrorCodeEnum.RESOURCE_NOT_FOUND);
+        }
+        Page<ResourceVO> page = (Page<ResourceVO>) list;
+        return new PageResult<>(page.getTotal(), page.getResult());
+    }
 
-    @Transactional
-    public Boolean addResource(...) { ... }
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean add(ResourceAddDTO dto) {
+        // Business logic with error handling
+    }
 }
 ```
 
-### Response: `Result.success(data)` / `Result.fail(message)` / `Result.success()`
+### Entity Pattern
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Employee {
+    private Integer id;
+    private String username;
+    private String password;
+    private Integer gender;      // 1: Male, 2: Female (use Integer for enums)
+    private BigInteger salary;   // Use BigInteger for large numbers
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+    private Boolean isDeleted;   // Soft delete flag
+}
+```
 
-### Exception: `BusinessException(ErrorCodeEnum.XXX)`, GlobalExceptionHandler handles all
+### Response Pattern
+```java
+// Success with data
+return Result.success(data);
 
-### Security
-- JWT: 1-hour expiration, BCrypt with pepper (cost 10, env `AUTH_BCRYPT_PEPPER`)
-- Redis blacklist: `blacklistToken:{employeeId}`
-- TokenFilter excludes: `/auth/login`, `/auth/update-password`
-- Permissions: `@Permission(role = RoleEnum.ROLE_ADMIN)`
-- Activity logging: `@AddActivityLog`
-- Thread-Local: `CurrentEmployee.get()`, `CurrentRole.get()`
+// Success without data
+return Result.success();
+
+// Failure
+return Result.fail(ErrorCodeEnum.XXX.getCode(), ErrorCodeEnum.XXX.getMessage());
+throw new BusinessException(ErrorCodeEnum.XXX);
+```
+
+### Error Handling
+- Use `BusinessException(ErrorCodeEnum.XXX)` for business errors
+- GlobalExceptionHandler converts exceptions to Result responses
+- Log with `@Slf4j`: `log.warn("Message:{}", value)`, `log.error("Message:{}", value, exception)`
+
+## Security Implementation
+- **JWT**: 1-hour expiration, stored in request headers
+- **BCrypt**: Cost factor 10 with pepper from `AUTH_BCRYPT_PEPPER` env var
+- **Redis blacklist**: Key pattern `blacklistToken:{employeeId}`
+- **TokenFilter**: Excludes `/auth/login`, `/auth/update-password`
+- **Authorization**: `@Permission(role = RoleEnum.ROLE_ADMIN)` for admin-only endpoints
+- **Audit logging**: `@AddActivityLog` annotation for operation tracking
+- **Thread-Local context**: Use `CurrentEmployee.get()` and `CurrentRole.get()` in services
 
 ## Testing Guidelines
 
-- JUnit 5 (Jupiter) with Mockito 5.17.0
-- `@ExtendWith(MockitoExtension.class)`, `@DisplayName`
-- `@Mock` for dependencies, `@InjectMocks` for class under test
-- `MockedStatic` for Thread-Local (`CurrentEmployee`, `CurrentRole`)
-- Naming: `{ClassName}Test`, methods: `test{MethodName}{Scenario}`
-- Location: Same package under `src/test/java`
-- Cleanup: Always close `MockedStatic` in `@AfterEach`
-
+### Test Structure
 ```java
 @ExtendWith(MockitoExtension.class)
-@DisplayName("Permission Aspect Tests")
-class PermissionAspectTest {
+@DisplayName("Resource Service Tests")
+class ResourceServiceImplTest {
     @Mock
-    private ProceedingJoinPoint pjp;
+    private ResourceMapper resourceMapper;
 
     @InjectMocks
-    private PermissionAspect permissionAspect;
+    private ResourceServiceImpl resourceService;
 
-    private MockedStatic<CurrentRole> mockedCurrentRole;
+    private MockedStatic<CurrentEmployee> mockedCurrentEmployee;
 
     @BeforeEach
     void setUp() {
-        mockedCurrentRole = mockStatic(CurrentRole.class);
+        mockedCurrentEmployee = mockStatic(CurrentEmployee.class);
     }
 
     @AfterEach
     void tearDown() {
-        if (mockedCurrentRole != null) {
-            mockedCurrentRole.close();
+        if (mockedCurrentEmployee != null) {
+            mockedCurrentEmployee.close();  // Always close MockedStatic
         }
     }
 
     @Test
-    void testCheckPermissionAdminRoleAuthorized() throws Throwable { ... }
+    @DisplayName("Test method description")
+    void testMethodName_Scenario() {
+        // Arrange
+        when(resourceMapper.findById(1)).thenReturn(Optional.of(entity));
+
+        // Act
+        ResourceVO result = resourceService.findById(1);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.getId());
+        verify(resourceMapper, times(1)).findById(1);
+    }
 }
 ```
 
+### Test Naming Convention
+- Class: `{ClassName}Test`
+- Method: `test{MethodName}_{Scenario}` (e.g., `testFindById_NotFound`)
+- Location: Same package under `src/test/java`
+
+### Test File Locations
+- `ems-service/src/test/java/io/clementleetimfu/educationmanagementsystem/`
+- `ems-common/src/test/java/io/clementleetimfu/educationmanagementsystem/`
+
 ## Database Conventions
-- Tables: `is_deleted` (soft delete), `create_time`, `update_time`
-- Generated columns: `active_username`, `active_name` (unique constraints)
-- IDs: `INT UNSIGNED`, `TINYINT UNSIGNED`
-- Naming: `t_{entity_name}`
+- **Primary keys**: `INT UNSIGNED AUTO_INCREMENT`
+- **Soft delete**: `is_deleted` `TINYINT(1)` with CHECK constraint
+- **Timestamps**: `create_time`, `update_time` `DATETIME NOT NULL`
+- **Generated columns**: `active_username`, `active_name` for unique constraints on non-deleted rows
+- **Foreign keys**: Use `INT UNSIGNED`
+- **Table naming**: Snake case without prefix (e.g., `employee`, `student`, not `t_employee`)
 
 ## Configuration
-- Sensitive config: Environment variables (see README.md)
+- Environment variables for sensitive config (see README.md)
 - Application config: `ems-service/src/main/resources/application.yml`
-- Database: MySQL 8.x, Redis 8.4
-- Cloud storage: Cloudflare R2 (S3-compatible)
+- MyBatis XML mappers: `ems-service/src/main/resources/io/clementleetimfu/educationmanagementsystem/mapper/`
 
-## Key Files
-| File                  | Purpose                  |
-|-----------------------|--------------------------|
-| `ErrorCodeEnum.java`   | Error codes (1001-13001) |
-| `RoleEnum.java`       | ROLE_ADMIN, ROLE_EMPLOYEE |
-| `BusinessException.java` | Custom exception     |
-| `TokenFilter.java`     | JWT authentication   |
-| `PermissionAspect.java` | Authorization AOP   |
+## Key Files Reference
+| File | Purpose |
+|------|---------|
+| `ErrorCodeEnum.java` | Business error codes (1001-13001) |
+| `RoleEnum.java` | ROLE_ADMIN, ROLE_EMPLOYEE |
+| `BusinessException.java` | Custom exception for business errors |
+| `TokenFilter.java` | JWT authentication filter |
+| `PermissionAspect.java` | Role-based authorization AOP |
 | `ActivityLogAspect.java` | Audit logging AOP |
-| `GlobalExceptionHandler.java` | Exception handling |
+| `GlobalExceptionHandler.java` | Centralized exception handling |
+| `Result.java` | Standard API response wrapper |
+| `PageResult.java` | Paginated response wrapper |
 
 ## Default Credentials (Development)
 - URL: `http://localhost:8080`
